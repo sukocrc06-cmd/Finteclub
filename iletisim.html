@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FinTeClub İletişim">
+    <title>İletişim - FinTeClub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes pulseLogo { 
+            0% { opacity: 0.5; transform: scale(0.95); } 
+            50% { opacity: 1; transform: scale(1.05); } 
+            100% { opacity: 0.5; transform: scale(0.95); } 
+        }
+        @media (max-width: 992px) {
+            .contact-left, .contact-right {
+                width: 100% !important;
+                padding-left: 0 !important;
+                margin-bottom: 40px;
+            }
+            .contact-section {
+                background: linear-gradient(180deg, #0A1B35 50%, #050D1D 50%) !important;
+                padding-top: 140px !important;
+            }
+            .qr-social-container {
+                flex-direction: column;
+                text-align: center !important;
+            }
+            .qr-social-container .social-links {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="index.html">Anasayfa</a></li>
+            <li><a href="duyurular.html">Duyurular</a></li>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" class="active">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-section" style="min-height: 85vh; display: flex; background: linear-gradient(105deg, #0A1B35 45%, #050D1D 45%); align-items: center; justify-content: center; padding: 140px 40px 40px 40px; flex-wrap: wrap;">
+        
+        <!-- Left Column - Animated Logo -->
+        <div class="contact-left" style="width: 45%; display: flex; justify-content: center; align-items: center;">
+            <img src="https://finteclub.my.canva.site/_assets/media/fc4aebf2ff2d2acd2be8a761309ad8ff.png" alt="FinTeClub Animated Logo" style="width: 100%; max-width: 450px; animation: pulseLogo 3s infinite ease-in-out;">
+        </div>
+
+        <!-- Right Column - Form & Links -->
+        <div class="contact-right" style="width: 55%; display: flex; flex-direction: column; text-align: center; gap: 20px; padding-left: 20px;">
+            <h1 style="font-size: 3.5rem; font-weight: 700; margin: 0; color: #ffffff;">İletişim</h1>
+            <p style="font-size: 1.2rem; line-height: 1.5; color: #e2e8f0; margin: 0;">Hemen üye olmak için üye formunu bağlantıya tıklayarak veya QR kodu kullanarak doldurabilirsiniz.</p>
+            <a href="https://docs.google.com/forms/d/1OGbMZIQHUZJbjsiPK99hosLc1oauXrQS72xBrzFiins/edit" target="_blank" style="color: #ffffff; text-decoration: underline; font-size: 1.1rem; word-break: break-all; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#ffffff'">https://docs.google.com/forms/d/1OGbMZIQHUZJbjsiPK99hosLc1oauXrQS72xBrzFiins/edit</a>
+            <p style="font-size: 1.2rem; margin-top: 15px; color: #e2e8f0;">Tüm soru, görüş ve önerileriniz için ekibimizle iletişime geçebilirsiniz.</p>
+            
+            <!-- Bottom Contact & QR Grid -->
+            <div class="qr-social-container" style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 20px; text-align: left; flex-wrap: wrap;">
+                
+                <!-- Functional QR -->
+                <div style="text-align: center; flex-shrink: 0;">
+                    <h3 style="color: #ffffff; font-size: 1.2rem; margin-bottom: 10px; font-weight: 600;">Üye Kayıt Formu</h3>
+                    <a href="https://docs.google.com/forms/d/1OGbMZIQHUZJbjsiPK99hosLc1oauXrQS72xBrzFiins/edit" target="_blank" style="display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="qr code.png" alt="Üye Kayıt Formu QR Kodu" style="max-width: 200px; width: 100%; height: auto; display: block; margin: 10px auto; border-radius: 12px; border: 4px solid white;">
+                    </a>
+                </div>
+
+                <!-- Active Social Links -->
+                <div class="social-links" style="display: flex; flex-direction: column; gap: 15px; font-size: 1.2rem;">
+                    <a href="mailto:finteclubaybu@gmail.com" style="color: white; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='white'">✉️ finteclubaybu@gmail.com</a>
+                    <a href="https://linkedin.com/company/finteclub-aybu" target="_blank" style="color: white; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='white'">🔗 linkedin.com/finteclub-aybu</a>
+                    <a href="https://instagram.com/finteclubaybu" target="_blank" style="color: white; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='white'">📷 instagram.com/finteclubaybu</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
