@@ -9,6 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Splash Screen Intro -->
+    <div id="intro-splash">
+        <video id="intro-video" src="intro.mp4" autoplay muted playsinline></video>
+        <button id="skip-intro">Geç</button>
+    </div>
+
     <nav class="navbar">
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
@@ -40,6 +46,7 @@
 
 
     <script>
+        // Hamburger Menu Logic
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
 
@@ -47,6 +54,22 @@
             navLinks.classList.toggle('open');
             hamburger.classList.toggle('active');
         });
+
+        // Splash Screen Logic
+        const introSplash = document.getElementById('intro-splash');
+        const introVideo = document.getElementById('intro-video');
+        const skipBtn = document.getElementById('skip-intro');
+
+        function hideSplash() {
+            introSplash.classList.add('fade-out');
+            setTimeout(() => {
+                introSplash.style.display = 'none';
+            }, 1000);
+        }
+
+        // Hide when video ends or when skip button is clicked
+        introVideo.addEventListener('ended', hideSplash);
+        skipBtn.addEventListener('click', hideSplash);
     </script>
 </body>
 </html>
