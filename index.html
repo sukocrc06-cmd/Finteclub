@@ -60,16 +60,21 @@
         const introVideo = document.getElementById('intro-video');
         const skipBtn = document.getElementById('skip-intro');
 
-        function hideSplash() {
-            introSplash.classList.add('fade-out');
-            setTimeout(() => {
-                introSplash.style.display = 'none';
-            }, 1000);
-        }
+        if (sessionStorage.getItem('introPlayed') === 'true') {
+            introSplash.style.display = 'none';
+        } else {
+            function hideSplash() {
+                sessionStorage.setItem('introPlayed', 'true');
+                introSplash.classList.add('fade-out');
+                setTimeout(() => {
+                    introSplash.style.display = 'none';
+                }, 1000);
+            }
 
-        // Hide when video ends or when skip button is clicked
-        introVideo.addEventListener('ended', hideSplash);
-        skipBtn.addEventListener('click', hideSplash);
+            // Hide when video ends or when skip button is clicked
+            introVideo.addEventListener('ended', hideSplash);
+            skipBtn.addEventListener('click', hideSplash);
+        }
     </script>
 </body>
 </html>
