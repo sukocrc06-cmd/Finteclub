@@ -648,3 +648,8 @@ body {
 .sponsor-card:hover {
     transform: scale(1.05);
 }
+
+.avukatapp-logo {
+    transform: scale(1.4);
+    transform-origin: center center;
+}
