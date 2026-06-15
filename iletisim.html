@@ -83,8 +83,13 @@
     <section class="contact-section" style="min-height: 85vh; display: flex; background: linear-gradient(105deg, #0A1B35 45%, #050D1D 45%); align-items: center; justify-content: center; padding: 140px 40px 40px 40px; flex-wrap: wrap;">
         
         <!-- Left Column - Animated Logo -->
-        <div class="contact-left" style="width: 45%; display: flex; justify-content: center; align-items: center;">
-            <img src="yeni-logo.png" alt="FinTeClub Animated Logo" class="contact-logo-final">
+        <div class="contact-left" style="width: 45%; display: flex; justify-content: center; align-items: center; background: transparent !important; background-color: transparent !important; border: none !important; padding: 0 !important;">
+            <style>
+                @keyframes contactLogoSpinFinal { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+                @keyframes contactLogoGlowFinal { 0%, 100% { filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.4)); opacity: 0.85; } 50% { filter: drop-shadow(0 0 22px rgba(0, 123, 255, 0.9)); opacity: 1; } }
+                .contact-spin-clean { mix-blend-mode: screen !important; background: transparent !important; background-color: transparent !important; border: none !important; border-radius: 0 !important; max-width: 280px; width: 100%; height: auto; display: block; animation: contactLogoSpinFinal 8s linear infinite, contactLogoGlowFinal 3s ease-in-out infinite; }
+            </style>
+            <img src="yeni-logo.png" alt="FinTeClub Animated Logo" class="contact-spin-clean">
         </div>
 
         <!-- Right Column - Form & Links -->
