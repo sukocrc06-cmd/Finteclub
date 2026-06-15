@@ -616,6 +616,101 @@ body {
     font-weight: 300;
 }
 
+/* Member Grid & Card styles */
+.team-group {
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.team-group-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 25px;
+    border-left: 4px solid #3b82f6;
+    padding-left: 15px;
+    text-align: left;
+}
+
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.member-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto;
+    color: #93c5fd;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-avatar {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0.1) 100%);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+    color: #ffffff;
+}
+
+.member-avatar svg {
+    width: 32px;
+    height: 32px;
+}
+
+.member-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.member-role {
+    font-size: 0.9rem;
+    color: #93c5fd;
+    font-weight: 400;
+}
+
+.team-group-footer {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    border-left: 3px solid #64748b;
+    text-align: left;
+}
+
 @media (max-width: 992px) {
     .about-container {
         flex-direction: column;
@@ -876,6 +971,7 @@ body {
     .team-flex-3col,
     .event-image-grid,
     .event-gallery,
+    .members-grid,
     .qr-social-container {
         display: flex !important;
         flex-direction: column !important;
