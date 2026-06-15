@@ -82,17 +82,19 @@ body {
     max-width: 450px;
 }
 
-.custom-tech-logo {
-    mix-blend-mode: screen;
+.glowing-tech-logo {
+    mix-blend-mode: screen !important;
     max-width: 100%;
     height: auto;
-    animation: logoPulseGlow 3s ease-in-out infinite;
+    display: block;
+    margin: 0 auto;
+    animation: pulseNeonGlow 3s ease-in-out infinite;
 }
 
-@keyframes logoPulseGlow {
-    0% { filter: drop-shadow(0 0 6px rgba(0, 123, 255, 0.5)); opacity: 0.85; }
-    50% { filter: drop-shadow(0 0 22px rgba(0, 123, 255, 0.9)); opacity: 1; }
-    100% { filter: drop-shadow(0 0 6px rgba(0, 123, 255, 0.5)); opacity: 0.85; }
+@keyframes pulseNeonGlow {
+    0% { filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.4)); opacity: 0.9; }
+    50% { filter: drop-shadow(0 0 20px rgba(0, 123, 255, 0.8)); opacity: 1; }
+    100% { filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.4)); opacity: 0.9; }
 }
 
 @keyframes float {
