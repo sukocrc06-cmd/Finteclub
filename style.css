@@ -80,10 +80,19 @@ body {
 .hero-logo img {
     width: 100%;
     max-width: 450px;
-    height: auto;
+}
+
+.custom-tech-logo {
     mix-blend-mode: screen;
-    filter: drop-shadow(0 0 12px rgba(0, 123, 255, 0.4));
-    animation: float 6s ease-in-out infinite;
+    max-width: 100%;
+    height: auto;
+    animation: logoPulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoPulseGlow {
+    0% { filter: drop-shadow(0 0 6px rgba(0, 123, 255, 0.5)); opacity: 0.85; }
+    50% { filter: drop-shadow(0 0 22px rgba(0, 123, 255, 0.9)); opacity: 1; }
+    100% { filter: drop-shadow(0 0 6px rgba(0, 123, 255, 0.5)); opacity: 0.85; }
 }
 
 @keyframes float {
