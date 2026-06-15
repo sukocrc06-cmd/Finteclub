@@ -7,19 +7,23 @@
     <title>Next-Generation Connectivity</title>
     <link rel="stylesheet" href="style.css">
     <style>
-    .homepage-logo-clean {
+    @keyframes homepageLogoSpin3D {
+        0% { transform: rotateY(0deg); }
+        100% { transform: rotateY(360deg); }
+    }
+    .homepage-logo-spin-final {
         mix-blend-mode: screen !important;
         background: transparent !important;
         background-color: transparent !important;
         border: none !important;
         box-shadow: none !important;
         border-radius: 0 !important;
-        max-width: 450px;
+        max-width: 280px;
         width: 100%;
         height: auto;
         display: block;
         margin: 0 auto;
-        filter: drop-shadow(0 0 15px rgba(0, 123, 255, 0.4));
+        animation: homepageLogoSpin3D 10s linear infinite;
     }
     </style>
 </head>
@@ -59,8 +63,8 @@
     </nav>
     <section class="hero" id="hero">
         <div class="hero-container">
-            <div class="hero-logo">
-                <img src="yeni-logo.png" alt="FinTeClub Logo" class="homepage-logo-clean">
+            <div class="hero-logo" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0; display: flex; justify-content: center; align-items: center;">
+                <img src="yeni-anasayfa-logosu.png.png" alt="FinTeClub Logo" class="homepage-logo-spin-final" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
             </div>
             <div class="hero-content">
                 <h3>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
