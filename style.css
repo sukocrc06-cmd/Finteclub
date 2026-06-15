@@ -803,6 +803,30 @@ body {
     margin-bottom: 0;
 }
 
+/* Custom 4-Photo Gallery */
+.event-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto 20px;
+    width: 100%;
+}
+
+.event-gallery img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.event-gallery img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
 /* --- Comprehensive Mobile Optimization --- */
 @media (max-width: 768px) {
     /* 1. Comfortable Horizontal Padding */
@@ -850,6 +874,7 @@ body {
     .team-cards-row,
     .team-flex-3col,
     .event-image-grid,
+    .event-gallery,
     .qr-social-container {
         display: flex !important;
         flex-direction: column !important;
