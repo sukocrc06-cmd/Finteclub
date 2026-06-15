@@ -10,7 +10,12 @@
 </head>
 <body>
     <nav class="navbar">
-        <ul class="nav-links">
+        <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
             <li><a href="index.html">Anasayfa</a></li>
             <li><a href="duyurular.html" class="active">Duyurular</a></li>
             <li><a href="hakkimizda.html">Hakkımızda</a></li>
@@ -116,6 +121,17 @@
         </div>
     </section>
     <script>
+        // Hamburger Menu Logic
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                hamburger.classList.toggle('active');
+            });
+        }
+
         const dropdownToggle = document.querySelector('.dropdown-toggle');
         if (dropdownToggle) {
             dropdownToggle.addEventListener('click', function(e) {

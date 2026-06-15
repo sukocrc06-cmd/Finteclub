@@ -275,11 +275,14 @@ body {
         height: 100vh;
         text-align: center;
         transition: 0.4s ease-in-out;
-        padding-top: 100px;
-        justify-content: flex-start;
-        gap: 30px;
+        padding-top: 80px;
+        padding-bottom: 40px;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
         backdrop-filter: blur(15px);
         z-index: 100;
+        overflow-y: auto;
     }
 
     .nav-links.open {
@@ -292,9 +295,10 @@ body {
     }
 
     .nav-links a {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         display: block;
-        padding: 15px;
+        padding: 10px 20px;
+        line-height: 1.4;
     }
 }
 
