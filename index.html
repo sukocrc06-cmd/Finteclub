@@ -59,27 +59,14 @@
     </nav>
     <section class="hero" id="hero">
         <div class="hero-container">
-            <div style="background: transparent !important; background-color: transparent !important; background-image: none !important; border: none !important; box-shadow: none !important; display: flex; justify-content: center; align-items: center; width: 100%; height: auto; padding: 0; margin: 0;">
+            <div style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; display: flex; justify-content: center; align-items: center; width: 100%; max-width: 320px; margin: 0 auto; padding: 10px;">
                 <style>
-                    @keyframes logoPulseGlowHome {
-                        0%, 100% { filter: drop-shadow(0 0 4px rgba(0, 123, 255, 0.4)); opacity: 0.85; }
-                        50% { filter: drop-shadow(0 0 18px rgba(0, 123, 255, 0.8)); opacity: 1; }
-                    }
-                    .homepage-logo-pulsing {
-                        mix-blend-mode: screen !important;
-                        background: transparent !important;
-                        background-color: transparent !important;
-                        border: none !important;
-                        box-shadow: none !important;
-                        border-radius: 0 !important;
-                        max-width: 100px !important;
-                        width: 100%;
-                        height: auto;
-                        display: block;
-                        animation: logoPulseGlowHome 3s ease-in-out infinite;
+                    @keyframes homepageLogoFlash {
+                        0%, 100% { filter: drop-shadow(0 0 6px rgba(0, 123, 255, 0.4)); opacity: 0.75; }
+                        50% { filter: drop-shadow(0 0 25px rgba(0, 123, 255, 0.9)); opacity: 1; }
                     }
                 </style>
-                <img src="yeni-logo.png" alt="FinTeClub Logo" class="homepage-logo-pulsing">
+                <img src="yeni-logo.png" alt="FinTeClub Logo" style="mix-blend-mode: screen !important; background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; width: 100%; height: auto; display: block; animation: homepageLogoFlash 3s ease-in-out infinite !important;">
             </div>
             <div class="hero-content">
                 <h3>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
