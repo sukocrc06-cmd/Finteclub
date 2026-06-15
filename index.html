@@ -43,14 +43,24 @@
     </nav>
     <section class="hero" id="hero">
         <div class="hero-container">
-            <div style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+            <div style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 auto; display: flex; justify-content: center; align-items: center; width: 100%; max-width: 280px;">
                 <style>
-                    @keyframes originalLogoFloat {
+                    @keyframes silverLogoFloat {
                         0%, 100% { transform: translateY(0); }
                         50% { transform: translateY(-12px); }
                     }
+                    .clean-floating-silver {
+                        animation: silverLogoFloat 4s ease-in-out infinite !important;
+                        background: transparent !important;
+                        background-color: transparent !important;
+                        box-shadow: none !important;
+                        border: none !important;
+                        width: 100%;
+                        height: auto;
+                        display: block;
+                    }
                 </style>
-                <img src="finteclub-logo.png" alt="FinTeClub Orijinal Logo" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; max-width: 350px; width: 100%; height: auto; display: block; animation: originalLogoFloat 4s ease-in-out infinite !important;">
+                <img src="finteclub-logo.png" alt="FinTeClub Orijinal Logo" class="clean-floating-silver" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
             </div>
             <div class="hero-content">
                 <h3>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
