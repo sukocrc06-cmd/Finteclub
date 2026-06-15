@@ -803,20 +803,41 @@ body {
     margin-bottom: 0;
 }
 
+/* BTK Event Specific Layout */
+.btk-event-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.event-text {
+    flex: 1;
+}
+
+.event-text p {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #e2e8f0;
+    line-height: 1.8;
+}
+
 /* Custom 4-Photo Gallery */
 .event-gallery {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    max-width: 800px;
-    margin: 0 auto 20px;
-    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex: 1;
 }
 
 .event-gallery img {
     width: 100%;
+    height: auto;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -875,7 +896,8 @@ body {
     .team-flex-3col,
     .event-image-grid,
     .event-gallery,
-    .qr-social-container {
+    .qr-social-container,
+    .btk-event-container {
         display: flex !important;
         flex-direction: column !important;
         gap: 20px !important;
