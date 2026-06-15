@@ -1012,3 +1012,87 @@ body {
         max-width: 300px !important;
     }
 }
+
+/* --- Accordion Menu for Ekip Page --- */
+.accordion-container {
+    max-width: 1000px;
+    margin: 40px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.accordion-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-item:hover {
+    border-color: rgba(59, 130, 246, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.accordion-item.active {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 24px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    text-align: left;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.accordion-header:hover {
+    color: #93c5fd;
+}
+
+.accordion-icon {
+    width: 24px;
+    height: 24px;
+    color: #93c5fd;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.accordion-item.active .accordion-icon {
+    transform: rotate(180deg);
+    color: #ffffff;
+}
+
+.accordion-content {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-content-inner {
+    padding: 0 30px 30px 30px;
+}
+
+@media (max-width: 768px) {
+    .accordion-header {
+        padding: 18px 20px;
+        font-size: 1.15rem;
+    }
+    .accordion-content-inner {
+        padding: 0 20px 20px 20px;
+    }
+}
+
