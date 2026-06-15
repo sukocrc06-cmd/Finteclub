@@ -1002,7 +1002,7 @@ body {
     }
 
     /* Specific Component Adjustments */
-    .sponsor-card {
+    .sponsor-card:not(.sponsor-track .sponsor-card) {
         width: 100% !important;
         max-width: 320px;
         margin: 0 auto;
@@ -1131,4 +1131,63 @@ body {
         transform: rotate(180deg);
     }
 }
+
+/* --- Sponsor Marquee Styles --- */
+.sponsor-slider {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 30px 0;
+    position: relative;
+}
+
+/* Add premium gradient overlays at the sides */
+.sponsor-slider::before,
+.sponsor-slider::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 150px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.sponsor-slider::before {
+    left: 0;
+    background: linear-gradient(to right, #050D1D 10%, transparent 100%);
+}
+
+.sponsor-slider::after {
+    right: 0;
+    background: linear-gradient(to left, #050D1D 10%, transparent 100%);
+}
+
+.sponsor-track {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    animation: scrollRight 20s linear infinite;
+}
+
+.sponsor-slider:hover .sponsor-track {
+    animation-play-state: paused;
+}
+
+.sponsor-track .sponsor-card {
+    flex-shrink: 0;
+    width: 300px !important;
+    height: 160px;
+    margin: 0 !important;
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
 
