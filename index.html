@@ -6,19 +6,6 @@
     <meta name="description" content="Next-Generation Data Connectivity platform providing interconnected digital solutions.">
     <title>Next-Generation Connectivity</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-    @keyframes logoFloatUpDown {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-12px); }
-    }
-    .homepage-original-floating {
-        animation: logoFloatUpDown 4s ease-in-out infinite !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
-    </style>
 </head>
 <body>
     <!-- Splash Screen Intro -->
@@ -56,8 +43,14 @@
     </nav>
     <section class="hero" id="hero">
         <div class="hero-container">
-            <div class="hero-logo" style="background: transparent !important; box-shadow: none !important;">
-                <img src="finteclub-logo.png" alt="FinTeClub Ankara Yildirim Beyazit Universitesi Logo" class="homepage-original-floating">
+            <div style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+                <style>
+                    @keyframes originalLogoFloat {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-12px); }
+                    }
+                </style>
+                <img src="finteclub-logo.png" alt="FinTeClub Orijinal Logo" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; max-width: 350px; width: 100%; height: auto; display: block; animation: originalLogoFloat 4s ease-in-out infinite !important;">
             </div>
             <div class="hero-content">
                 <h3>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
