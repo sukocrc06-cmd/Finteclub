@@ -98,7 +98,19 @@
                 </div>
             </div>
 
-            <!-- Card 5: BTK Teknik Gezisi -->
+            <!-- Card 5: AYBÜ Bahar Şenliği -->
+            <div class="event-card">
+                <div class="event-card-cover-container">
+                    <img src="bahar-senligi-afis.jpg" class="event-card-cover" alt="AYBÜ Bahar Şenliği">
+                </div>
+                <div class="event-card-body">
+                    <span class="event-card-date">MAYIS 2026</span>
+                    <h3 class="event-card-title">AYBÜ Bahar Şenliği</h3>
+                    <button class="event-card-btn" data-modal="modal-bahar-senligi">Detayları İncele &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Card 6: BTK Teknik Gezisi -->
             <div class="event-card">
                 <div class="event-card-cover-container">
                     <img src="btk-1.jpg.jpg" class="event-card-cover" alt="BTK Teknik Gezisi">
@@ -110,7 +122,7 @@
                 </div>
             </div>
 
-            <!-- Card 6: Fidan Dikme Etkinliği -->
+            <!-- Card 7: Fidan Dikme Etkinliği -->
             <div class="event-card">
                 <div class="event-card-cover-container">
                     <img src="IMG-20260407-WA0006.jpg" class="event-card-cover" alt="Fidan Dikme Etkinliği">
@@ -122,7 +134,7 @@
                 </div>
             </div>
 
-            <!-- Card 7: Teknopark Ankara Ziyareti -->
+            <!-- Card 8: Teknopark Ankara Ziyareti -->
             <div class="event-card">
                 <div class="event-card-cover-container">
                     <img src="teknopark-logo.png" class="event-card-cover" alt="Teknopark Ankara Ziyareti">
@@ -212,7 +224,53 @@
         </div>
     </div>
 
-    <!-- Modal 5: BTK Teknik Gezisi -->
+    <!-- Modal 5: AYBÜ Bahar Şenliği -->
+    <div class="event-modal" id="modal-bahar-senligi">
+        <div class="modal-backdrop"></div>
+        <div class="modal-window">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-event-title">AYBÜ Bahar Şenliği</h2>
+            <span class="modal-event-date">Tarih: MAYIS 2026</span>
+            
+            <!-- Event Carousel / Slider -->
+            <div class="event-carousel-container" style="position: relative; width: 100%; max-width: 600px; margin: 0 auto 20px; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <div class="event-carousel-slides" style="display: flex; transition: transform 0.5s ease-in-out; width: 100%;">
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-1.jpg" alt="AYBÜ Bahar Şenliği 1" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-2.jpg" alt="AYBÜ Bahar Şenliği 2" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-3.jpg" alt="AYBÜ Bahar Şenliği 3" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-4.jpg" alt="AYBÜ Bahar Şenliği 4" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-5.jpg" alt="AYBÜ Bahar Şenliği 5" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-6.jpg" alt="AYBÜ Bahar Şenliği 6" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-7.jpg" alt="AYBÜ Bahar Şenliği 7" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-8.jpg" alt="AYBÜ Bahar Şenliği 8" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-9.jpg" alt="AYBÜ Bahar Şenliği 9" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
+                </div>
+                
+                <!-- Controls -->
+                <button class="carousel-prev" onclick="prevSlide()" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(0,0,0,0.5); border: none; color: #fff; font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; z-index: 10; transition: background 0.3s;">&#10094;</button>
+                <button class="carousel-next" onclick="nextSlide()" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(0,0,0,0.5); border: none; color: #fff; font-size: 20px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; z-index: 10; transition: background 0.3s;">&#10095;</button>
+                
+                <!-- Indicators -->
+                <div class="carousel-dots" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 20px;">
+                    <span class="dot active" onclick="currentSlide(0)" style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(1)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(2)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(3)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(4)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(5)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(6)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(7)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                    <span class="dot" onclick="currentSlide(8)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
+                </div>
+            </div>
+
+            <div class="modal-event-description">
+                <p>2026 AYBÜ bahar şenliklerimizde FinteClub olarak standımızda öğrencilerimizle ve hocalarımızla keyifli anlar yaşayarak hem kulüp hakkında bilgi vermek hemde kulübümüzü okula tanıtarak şenliğimize renk katmak istedik ve güzel bir bahar şenliği süreci yaşamış olduk</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: BTK Teknik Gezisi -->
     <div class="event-modal" id="modal-btk">
         <div class="modal-backdrop"></div>
         <div class="modal-window">
@@ -232,7 +290,7 @@
         </div>
     </div>
 
-    <!-- Modal 6: Fidan Dikme Etkinliği -->
+    <!-- Modal 7: Fidan Dikme Etkinliği -->
     <div class="event-modal" id="modal-fidan">
         <div class="modal-backdrop"></div>
         <div class="modal-window">
@@ -252,7 +310,7 @@
         </div>
     </div>
 
-    <!-- Modal 7: Teknopark Ankara Ziyareti -->
+    <!-- Modal 8: Teknopark Ankara Ziyareti -->
     <div class="event-modal" id="modal-teknopark">
         <div class="modal-backdrop"></div>
         <div class="modal-window">
@@ -323,6 +381,54 @@
                 closeAllModals();
             }
         });
+
+        // Carousel logic for Bahar Şenliği
+        let currentSlideIndex = 0;
+        const slidesContainer = document.querySelector('.event-carousel-slides');
+        const dots = document.querySelectorAll('.carousel-dots .dot');
+        const totalSlides = 9;
+
+        function updateCarousel() {
+            if (slidesContainer) {
+                slidesContainer.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+                dots.forEach((dot, index) => {
+                    if (index === currentSlideIndex) {
+                        dot.classList.add('active');
+                        dot.style.background = '#3b82f6';
+                    } else {
+                        dot.classList.remove('active');
+                        dot.style.background = 'rgba(255,255,255,0.5)';
+                    }
+                });
+            }
+        }
+
+        window.prevSlide = function() {
+            currentSlideIndex = (currentSlideIndex > 0) ? currentSlideIndex - 1 : totalSlides - 1;
+            updateCarousel();
+        };
+
+        window.nextSlide = function() {
+            currentSlideIndex = (currentSlideIndex < totalSlides - 1) ? currentSlideIndex + 1 : 0;
+            updateCarousel();
+        };
+
+        window.currentSlide = function(index) {
+            currentSlideIndex = index;
+            updateCarousel();
+        };
+
+        // Auto-slide every 4 seconds
+        let autoSlideInterval = setInterval(window.nextSlide, 4000);
+
+        const carouselContainer = document.querySelector('.event-carousel-container');
+        if (carouselContainer) {
+            carouselContainer.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+            carouselContainer.addEventListener('mouseleave', () => {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(window.nextSlide, 4000);
+            });
+        }
     </script>
 </body>
 </html>
