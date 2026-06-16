@@ -7,6 +7,87 @@
     <title>Duyurular - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Re-architect grid to single column flex stack of rows */
+        .cards-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 30px !important;
+        }
+
+        /* Redesign card component */
+        .card {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: stretch !important;
+            gap: 0 !important;
+            padding: 24px !important;
+        }
+
+        /* Two column split */
+        .announcement-image-col {
+            width: 28%;
+            max-width: 300px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .announcement-image-col img {
+            max-height: 250px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .announcement-content-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-left: 30px;
+            text-align: left;
+            justify-content: space-between;
+        }
+
+        /* Text clamping for description paragraph */
+        .announcement-description {
+            color: #cbd5e1;
+            font-size: 1.02rem;
+            line-height: 1.6;
+            margin: 10px 0;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Ensure card links align to the left and have space */
+        .card-link {
+            align-self: flex-start !important;
+            margin-top: 15px !important;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .card {
+                flex-direction: column !important;
+                gap: 20px !important;
+            }
+            .announcement-image-col {
+                width: 100% !important;
+                max-width: none !important;
+            }
+            .announcement-image-col img {
+                height: 200px !important;
+            }
+            .announcement-content-col {
+                padding-left: 0 !important;
+                gap: 15px !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -44,78 +125,132 @@
             <div class="cards-grid">
                 <!-- BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler! -->
                 <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: -15px;">
-                        <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Temmuz–Ağustos 2026</span>
+                    <div class="announcement-image-col">
+                        <img src="btk-akademi-etkinlik.jpg" alt="BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler!">
                     </div>
-                    <h3 class="card-title" style="text-align: left; margin-top: 10px;">BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler!</h3>
-                    <img src="btk-akademi-etkinlik.jpg" alt="BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler!" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; display: block; margin: 0 auto;">
-                    <div style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; text-align: left; display: flex; flex-direction: column; gap: 12px;">
-                        <p style="margin: 0;">Temmuz–Ağustos 2026 döneminde farklı şehirlerde yapay zekâ, büyük dil modelleri, Microsoft 365 Copilot, Figma, IoT ve İHA alanlarında yüz yüze eğitimler düzenleniyor.</p>
-                        <p style="margin: 0;">Başvuru tarihleri şehir ve eğitime göre değişiyor. Detayları Kariyer Pusulan’daki program sayfasından inceleyip BTK Akademi üzerinden başvurunu tamamlayabilirsin.</p>
-                        <div style="margin-top: 5px; display: flex; flex-direction: column; gap: 4px;">
-                            <div>📌 <strong>Detaylar:</strong> <a href="https://kariyerpusulan.com" target="_blank" style="color: #93c5fd; text-decoration: none;">kariyerpusulan.com</a></div>
-                            <div>🔎 <strong>Program adı:</strong> BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler</div>
-                            <div>👤 <strong>Kanal:</strong> @btkakademi</div>
-                            <div style="color: #93c5fd; font-weight: 600; margin-top: 4px;">#KariyerPusulan #BTKAkademi #YapayZeka #ÜcretsizEğitim</div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Temmuz–Ağustos 2026</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler!</h3>
+                            <p class="announcement-description">Temmuz–Ağustos 2026 döneminde farklı şehirlerde yapay zekâ, büyük dil modelleri, Microsoft 365 Copilot, Figma, IoT ve İHA alanlarında yüz yüze eğitimler düzenleniyor. Başvuru tarihleri şehir ve eğitime göre değişiyor. Detayları Kariyer Pusulan’daki program sayfasından inceleyip BTK Akademi üzerinden başvurunu tamamlayabilirsin.</p>
+                            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px; font-size: 0.95rem; color: #cbd5e1;">
+                                <div>📌 <strong>Detaylar:</strong> <a href="https://kariyerpusulan.com" target="_blank" style="color: #93c5fd; text-decoration: none;">kariyerpusulan.com</a></div>
+                                <div>🔎 <strong>Program adı:</strong> BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler</div>
+                                <div>👤 <strong>Kanal:</strong> @btkakademi</div>
+                                <div style="color: #93c5fd; font-weight: 600; margin-top: 4px;">#KariyerPusulan #BTKAkademi #YapayZeka #ÜcretsizEğitim</div>
+                            </div>
                         </div>
+                        <a href="https://kariyerpusulan.com" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Detayları İncele &rarr;</a>
                     </div>
-                    <a href="https://kariyerpusulan.com" target="_blank" class="uyelik-butonu" style="width: 100%; text-align: center; box-sizing: border-box; margin-top: auto;">Detayları İncele &rarr;</a>
                 </div>
 
                 <!-- Dijital Avrupa Programı Ortak Bulma Etkinliği -->
                 <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: -15px;">
-                        <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">24 Haziran 2026</span>
+                    <div class="announcement-image-col">
+                        <img src="dijital-avrupa-etkinlik.jpg" alt="Dijital Avrupa Programı Ortak Bulma Etkinliği">
                     </div>
-                    <h3 class="card-title" style="text-align: left; margin-top: 10px;">Dijital Avrupa Programı Ortak Bulma Etkinliği</h3>
-                    <img src="dijital-avrupa-etkinlik.jpg" alt="Dijital Avrupa Programı Ortak Bulma Etkinliği" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; display: block; margin: 0 auto;">
-                    <div style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; text-align: left; display: flex; flex-direction: column; gap: 12px;">
-                        <p style="margin: 0;">📢 DEP4ALL tarafından Dijital Avrupa Programı 10. Çağrı dönemi kapsamında proje hazırlayan kuruluşlara yönelik çevrim içi ortak bulma etkinliği düzenleniyor!</p>
-                        <p style="margin: 0;">🤝 Etkinlik kapsamında katılımcılar;</p>
-                        <ul style="margin: 0 0 0 20px; padding: 0; list-style-type: disc; display: flex; flex-direction: column; gap: 6px;">
-                            <li>Potansiyel konsorsiyum ortaklarıyla tanışabilecek,</li>
-                            <li>Uzmanlık alanlarını ve proje fikirlerini paylaşabilecek,</li>
-                            <li>Avrupa çapındaki iş birliği ağlarını genişletebilecek,</li>
-                            <li>Farklı ülkelerden paydaşlarla doğrudan bağlantı kurabileceklerdir.</li>
-                        </ul>
-                        <div style="margin-top: 5px; display: flex; flex-direction: column; gap: 4px;">
-                            <div>📅 <strong>Tarih:</strong> 24 Haziran 2026</div>
-                            <div>🕑 <strong>Saat:</strong> 14.00 – 16.00 (TSİ)</div>
-                            <div>💻 <strong>Platform:</strong> Çevrim içi</div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">24 Haziran 2026</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Dijital Avrupa Programı Ortak Bulma Etkinliği</h3>
+                            <p class="announcement-description">📢 DEP4ALL tarafından Dijital Avrupa Programı 10. Çağrı dönemi kapsamında proje hazırlayan kuruluşlara yönelik çevrim içi ortak bulma etkinliği düzenleniyor! Etkinlik kapsamında katılımcılar; potansiyel konsorsiyum ortaklarıyla tanışabilecek, uzmanlık alanlarını ve proje fikirlerini paylaşabilecek, Avrupa çapındaki iş birliği ağlarını genişletebilecek ve farklı ülkelerden paydaşlarla doğrudan bağlantı kurabileceklerdir.</p>
+                            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px; font-size: 0.95rem; color: #cbd5e1;">
+                                <div>📅 <strong>Tarih:</strong> 24 Haziran 2026</div>
+                                <div>🕑 <strong>Saat:</strong> 14.00 – 16.00 (TSİ)</div>
+                                <div>💻 <strong>Platform:</strong> Çevrim içi</div>
+                            </div>
                         </div>
+                        <a href="https://tinyurl.com/3u8wuxrz" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Etkinliğe Kayıt Ol &rarr;</a>
                     </div>
-                    <a href="https://tinyurl.com/3u8wuxrz" target="_blank" class="uyelik-butonu" style="width: 100%; text-align: center; box-sizing: border-box; margin-top: auto;">Etkinliğe Kayıt Ol &rarr;</a>
                 </div>
 
                 <!-- Card 1 -->
                 <div class="card">
-                    <h3 class="card-title">Çubuk Karagöl Pikniği</h3>
-                    <img src="karagol-piknik.jpg.jpeg" alt="Çubuk Karagöl Pikniği" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: block;">
-                    <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                    <div class="announcement-image-col">
+                        <img src="karagol-piknik.jpg.jpeg" alt="Çubuk Karagöl Pikniği">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Mayıs 2026</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Çubuk Karagöl Pikniği</h3>
+                            <p class="announcement-description">Kulübümüz üyeleri ve hocalarımızın katılımıyla doğayla iç içe, keyifli anlar paylaştığımız geleneksel Karagöl pikniği etkinliğimiz.</p>
+                        </div>
+                        <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
                 </div>
+
                 <!-- Card 2 -->
                 <div class="card">
-                    <h3 class="card-title">Uluslararası Öğrenci Günü</h3>
-                    <img src="ogrenci-gunu.jpg.png" alt="Uluslararası Öğrenci Günü" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: block;">
-                    <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                    <div class="announcement-image-col">
+                        <img src="ogrenci-gunu.jpg.png" alt="Uluslararası Öğrenci Günü">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Kasım 2025</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Uluslararası Öğrenci Günü</h3>
+                            <p class="announcement-description">Farklı kültürlerden gelen uluslararası öğrencilerimizle bir araya gelerek kültürel etkileşimi ve dostluğu pekiştirdiğimiz özel gün kutlaması.</p>
+                        </div>
+                        <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
                 </div>
+
                 <!-- Card 3 -->
                 <div class="card">
-                    <h3 class="card-title">Dostluk Maçları</h3>
-                    <img src="dostluk-maci.jpg.png" alt="Dostluk Maçları" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: block;">
-                    <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                    <div class="announcement-image-col">
+                        <img src="dostluk-maci.jpg.png" alt="Dostluk Maçları">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Mayıs 2026</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Dostluk Maçları</h3>
+                            <p class="announcement-description">Öğrencilerimiz ve akademisyenlerimiz arasında sporun birleştirici gücüyle düzenlenen, tatlı rekabetin ve dostluğun kazandığı spor karşılaşmaları.</p>
+                        </div>
+                        <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
                 </div>
+
                 <!-- Card 4 -->
                 <div class="card">
-                    <h3 class="card-title">Tanışma Etkinliği</h3>
-                    <img src="tanisma.png" alt="Tanışma Etkinliği" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: block;">
-                    <a href="tanisma.html" class="card-link">Daha fazlası &rarr;</a>
+                    <div class="announcement-image-col">
+                        <img src="tanisma.png" alt="Tanışma Etkinliği">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Nisan 2026</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Tanışma Etkinliği</h3>
+                            <p class="announcement-description">Yeni katılan üyelerimizle tanışarak kulübümüzü okula tanıttığımız ve gelecek projelerimizi paylaştığımız samimi sezon başlangıcı buluşması.</p>
+                        </div>
+                        <a href="tanisma.html" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
                 </div>
+
                 <!-- Card 5 -->
                 <div class="card">
-                    <h3 class="card-title">Teknopark Ankara Teknik Gezisi</h3>
-                    <img src="teknopark.png" alt="Teknopark Gezisi" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: block;">
-                    <a href="teknopark.html" class="card-link">Daha fazlası &rarr;</a>
+                    <div class="announcement-image-col">
+                        <img src="teknopark.png" alt="Teknopark Gezisi">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Nisan 2026</span>
+                            </div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Teknopark Ankara Teknik Gezisi</h3>
+                            <p class="announcement-description">Teknoloji ve inovasyon merkezlerini yakından incelemek, profesyonel iş ortamlarını yerinde deneyimlemek amacıyla gerçekleştirdiğimiz teknik gezi.</p>
+                        </div>
+                        <a href="teknopark.html" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
                 </div>
             </div>
         </div>
