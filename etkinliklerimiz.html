@@ -243,7 +243,6 @@
                     <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-6.jpg" alt="AYBÜ Bahar Şenliği 6" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
                     <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-7.jpg" alt="AYBÜ Bahar Şenliği 7" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
                     <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-8.jpg" alt="AYBÜ Bahar Şenliği 8" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
-                    <div class="carousel-slide" style="min-width: 100%; box-sizing: border-box;"><img src="bahar-senligi-9.jpg" alt="AYBÜ Bahar Şenliği 9" style="width: 100%; height: auto; display: block; object-fit: cover;"></div>
                 </div>
                 
                 <!-- Controls -->
@@ -260,7 +259,6 @@
                     <span class="dot" onclick="currentSlide(5)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
                     <span class="dot" onclick="currentSlide(6)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
                     <span class="dot" onclick="currentSlide(7)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
-                    <span class="dot" onclick="currentSlide(8)" style="width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s;"></span>
                 </div>
             </div>
 
@@ -347,6 +345,20 @@
 
         // Modal triggers setup
         const openButtons = document.querySelectorAll('.event-card-btn');
+        let autoSlideInterval = null;
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            autoSlideInterval = setInterval(window.nextSlide, 3000);
+        }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+
         openButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const modalId = btn.getAttribute('data-modal');
@@ -354,6 +366,13 @@
                 if (modal) {
                     modal.classList.add('open');
                     document.body.style.overflow = 'hidden';
+                    
+                    // Specific logic for Bahar Şenliği carousel
+                    if (modalId === 'modal-bahar-senligi') {
+                        currentSlideIndex = 0;
+                        updateCarousel();
+                        startAutoSlide();
+                    }
                 }
             });
         });
@@ -364,6 +383,9 @@
                 modal.classList.remove('open');
             });
             document.body.style.overflow = '';
+            
+            // Stop Bahar Şenliği carousel when modals are closed
+            stopAutoSlide();
         }
 
         // Add event listeners to close buttons and backdrops
@@ -386,7 +408,7 @@
         let currentSlideIndex = 0;
         const slidesContainer = document.querySelector('.event-carousel-slides');
         const dots = document.querySelectorAll('.carousel-dots .dot');
-        const totalSlides = 9;
+        const totalSlides = 8;
 
         function updateCarousel() {
             if (slidesContainer) {
@@ -406,6 +428,7 @@
         window.prevSlide = function() {
             currentSlideIndex = (currentSlideIndex > 0) ? currentSlideIndex - 1 : totalSlides - 1;
             updateCarousel();
+            if (autoSlideInterval) startAutoSlide(); // reset timer on manual click
         };
 
         window.nextSlide = function() {
@@ -416,17 +439,17 @@
         window.currentSlide = function(index) {
             currentSlideIndex = index;
             updateCarousel();
+            if (autoSlideInterval) startAutoSlide(); // reset timer on manual click
         };
-
-        // Auto-slide every 4 seconds
-        let autoSlideInterval = setInterval(window.nextSlide, 4000);
 
         const carouselContainer = document.querySelector('.event-carousel-container');
         if (carouselContainer) {
-            carouselContainer.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+            carouselContainer.addEventListener('mouseenter', stopAutoSlide);
             carouselContainer.addEventListener('mouseleave', () => {
-                clearInterval(autoSlideInterval);
-                autoSlideInterval = setInterval(window.nextSlide, 4000);
+                const modal = document.getElementById('modal-bahar-senligi');
+                if (modal && modal.classList.contains('open')) {
+                    startAutoSlide();
+                }
             });
         }
     </script>
