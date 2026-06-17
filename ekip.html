@@ -827,6 +827,17 @@
                 const modalId = btn.getAttribute('data-modal');
                 const modal = document.getElementById(modalId);
                 if (modal) {
+                    // Specific logic for Şevval Aksakal's contact modal image mapping
+                    if (modalId === 'modal-sevval-contact') {
+                        const imgEl = modal.querySelector('.president-modal-left img');
+                        if (imgEl) {
+                            imgEl.src = 'img/ekip/sevval-aksakal.jpg';
+                            // Fallback to local root path if the img/ekip folder layout is not present
+                            imgEl.onerror = function() {
+                                this.src = 'sevval-aksakal.jpg';
+                            };
+                        }
+                    }
                     const customTitle = btn.getAttribute('data-title');
                     if (customTitle) {
                         const titleEl = modal.querySelector('.president-modal-right p');
