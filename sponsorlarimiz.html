@@ -7,6 +7,216 @@
     <title>Sponsorlarımız - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Make sponsor cards look interactive and hoverable */
+        .sponsor-card {
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .sponsor-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.35);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.1);
+        }
+
+        /* --- Sponsor Modal System Styles --- */
+        .sponsor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        .sponsor-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sponsor-modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .sponsor-modal-window {
+            position: relative;
+            width: 90%;
+            max-width: 550px;
+            background: rgba(9, 19, 38, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-radius: 20px;
+            padding: 35px;
+            z-index: 10000;
+            transform: translateY(30px);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.15);
+        }
+
+        .sponsor-modal.open .sponsor-modal-window {
+            transform: translateY(0);
+        }
+
+        .sponsor-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #93c5fd;
+            font-size: 2.2rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .sponsor-modal-close:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .sponsor-modal-layout {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .sponsor-modal-left {
+            flex-shrink: 0;
+        }
+
+        .sponsor-modal-left img {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        /* For round logo like Muhammet Kasap */
+        .sponsor-modal-left img.round-logo {
+            border-radius: 50%;
+            object-fit: cover;
+            padding: 0;
+        }
+
+        .sponsor-modal-right {
+            flex: 1;
+            text-align: left;
+        }
+
+        .sponsor-modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 5px 0;
+        }
+
+        .sponsor-modal-subtitle {
+            font-size: 1rem;
+            color: #93c5fd;
+            font-weight: 600;
+            margin: 0 0 15px 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sponsor-address-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .sponsor-address-block strong {
+            color: #93c5fd;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .sponsor-btn-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sponsor-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sponsor-action-btn.instagram {
+            background: rgba(225, 48, 108, 0.1);
+            border: 1px solid rgba(225, 48, 108, 0.4);
+            color: #fd5c63;
+        }
+
+        .sponsor-action-btn.instagram:hover {
+            background: rgba(225, 48, 108, 0.25);
+            box-shadow: 0 0 15px rgba(225, 48, 108, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .sponsor-action-btn.website {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #93c5fd;
+        }
+
+        .sponsor-action-btn.website:hover {
+            background: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 576px) {
+            .sponsor-modal-window {
+                padding: 30px 20px;
+            }
+            .sponsor-modal-layout {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .sponsor-modal-right {
+                text-align: center;
+                width: 100%;
+            }
+            .sponsor-btn-container {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -48,70 +258,70 @@
         <div class="sponsor-slider">
             <div class="sponsor-track">
                 <!-- Card 1 -->
-                <div class="sponsor-card">
+                <div class="sponsor-card" data-sponsor="anadolu-doner">
                     <img src="https://finteclub.my.canva.site/_assets/media/d3379b9eda2cb88ea7aa232348bf5334.png" alt="Anadolu Döner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
     
                 <!-- Card 2 -->
-                <div class="sponsor-card">
+                <div class="sponsor-card" data-sponsor="hacibaba">
                     <img src="https://finteclub.my.canva.site/_assets/media/b3d971bafefda240a0d6e1a9732342bf.png" alt="Kahveci Hacıbaba" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
     
                 <!-- Card 3 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="avukatapp" style="flex-direction: column; gap: 10px;">
                     <img src="avukatapp.png" alt="AvukatApp Logo" class="avukatapp-logo" style="max-width: 100%; max-height: 70%; object-fit: contain;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">AvukatApp</span>
                 </div>
     
                 <!-- Card 4 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="muhammet-kasap" style="flex-direction: column; gap: 10px;">
                     <img src="muhammet-kasap.jpeg" alt="Muhammet Kasap Logo" style="max-width: 100%; max-height: 70%; object-fit: contain; border-radius: 50%;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Muhammet Kasap</span>
                 </div>
     
                 <!-- Card 5 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="cubuk-belediyesi" style="flex-direction: column; gap: 10px;">
                     <img src="cubukbelediyesi.jpg.png" alt="Çubuk Belediyesi Logo" style="max-width: 100%; max-height: 70%; object-fit: contain;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Çubuk Belediyesi</span>
                 </div>
     
                 <!-- Card 6 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="begum-mutfagi" style="flex-direction: column; gap: 10px;">
                     <img src="begum-mutfagi-yeni.png" alt="Begüm'ün Mutfağı Logo" style="max-width: 100%; max-height: 70%; object-fit: contain;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Begüm'ün Mutfağı</span>
                 </div>
 
                 <!-- Duplicate once for seamless loop -->
                 <!-- Card 1 -->
-                <div class="sponsor-card">
+                <div class="sponsor-card" data-sponsor="anadolu-doner">
                     <img src="https://finteclub.my.canva.site/_assets/media/d3379b9eda2cb88ea7aa232348bf5334.png" alt="Anadolu Döner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
     
                 <!-- Card 2 -->
-                <div class="sponsor-card">
+                <div class="sponsor-card" data-sponsor="hacibaba">
                     <img src="https://finteclub.my.canva.site/_assets/media/b3d971bafefda240a0d6e1a9732342bf.png" alt="Kahveci Hacıbaba" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
     
                 <!-- Card 3 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="avukatapp" style="flex-direction: column; gap: 10px;">
                     <img src="avukatapp.png" alt="AvukatApp Logo" class="avukatapp-logo" style="max-width: 100%; max-height: 70%; object-fit: contain;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">AvukatApp</span>
                 </div>
     
                 <!-- Card 4 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="muhammet-kasap" style="flex-direction: column; gap: 10px;">
                     <img src="muhammet-kasap.jpeg" alt="Muhammet Kasap Logo" style="max-width: 100%; max-height: 70%; object-fit: contain; border-radius: 50%;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Muhammet Kasap</span>
                 </div>
     
                 <!-- Card 5 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="cubuk-belediyesi" style="flex-direction: column; gap: 10px;">
                     <img src="cubukbelediyesi.jpg.png" alt="Çubuk Belediyesi Logo" style="max-width: 100%; max-height: 70%; object-fit: contain;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Çubuk Belediyesi</span>
                 </div>
     
                 <!-- Card 6 -->
-                <div class="sponsor-card" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="begum-mutfagi" style="flex-direction: column; gap: 10px;">
                     <img src="begum-mutfagi-yeni.png" alt="Begüm'ün Mutfağı Logo" style="max-width: 100%; max-height: 70%; object-fit: contain;">
                     <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Begüm'ün Mutfağı</span>
                 </div>
@@ -119,18 +329,181 @@
         </div>
     </section>
 
+    <!-- Sponsor Modals -->
+    <!-- Modal 1: Anadolu Döner & Cafe Çubuk -->
+    <div class="sponsor-modal" id="modal-anadolu-doner">
+        <div class="sponsor-modal-backdrop"></div>
+        <div class="sponsor-modal-window">
+            <button class="sponsor-modal-close" aria-label="Close modal">&times;</button>
+            <div class="sponsor-modal-layout">
+                <div class="sponsor-modal-left">
+                    <img src="https://finteclub.my.canva.site/_assets/media/d3379b9eda2cb88ea7aa232348bf5334.png" alt="Anadolu Döner & Cafe Çubuk">
+                </div>
+                <div class="sponsor-modal-right">
+                    <h2 class="sponsor-modal-title">Anadolu Döner & Cafe Çubuk</h2>
+                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <div class="sponsor-address-block">
+                        <strong>Adres</strong>
+                        Cumhuriyet Mah. Kıbrıs Cad. No:8
+                    </div>
+                    <div class="sponsor-btn-container">
+                        <a href="https://instagram.com/anadoludoner_cafe_cubuk" target="_blank" class="sponsor-action-btn instagram">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Kahveci Hacıbaba -->
+    <div class="sponsor-modal" id="modal-hacibaba">
+        <div class="sponsor-modal-backdrop"></div>
+        <div class="sponsor-modal-window">
+            <button class="sponsor-modal-close" aria-label="Close modal">&times;</button>
+            <div class="sponsor-modal-layout">
+                <div class="sponsor-modal-left">
+                    <img src="https://finteclub.my.canva.site/_assets/media/b3d971bafefda240a0d6e1a9732342bf.png" alt="Kahveci Hacıbaba">
+                </div>
+                <div class="sponsor-modal-right">
+                    <h2 class="sponsor-modal-title">Kahveci Hacıbaba</h2>
+                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <div class="sponsor-address-block">
+                        <strong>Adres</strong>
+                        Kızılay, Selanik Cd No:39,06400
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: AvukatApp -->
+    <div class="sponsor-modal" id="modal-avukatapp">
+        <div class="sponsor-modal-backdrop"></div>
+        <div class="sponsor-modal-window">
+            <button class="sponsor-modal-close" aria-label="Close modal">&times;</button>
+            <div class="sponsor-modal-layout">
+                <div class="sponsor-modal-left">
+                    <img src="avukatapp.png" alt="AvukatApp">
+                </div>
+                <div class="sponsor-modal-right">
+                    <h2 class="sponsor-modal-title">AvukatApp</h2>
+                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <div class="sponsor-btn-container">
+                        <a href="https://instagram.com/avukatapptr" target="_blank" class="sponsor-action-btn instagram">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                            Instagram
+                        </a>
+                        <a href="https://avukatapp.com.tr/" target="_blank" class="sponsor-action-btn website">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                            Web Sitesi
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Muhammet Kasap -->
+    <div class="sponsor-modal" id="modal-muhammet-kasap">
+        <div class="sponsor-modal-backdrop"></div>
+        <div class="sponsor-modal-window">
+            <button class="sponsor-modal-close" aria-label="Close modal">&times;</button>
+            <div class="sponsor-modal-layout">
+                <div class="sponsor-modal-left">
+                    <img src="muhammet-kasap.jpeg" alt="Muhammet Kasap" class="round-logo">
+                </div>
+                <div class="sponsor-modal-right">
+                    <h2 class="sponsor-modal-title">Muhammet Kasap</h2>
+                    <p class="sponsor-modal-subtitle">Destekçimiz</p>
+                    <div class="sponsor-address-block">
+                        <strong>Hakkında</strong>
+                        FinTeClub etkinliklerine lezzet katan değerli sponsorluk desteği ve katkılarıyla yanımızda.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: Çubuk Belediyesi -->
+    <div class="sponsor-modal" id="modal-cubuk-belediyesi">
+        <div class="sponsor-modal-backdrop"></div>
+        <div class="sponsor-modal-window">
+            <button class="sponsor-modal-close" aria-label="Close modal">&times;</button>
+            <div class="sponsor-modal-layout">
+                <div class="sponsor-modal-left">
+                    <img src="cubukbelediyesi.jpg.png" alt="Çubuk Belediyesi Logo">
+                </div>
+                <div class="sponsor-modal-right">
+                    <h2 class="sponsor-modal-title">Çubuk Belediyesi</h2>
+                    <p class="sponsor-modal-subtitle">Sponsorumuz / Destekçimiz</p>
+                    <div class="sponsor-address-block">
+                        <strong>Adres</strong>
+                        Atatürk Mahallesi Alparslan Türkeş Caddesi No:1 Çubuk/ANKARA/TÜRKİYE
+                    </div>
+                    <div class="sponsor-btn-container">
+                        <a href="https://instagram.com/cubukbelediyesi" target="_blank" class="sponsor-action-btn instagram">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: Begüm'ün Mutfağı -->
+    <div class="sponsor-modal" id="modal-begum-mutfagi">
+        <div class="sponsor-modal-backdrop"></div>
+        <div class="sponsor-modal-window">
+            <button class="sponsor-modal-close" aria-label="Close modal">&times;</button>
+            <div class="sponsor-modal-layout">
+                <div class="sponsor-modal-left">
+                    <img src="begum-mutfagi-yeni.png" alt="Begüm'ün Mutfağı">
+                </div>
+                <div class="sponsor-modal-right">
+                    <h2 class="sponsor-modal-title">Begüm'ün Mutfağı</h2>
+                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <div class="sponsor-address-block">
+                        <strong>Adres</strong>
+                        Dumlupınar, Binali Yıldırım Bulvarı 85/A, 06760 Çubuk/Ankara
+                    </div>
+                    <div class="sponsor-btn-container">
+                        <a href="https://instagram.com/begumunmutfagidumlupınar" target="_blank" class="sponsor-action-btn instagram">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Hamburger Menu Logic
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
-
+ 
         if (hamburger && navLinks) {
             hamburger.addEventListener('click', () => {
                 navLinks.classList.toggle('open');
                 hamburger.classList.toggle('active');
             });
         }
-
+ 
         const dropdownToggle = document.querySelector('.dropdown-toggle');
         if (dropdownToggle) {
             dropdownToggle.addEventListener('click', function(e) {
@@ -140,6 +513,42 @@
                 }
             });
         }
+
+        // Sponsor Modal Controller Logic
+        const sponsorCards = document.querySelectorAll('.sponsor-card[data-sponsor]');
+        sponsorCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const sponsorId = card.getAttribute('data-sponsor');
+                const modal = document.getElementById(`modal-${sponsorId}`);
+                if (modal) {
+                    modal.classList.add('open');
+                }
+            });
+        });
+
+        // Close logic for all sponsor modals
+        const sponsorModals = document.querySelectorAll('.sponsor-modal');
+        sponsorModals.forEach(modal => {
+            const closeBtn = modal.querySelector('.sponsor-modal-close');
+            const backdrop = modal.querySelector('.sponsor-modal-backdrop');
+
+            const closeModal = () => {
+                modal.classList.remove('open');
+            };
+
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (backdrop) backdrop.addEventListener('click', closeModal);
+        });
+
+        // Escape key close handler
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.sponsor-modal.open');
+                if (openModal) {
+                    openModal.classList.remove('open');
+                }
+            }
+        });
     </script>
 </body>
 </html>
