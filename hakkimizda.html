@@ -7,10 +7,120 @@
     <title>Hakkımızda - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Premium FAQ Accordion Styles --- */
+        .faq-section {
+            padding: 80px 0;
+            background-color: #050D1D;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .faq-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .faq-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item.active {
+            border-color: rgba(59, 130, 246, 0.45);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.15), inset 0 0 10px rgba(59, 130, 246, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .faq-trigger {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            padding: 24px;
+            cursor: pointer;
+            text-align: left;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .faq-trigger:hover {
+            color: #93c5fd;
+        }
+
+        .faq-question {
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.4;
+            padding-right: 20px;
+        }
+
+        .faq-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #93c5fd;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+            color: #ffffff;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-content {
+            opacity: 1;
+        }
+
+        .faq-content-inner {
+            padding: 0 24px 24px 24px;
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
-        <ul class="nav-links">
+        <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
             <li><a href="index.html">Anasayfa</a></li>
             <li><a href="duyurular.html">Duyurular</a></li>
             <li><a href="hakkimizda.html" class="active">Hakkımızda</a></li>
@@ -56,8 +166,94 @@
         </div>
     </section>
 
+    <!-- FAQ Accordion Section -->
+    <section class="faq-section" id="faq">
+        <div class="faq-container">
+            <h2 class="faq-title">Sıkça Sorulan Sorular</h2>
+            <div class="faq-accordion">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span class="faq-question">FinTeclub nedir ve temel amaçları nelerdir?</span>
+                        <span class="faq-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p>FinTeclub, finans ve teknolojiyi (FinTech) bir araya getirerek öğrencilerin bu alanda gelişim göstermesini hedefleyen yenilikçi bir üniversite topluluğudur. Gerçekleştirdiğimiz projeler, eğitimler ve sektör ziyaretleriyle teorik bilgiyi pratik tecrübeye dönüştürmeyi amaçlıyoruz.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span class="faq-question">Kulübe katılmak için yazılım veya finans altyapısına sahip olmak şart mı?</span>
+                        <span class="faq-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p>Kesinlikle hayır! FinTeclub kapılarını öğrenmeye ve kendini geliştirmeye istekli tüm öğrencilere açar. Kulüp içi akran danışmanlığı, mentorluk destekleri ve sıfırdan başlayan eğitim modüllerimiz sayesinde her üye kendi ilgi alanına göre pürüzsüz bir gelişim eğrisi yakalayabilir.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span class="faq-question">Düzenlenen etkinlikler ve eğitimler sertifikalı mı, katılım ücretli mi?</span>
+                        <span class="faq-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p>Kulübümüz tarafından organize edilen tüm temel eğitimler, paneller ve zirveler tamamen ücretsizdir. Belirli teknik eğitimleri ve iş birliği zirvelerini başarıyla tamamlayan katılımcılarımıza, kariyerlerinde fark yaratacak kurumsal onaylı katılım sertifikaları takdim edilmektedir.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span class="faq-question">Sponsorluk, mentorluk veya kurumsal iş birlikleri için nasıl iletişime geçebiliriz?</span>
+                        <span class="faq-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p>Topluluğumuzla sponsorluk anlaşmaları yapmak, etkinliklerimize mentor olarak destek vermek veya kurumsal projeler geliştirmek için 'İletişim' sayfamızdaki formları kullanabilir ya da doğrudan yönetim kurulumuzun iletişim kanalları üzerinden bizimle pürüzsüzce koordine olabilirsiniz.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script>
+        // Hamburger Menu Logic
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+ 
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                hamburger.classList.toggle('active');
+            });
+        }
+
         const dropdownToggle = document.querySelector('.dropdown-toggle');
         if (dropdownToggle) {
             dropdownToggle.addEventListener('click', function(e) {
@@ -67,6 +263,31 @@
                 }
             });
         }
+
+        // FAQ Accordion Logic
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const trigger = item.querySelector('.faq-trigger');
+            const content = item.querySelector('.faq-content');
+
+            trigger.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+
+                // Collapse all items first
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-content').style.maxHeight = null;
+                    otherItem.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+                });
+
+                // If the clicked item was not active, expand it
+                if (!isActive) {
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    trigger.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
     </script>
 </body>
 </html>
