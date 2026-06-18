@@ -32,12 +32,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    /* Use the generated background image containing the digital nodes and blurry graphs */
-    background-image: url('hero-bg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: var(--primary-bg); /* Fallback */
+    background-color: transparent;
 }
 
 /* Subtle overlay to ensure text readability while maintaining the clean, metallic feel focused on blue light */
@@ -1449,9 +1444,23 @@ body {
         top: 15px;
         right: 15px;
     }
-    .modal-event-title {
-        font-size: 1.6rem;
-    }
 }
 
+/* --- Homepage Background and Particle Container Styles --- */
+body.home-page {
+    background-image: url('hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
