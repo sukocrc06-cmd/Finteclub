@@ -759,36 +759,289 @@ body {
 }
 
 /* Sponsorlarimiz Page Styles */
-.sponsor-card {
-    background-color: white;
-    width: 300px;
-    height: 160px;
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
-    cursor: pointer;
+.sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.sponsor-card a {
+.sponsor-card {
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
     display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    text-decoration: none;
+    justify-content: center;
+    padding: 20px;
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .sponsor-card:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    border-color: rgba(59, 130, 246, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+.sponsor-card img {
+    object-fit: contain;
+    width: 80%;
+    height: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+.sponsor-card img.round-logo {
+    border-radius: 50%;
+}
+
+.sponsor-card span {
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-top: 8px;
+    text-align: center;
+    display: block;
 }
 
 .avukatapp-logo {
     transform: scale(1.4);
     transform-origin: center center;
+}
+
+/* --- Sponsor Modal System Styles --- */
+.sponsor-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.sponsor-modal.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sponsor-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.sponsor-modal-window {
+    position: relative;
+    width: 90%;
+    max-width: 550px;
+    background: rgba(9, 19, 38, 0.95);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    border-radius: 20px;
+    padding: 35px;
+    z-index: 10000;
+    transform: translateY(30px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.15);
+}
+
+.sponsor-modal.open .sponsor-modal-window {
+    transform: translateY(0);
+}
+
+.sponsor-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #93c5fd;
+    font-size: 2.2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.sponsor-modal-close:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.sponsor-modal-layout {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.sponsor-modal-left {
+    flex-shrink: 0;
+}
+
+.sponsor-modal-left img {
+    width: 120px;
+    height: 120px;
+    border-radius: 15px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+    display: block;
+    margin: auto;
+}
+
+.sponsor-modal-left img.round-logo {
+    border-radius: 50%;
+    object-fit: contain;
+    padding: 5px;
+}
+
+#modal-hacibaba .sponsor-modal-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 120px;
+    height: 120px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+    overflow: visible;
+    flex-shrink: 0;
+}
+
+#modal-hacibaba .sponsor-modal-left img {
+    max-width: 85% !important;
+    max-height: 80% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: auto !important;
+}
+
+.sponsor-modal-right {
+    flex: 1;
+    text-align: left;
+}
+
+.sponsor-modal-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 5px 0;
+}
+
+.sponsor-modal-subtitle {
+    font-size: 1rem;
+    color: #93c5fd;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.sponsor-address-block {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.sponsor-address-block strong {
+    color: #93c5fd;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.sponsor-btn-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.sponsor-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sponsor-action-btn.instagram {
+    background: rgba(225, 48, 108, 0.1);
+    border: 1px solid rgba(225, 48, 108, 0.4);
+    color: #fd5c63;
+}
+
+.sponsor-action-btn.instagram:hover {
+    background: rgba(225, 48, 108, 0.25);
+    box-shadow: 0 0 15px rgba(225, 48, 108, 0.3);
+    transform: translateY(-2px);
+}
+
+.sponsor-action-btn.website {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+}
+
+.sponsor-action-btn.website:hover {
+    background: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 576px) {
+    .sponsor-modal-window {
+        padding: 30px 20px;
+    }
+    .sponsor-modal-layout {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    .sponsor-modal-right {
+        text-align: center;
+        width: 100%;
+    }
+    .sponsor-btn-container {
+        justify-content: center;
+    }
 }
 
 .uyelik-butonu {
@@ -1039,12 +1292,7 @@ body {
         width: 100%;
     }
 
-    /* Specific Component Adjustments */
-    .sponsor-card:not(.sponsor-track .sponsor-card) {
-        width: 100% !important;
-        max-width: 320px;
-        margin: 0 auto;
-    }
+
     
     .event-title-badge {
         padding: 10px 20px;
@@ -1170,63 +1418,7 @@ body {
     }
 }
 
-/* --- Sponsor Marquee Styles --- */
-.sponsor-slider {
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 30px 0;
-    position: relative;
-}
 
-/* Add premium gradient overlays at the sides */
-.sponsor-slider::before,
-.sponsor-slider::after {
-    content: "";
-    height: 100%;
-    position: absolute;
-    width: 150px;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.sponsor-slider::before {
-    left: 0;
-    background: linear-gradient(to right, #050D1D 10%, transparent 100%);
-}
-
-.sponsor-slider::after {
-    right: 0;
-    background: linear-gradient(to left, #050D1D 10%, transparent 100%);
-}
-
-.sponsor-track {
-    display: flex;
-    gap: 40px;
-    width: max-content;
-    animation: scrollRight 20s linear infinite;
-}
-
-.sponsor-slider:hover .sponsor-track {
-    animation-play-state: paused;
-}
-
-.sponsor-track .sponsor-card {
-    flex-shrink: 0;
-    width: 300px !important;
-    height: 160px;
-    margin: 0 !important;
-}
-
-@keyframes scrollRight {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
 
 /* --- Event Card Grid Layout --- */
 .events-grid-container {

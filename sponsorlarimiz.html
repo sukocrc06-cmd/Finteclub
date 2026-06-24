@@ -7,301 +7,7 @@
     <title>Sponsorlarımız - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Make sponsor cards look interactive and hoverable */
-        .sponsor-card {
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .sponsor-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(59, 130, 246, 0.35);
-            background: rgba(255, 255, 255, 0.04);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(59, 130, 246, 0.1);
-        }
 
-        .sponsor-card a {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        /* Slider Logo Aspect-Ratio Protection and Centering */
-        .sponsor-card img {
-            max-width: 100%;
-            max-height: 85px; /* Uniform bounded height limit */
-            width: auto;
-            height: auto;
-            object-fit: contain; /* Preserve aspect ratio perfectly */
-            display: block;
-            margin: auto;
-        }
-
-        /* Round Logo variation for Muhammet Kasap in slider */
-        .sponsor-card img.round-logo {
-            border-radius: 50%;
-            aspect-ratio: 1 / 1;
-            object-fit: contain; /* Protect aspect ratio */
-            max-height: 80px;
-        }
-
-        /* Specific card container override for Kahveci Hacıbaba to give breathing room */
-        .sponsor-card[data-sponsor="hacibaba"] {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            box-sizing: border-box;
-            overflow: visible;
-        }
-
-        /* Specific logo styling for Kahveci Hacıbaba logo to prevent clipping */
-        .sponsor-card[data-sponsor="hacibaba"] img {
-            max-width: 85% !important;
-            max-height: 80% !important;
-            width: auto !important;
-            height: auto !important;
-            object-fit: contain !important;
-        }
-
-        /* --- Sponsor Modal System Styles --- */
-        .sponsor-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-        }
-
-        .sponsor-modal.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .sponsor-modal-backdrop {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .sponsor-modal-window {
-            position: relative;
-            width: 90%;
-            max-width: 550px;
-            background: rgba(9, 19, 38, 0.95);
-            border: 1px solid rgba(59, 130, 246, 0.35);
-            border-radius: 20px;
-            padding: 35px;
-            z-index: 10000;
-            transform: translateY(30px);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.15);
-        }
-
-        .sponsor-modal.open .sponsor-modal-window {
-            transform: translateY(0);
-        }
-
-        .sponsor-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: #93c5fd;
-            font-size: 2.2rem;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.2s ease, transform 0.2s ease;
-        }
-
-        .sponsor-modal-close:hover {
-            color: #ffffff;
-            transform: scale(1.1);
-        }
-
-        .sponsor-modal-layout {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .sponsor-modal-left {
-            flex-shrink: 0;
-        }
-
-        .sponsor-modal-left img {
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
-            object-fit: contain; /* Protect aspect ratio */
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            padding: 10px;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
-            display: block;
-            margin: auto;
-        }
-
-        /* For round logo like Muhammet Kasap */
-        .sponsor-modal-left img.round-logo {
-            border-radius: 50%;
-            object-fit: contain; /* Protect aspect ratio */
-            padding: 5px; /* Glassmorphic ring look */
-        }
-
-        /* Specific style override for Kahveci Hacıbaba modal logo container to prevent clipping */
-        #modal-hacibaba .sponsor-modal-left {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            box-sizing: border-box;
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
-            overflow: visible;
-            flex-shrink: 0;
-        }
-
-        /* Specific logo image within Kahveci Hacıbaba modal */
-        #modal-hacibaba .sponsor-modal-left img {
-            max-width: 85% !important;
-            max-height: 80% !important;
-            width: auto !important;
-            height: auto !important;
-            object-fit: contain !important;
-            border-radius: 0 !important;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-            margin: auto !important;
-        }
-
-        .sponsor-modal-right {
-            flex: 1;
-            text-align: left;
-        }
-
-        .sponsor-modal-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 0 0 5px 0;
-        }
-
-        .sponsor-modal-subtitle {
-            font-size: 1rem;
-            color: #93c5fd;
-            font-weight: 600;
-            margin: 0 0 15px 0;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .sponsor-address-block {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            color: #cbd5e1;
-            line-height: 1.5;
-        }
-
-        .sponsor-address-block strong {
-            color: #93c5fd;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .sponsor-btn-container {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .sponsor-action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .sponsor-action-btn.instagram {
-            background: rgba(225, 48, 108, 0.1);
-            border: 1px solid rgba(225, 48, 108, 0.4);
-            color: #fd5c63;
-        }
-
-        .sponsor-action-btn.instagram:hover {
-            background: rgba(225, 48, 108, 0.25);
-            box-shadow: 0 0 15px rgba(225, 48, 108, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .sponsor-action-btn.website {
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            color: #93c5fd;
-        }
-
-        .sponsor-action-btn.website:hover {
-            background: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 576px) {
-            .sponsor-modal-window {
-                padding: 30px 20px;
-            }
-            .sponsor-modal-layout {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            .sponsor-modal-right {
-                text-align: center;
-                width: 100%;
-            }
-            .sponsor-btn-container {
-                justify-content: center;
-            }
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -340,8 +46,8 @@
 
     <!-- Modern Sponsor Showcase -->
     <section class="sponsors-content" style="padding: 60px 0;">
-        <div class="sponsor-slider">
-            <div class="sponsor-track">
+        <div class="container">
+            <div class="sponsor-grid">
                 <!-- Card 1 -->
                 <div class="sponsor-card" data-sponsor="anadolu-doner">
                     <img src="https://finteclub.my.canva.site/_assets/media/d3379b9eda2cb88ea7aa232348bf5334.png" alt="Anadolu Döner">
@@ -353,74 +59,33 @@
                 </div>
     
                 <!-- Card 3 -->
-                <div class="sponsor-card" data-sponsor="avukatapp" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="avukatapp">
                     <img src="avukatapp.png" alt="AvukatApp Logo" class="avukatapp-logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">AvukatApp</span>
+                    <span>AvukatApp</span>
                 </div>
     
                 <!-- Card 4 -->
-                <div class="sponsor-card" data-sponsor="muhammet-kasap" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="muhammet-kasap">
                     <img src="muhammet-kasap.jpeg" alt="Muhammet Kasap Logo" class="round-logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Muhammet Kasap</span>
+                    <span>Muhammet Kasap</span>
                 </div>
     
                 <!-- Card 5 -->
-                <div class="sponsor-card" data-sponsor="cubuk-belediyesi" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="cubuk-belediyesi">
                     <img src="cubukbelediyesi.png" alt="Çubuk Belediyesi Logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Çubuk Belediyesi</span>
+                    <span>Çubuk Belediyesi</span>
                 </div>
     
                 <!-- Card 6 -->
-                <div class="sponsor-card" data-sponsor="begum-mutfagi" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="begum-mutfagi">
                     <img src="begum-mutfagi-yeni.png" alt="Begüm'ün Mutfağı Logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Begüm'ün Mutfağı</span>
+                    <span>Begüm'ün Mutfağı</span>
                 </div>
-
+    
                 <!-- Card 7: Hammurabi -->
-                <div class="sponsor-card" data-sponsor="hammurabi" style="flex-direction: column; gap: 10px;">
+                <div class="sponsor-card" data-sponsor="hammurabi">
                     <img src="images/sponsor-hammurabi.png" alt="Hammurabi">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Hammurabi</span>
-                </div>
- 
-                <!-- Duplicate once for seamless loop -->
-                <!-- Card 1 -->
-                <div class="sponsor-card" data-sponsor="anadolu-doner">
-                    <img src="https://finteclub.my.canva.site/_assets/media/d3379b9eda2cb88ea7aa232348bf5334.png" alt="Anadolu Döner">
-                </div>
-    
-                <!-- Card 2 -->
-                <div class="sponsor-card" data-sponsor="hacibaba">
-                    <img src="https://finteclub.my.canva.site/_assets/media/b3d971bafefda240a0d6e1a9732342bf.png" alt="Kahveci Hacıbaba">
-                </div>
-    
-                <!-- Card 3 -->
-                <div class="sponsor-card" data-sponsor="avukatapp" style="flex-direction: column; gap: 10px;">
-                    <img src="avukatapp.png" alt="AvukatApp Logo" class="avukatapp-logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">AvukatApp</span>
-                </div>
-    
-                <!-- Card 4 -->
-                <div class="sponsor-card" data-sponsor="muhammet-kasap" style="flex-direction: column; gap: 10px;">
-                    <img src="muhammet-kasap.jpeg" alt="Muhammet Kasap Logo" class="round-logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Muhammet Kasap</span>
-                </div>
-    
-                <!-- Card 5 -->
-                <div class="sponsor-card" data-sponsor="cubuk-belediyesi" style="flex-direction: column; gap: 10px;">
-                    <img src="cubukbelediyesi.png" alt="Çubuk Belediyesi Logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Çubuk Belediyesi</span>
-                </div>
-    
-                <!-- Card 6 -->
-                <div class="sponsor-card" data-sponsor="begum-mutfagi" style="flex-direction: column; gap: 10px;">
-                    <img src="begum-mutfagi-yeni.png" alt="Begüm'ün Mutfağı Logo">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Begüm'ün Mutfağı</span>
-                </div>
-
-                <!-- Card 7: Hammurabi (Duplicate) -->
-                <div class="sponsor-card" data-sponsor="hammurabi" style="flex-direction: column; gap: 10px;">
-                    <img src="images/sponsor-hammurabi.png" alt="Hammurabi">
-                    <span style="color: #1e293b; font-weight: 600; font-size: 1.1rem;">Hammurabi</span>
+                    <span>Hammurabi</span>
                 </div>
             </div>
         </div>
