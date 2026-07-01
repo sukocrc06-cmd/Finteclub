@@ -1672,3 +1672,27 @@ body.home-page {
     z-index: -1;
     pointer-events: none;
 }
+
+/* --- Announcement Multi-Button Layout --- */
+.announcement-buttons-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.announcement-buttons-container .uyelik-butonu {
+    margin: 0 !important;
+}
+
+@media (max-width: 576px) {
+    .announcement-buttons-container {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+    .announcement-buttons-container .uyelik-butonu {
+        width: 100% !important;
+        text-align: center;
+    }
+}
