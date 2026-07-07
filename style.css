@@ -1696,3 +1696,15 @@ body.home-page {
         text-align: center;
     }
 }
+
+/* --- Hakkimizda "Biz Kimiz" Section Specific Layout Adjustments --- */
+#biz-kimiz .about-container {
+    justify-content: center;
+    text-align: center;
+}
+
+#biz-kimiz .about-content {
+    max-width: 800px;
+    align-items: center;
+    text-align: center;
+}
