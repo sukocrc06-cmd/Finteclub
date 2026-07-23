@@ -90,6 +90,7 @@
     </style>
 </head>
 <body>
+    <script src="maintenance-check.js"></script>
     <nav class="navbar">
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
@@ -123,6 +124,7 @@
         <div class="container">
             <h2 class="section-title">Duyurular</h2>
             <div class="cards-grid">
+                <div id="dynamic-announcements"></div>
 
                 <!-- AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 2/2 -->
                 <div class="card">
@@ -426,6 +428,46 @@
                 }
             });
         }
+    </script>
+
+    <!-- Admin panelinden eklenen duyuruları göster -->
+    <script>
+    (function () {
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        fetch('site-data.json?t=' + Date.now())
+            .then(res => res.json())
+            .then(data => {
+                const items = data.announcements || [];
+                if (items.length === 0) return;
+                const container = document.getElementById('dynamic-announcements');
+                if (!container) return;
+
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const imageHtml = item.image
+                        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" class="img-fluid rounded">`
+                        : '';
+                    const linkHtml = item.link
+                        ? `<a href="${escapeHtml(item.link)}" target="_blank" class="card-link">Daha fazlası &rarr;</a>`
+                        : '';
+                    card.innerHTML =
+                        `<div class="announcement-image-col">${imageHtml}</div>` +
+                        `<div class="announcement-content-col">` +
+                            `<div>` +
+                                `<h3 class="card-title" style="text-align:left; margin-top:0; margin-bottom:10px;">${escapeHtml(item.title || '')}</h3>` +
+                                `<p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom:10px;">${escapeHtml(item.description || '')}</p>` +
+                            `</div>` +
+                            linkHtml +
+                        `</div>`;
+                    container.appendChild(card);
+                });
+            })
+            .catch(() => {});
+    })();
     </script>
 </body>
 </html>
