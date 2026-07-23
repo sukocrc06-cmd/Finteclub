@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Next-Generation Data Connectivity platform providing interconnected digital solutions.">
-    <title>Anasayfa - FinTeClub</title>
+    <title>Next-Generation Connectivity</title>
     <link rel="stylesheet" href="style.css">
     <style>
     @keyframes homepageLogoSpin3D {
@@ -24,10 +24,14 @@
         display: block;
         margin: 0 auto;
         animation: homepageLogoSpin3D 10s linear infinite;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-drag: none;
     }
     </style>
 </head>
 <body class="home-page">
+    <script src="maintenance-check.js"></script>
     <div id="particles-js"></div>
     <!-- Splash Screen Intro -->
     <div id="intro-splash">
@@ -65,7 +69,7 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-logo" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0; display: flex; justify-content: center; align-items: center;">
-                <img src="Yeni-beyaz-font-Logo.png" alt="FinTeClub Logo" class="homepage-logo-spin-final" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
+                <img id="homepage-logo" src="Yeni-beyaz-font-Logo.png" alt="FinTeClub Logo" class="homepage-logo-spin-final" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
             </div>
             <div class="hero-content">
                 <h3>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
@@ -117,6 +121,24 @@
             introVideo.addEventListener('ended', hideSplash);
             skipBtn.addEventListener('click', hideSplash);
         }
+
+        // ---- Gizli Yönetim Paneli Erişimi ----
+        // Logoya 2 saniye içinde 5 kez tıklanırsa admin.html'e yönlendirir.
+        (function () {
+            const logo = document.getElementById('homepage-logo');
+            let clickCount = 0;
+            let clickTimer = null;
+            if (!logo) return;
+            logo.addEventListener('click', () => {
+                clickCount++;
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+                if (clickCount >= 5) {
+                    clickCount = 0;
+                    window.location.href = 'admin.html';
+                }
+            });
+        })();
     </script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
