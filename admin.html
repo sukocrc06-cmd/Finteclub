@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yönetim Paneli - FinTeClub</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: -apple-system, 'Inter', Arial, sans-serif;
+        background: #eef1f6;
+        color: #1a2233;
+    }
+
+    /* ---- Login Gate ---- */
+    #login-gate {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    #login-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 36px;
+        width: 100%;
+        max-width: 380px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+    #login-box h1 {
+        font-size: 1.4rem;
+        margin: 0 0 6px 0;
+        color: #14204a;
+    }
+    #login-box p {
+        margin: 0 0 24px 0;
+        color: #667;
+        font-size: 0.9rem;
+    }
+    .field { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 0.85rem; font-weight: 600; color: #333; }
+    .field input, .field textarea {
+        border: 1px solid #d7dce5;
+        border-radius: 8px;
+        padding: 11px 13px;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: #1a2233;
+        background: #fafbfd;
+    }
+    .field textarea { resize: vertical; }
+    .btn {
+        border: none;
+        border-radius: 8px;
+        padding: 11px 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-primary { background: #0f766e; color: #fff; }
+    .btn-block { width: 100%; }
+    #login-error { color: #dc2626; font-size: 0.85rem; margin-top: 12px; display: none; }
+
+    /* ---- Dashboard ---- */
+    #dashboard { display: none; max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+    #dashboard h1 { font-size: 1.9rem; color: #14204a; margin: 0 0 4px 0; }
+    #dashboard > p.subtitle { color: #5a6478; margin: 0 0 28px 0; }
+
+    .panel {
+        background: #fff;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        margin-bottom: 28px;
+    }
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+    .panel-header h2 { margin: 0; font-size: 1.25rem; color: #14204a; }
+
+    .setting-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 14px 0;
+        border-bottom: 1px solid #eef0f4;
+    }
+    .setting-row:last-of-type { border-bottom: none; }
+    .setting-text strong { display: block; font-size: 1rem; color: #1a2233; margin-bottom: 3px; }
+    .setting-text span { font-size: 0.87rem; color: #6b7280; }
+
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; margin-top: 2px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch-slider { position: absolute; inset: 0; background: #d1d5db; border-radius: 34px; cursor: pointer; transition: 0.2s; }
+    .switch-slider::before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s; }
+    .switch input:checked + .switch-slider { background: #0f766e; }
+    .switch input:checked + .switch-slider::before { transform: translateX(20px); }
+
+    .sub-input { margin-top: 10px; }
+    .sub-input input { width: 100%; }
+
+    .save-row { display: flex; justify-content: flex-end; margin-top: 22px; }
+
+    /* ---- Announcements ---- */
+    #announcements-list { min-height: 40px; }
+    .empty-state { text-align: center; color: #9aa2b1; padding: 30px 0; font-size: 0.95rem; }
+    .announcement-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eef0f4;
+    }
+    .announcement-row img { width: 52px; height: 52px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: #eee; }
+    .announcement-row .a-info { flex: 1; min-width: 0; }
+    .announcement-row .a-info strong { display: block; font-size: 0.95rem; color: #1a2233; }
+    .announcement-row .a-info span { font-size: 0.82rem; color: #8791a3; }
+    .announcement-row button {
+        background: #fee2e2; color: #dc2626; border: none; border-radius: 6px;
+        padding: 6px 10px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
+    }
+
+    #new-announcement-form { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4; }
+
+    #gh-token-row { font-size: 0.85rem; color: #6b7280; margin-bottom: 18px; }
+    #gh-token-row input { width: 100%; margin-top: 6px; }
+
+    #save-status { font-size: 0.85rem; color: #6b7280; margin-top: 10px; min-height: 1.2em; text-align: right; }
+</style>
+</head>
+<body>
+
+    <!-- ============ LOGIN GATE ============ -->
+    <div id="login-gate">
+        <div id="login-box">
+            <h1>Yönetim Paneli</h1>
+            <p>Devam etmek için giriş yapın.</p>
+            <div class="field">
+                <label>E-posta</label>
+                <input type="email" id="login-email" placeholder="ornek@gmail.com">
+            </div>
+            <div class="field">
+                <label>Şifre</label>
+                <input type="password" id="login-password" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary btn-block" id="login-btn">Giriş Yap</button>
+            <p id="login-error">E-posta veya şifre hatalı.</p>
+        </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <div id="dashboard">
+        <h1>Sistem Ayarları &amp; Duyurular</h1>
+        <p class="subtitle">Bakım modu, site geneli banner ve öğrencilere yönelik duyurular.</p>
+
+        <div id="gh-token-row">
+            <label style="font-weight:600; color:#333;">GitHub Token (sadece bu tarayıcıda saklanır)</label>
+            <input type="password" id="github-token" placeholder="ghp_...">
+        </div>
+
+        <!-- Sistem Durumu -->
+        <div class="panel">
+            <div class="panel-header"><h2>Sistem Durumu</h2></div>
+
+            <div class="setting-row">
+                <div class="setting-text">
+                    <strong>Bakım Modu</strong>
+                    <span>Etkinleştirildiğinde ziyaretçiler tüm sayfalarda bir bakım mesajı görür.</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="maintenance-toggle">
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+            <div class="sub-input">
+                <input type="text" id="maintenance-message" placeholder="Bakım mesajı (isteğe bağlı)">
+            </div>
+
+            <div class="setting-row" style="margin-top: 10px;">
+                <div class="setting-text">
+                    <strong>Site Geneli Banner</strong>
+                    <span>Ana sayfada ve tüm sayfalarda üstte gösterilen kısa duyuru şeridi.</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="banner-toggle">
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+            <div class="sub-input">
+                <input type="text" id="banner-text" placeholder="Banner metni">
+            </div>
+
+            <div class="save-row">
+                <button class="btn btn-primary" id="save-settings-btn">Ayarları Kaydet</button>
+            </div>
+            <div id="save-status"></div>
+        </div>
+
+        <!-- Duyurular -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Duyurular</h2>
+                <button class="btn btn-primary" id="toggle-new-announcement-btn">+ Yeni Duyuru</button>
+            </div>
+
+            <div id="announcements-list">
+                <div class="empty-state" id="announcements-empty">Henüz duyuru yok.</div>
+            </div>
+
+            <div id="new-announcement-form">
+                <div class="field">
+                    <label>Başlık</label>
+                    <input type="text" id="new-title" placeholder="Duyuru başlığı">
+                </div>
+                <div class="field">
+                    <label>Açıklama</label>
+                    <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması"></textarea>
+                </div>
+                <div class="field">
+                    <label>Görsel (isteğe bağlı)</label>
+                    <input type="file" id="new-image" accept="image/*">
+                </div>
+                <div class="field">
+                    <label>Link (isteğe bağlı)</label>
+                    <input type="text" id="new-link" placeholder="https://...">
+                </div>
+                <button class="btn btn-primary" id="add-announcement-btn">Duyuruyu Ekle</button>
+                <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        const CRED_HASH = 'a5444748c68bbe12b7f593a7c0859e3e0bf5b7247ce0df5bf97ea1f60e522dc0';
+        const DATA_PATH = 'site-data.json';
+        const REPO = 'sukocrc06-cmd/Finteclub';
+        const BRANCH = 'main';
+        const SESSION_KEY = 'finteclub_admin_session';
+        const TOKEN_KEY = 'finteclub_gh_token';
+
+        const loginGate = document.getElementById('login-gate');
+        const dashboard = document.getElementById('dashboard');
+        const emailInput = document.getElementById('login-email');
+        const passwordInput = document.getElementById('login-password');
+        const loginBtn = document.getElementById('login-btn');
+        const loginError = document.getElementById('login-error');
+        const tokenInput = document.getElementById('github-token');
+
+        const maintenanceToggle = document.getElementById('maintenance-toggle');
+        const maintenanceMessage = document.getElementById('maintenance-message');
+        const bannerToggle = document.getElementById('banner-toggle');
+        const bannerText = document.getElementById('banner-text');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const saveStatus = document.getElementById('save-status');
+
+        const announcementsList = document.getElementById('announcements-list');
+        const announcementsEmpty = document.getElementById('announcements-empty');
+        const toggleNewBtn = document.getElementById('toggle-new-announcement-btn');
+        const newForm = document.getElementById('new-announcement-form');
+        const newTitle = document.getElementById('new-title');
+        const newDescription = document.getElementById('new-description');
+        const newImage = document.getElementById('new-image');
+        const newLink = document.getElementById('new-link');
+        const addAnnouncementBtn = document.getElementById('add-announcement-btn');
+        const announcementSaveStatus = document.getElementById('announcement-save-status');
+
+        let currentData = null;
+
+        async function sha256(text) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function showDashboard() {
+            loginGate.style.display = 'none';
+            dashboard.style.display = 'block';
+            const savedToken = localStorage.getItem(TOKEN_KEY);
+            if (savedToken) tokenInput.value = savedToken;
+            loadData();
+        }
+
+        if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+            showDashboard();
+        }
+
+        loginBtn.addEventListener('click', async () => {
+            const combo = emailInput.value.trim() + '|' + passwordInput.value;
+            const hash = await sha256(combo);
+            if (hash === CRED_HASH) {
+                sessionStorage.setItem(SESSION_KEY, 'true');
+                loginError.style.display = 'none';
+                showDashboard();
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+        passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+
+        async function loadData() {
+            try {
+                const res = await fetch(DATA_PATH + '?t=' + Date.now());
+                currentData = await res.json();
+            } catch (e) {
+                currentData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+            }
+            maintenanceToggle.checked = !!currentData.maintenanceMode;
+            maintenanceMessage.value = currentData.maintenanceMessage || '';
+            bannerToggle.checked = !!currentData.bannerEnabled;
+            bannerText.value = currentData.bannerText || '';
+            renderAnnouncements();
+        }
+
+        function renderAnnouncements() {
+            const items = currentData.announcements || [];
+            announcementsList.querySelectorAll('.announcement-row').forEach(el => el.remove());
+            if (items.length === 0) {
+                announcementsEmpty.style.display = 'block';
+                return;
+            }
+            announcementsEmpty.style.display = 'none';
+            items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'announcement-row';
+                row.innerHTML =
+                    (item.image ? `<img src="${item.image}" alt="">` : `<div style="width:52px;height:52px;border-radius:8px;background:#eef0f4;flex-shrink:0;"></div>`) +
+                    `<div class="a-info"><strong>${escapeHtml(item.title || '')}</strong><span>${escapeHtml((item.description || '').slice(0, 80))}</span></div>` +
+                    `<button data-id="${item.id}">Sil</button>`;
+                row.querySelector('button').addEventListener('click', () => deleteAnnouncement(item.id));
+                announcementsList.appendChild(row);
+            });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        toggleNewBtn.addEventListener('click', () => {
+            newForm.style.display = newForm.style.display === 'block' ? 'none' : 'block';
+        });
+
+        async function getFileSha(path, token) {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                headers: { Authorization: `token ${token}` }
+            });
+            if (res.status === 404) return null;
+            if (!res.ok) throw new Error('Dosya okunamadı (' + path + ', HTTP ' + res.status + ')');
+            const data = await res.json();
+            return data.sha;
+        }
+
+        async function putFile(path, base64Content, message, token, sha) {
+            const body = { message, content: base64Content, branch: BRANCH };
+            if (sha) body.sha = sha;
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                method: 'PUT',
+                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || ('HTTP ' + res.status));
+            }
+        }
+
+        function requireToken() {
+            const token = tokenInput.value.trim();
+            if (!token) throw new Error('GitHub token gerekli.');
+            localStorage.setItem(TOKEN_KEY, token);
+            return token;
+        }
+
+        async function saveSiteData(token, statusEl) {
+            const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
+            const sha = await getFileSha(DATA_PATH, token);
+            await putFile(DATA_PATH, contentB64, 'Site ayarları güncellendi', token, sha);
+            if (statusEl) statusEl.textContent = 'Kaydedildi! Değişiklik birkaç saniye içinde yayında olacak.';
+        }
+
+        saveSettingsBtn.addEventListener('click', async () => {
+            saveStatus.textContent = 'Kaydediliyor...';
+            try {
+                const token = requireToken();
+                currentData.maintenanceMode = maintenanceToggle.checked;
+                currentData.maintenanceMessage = maintenanceMessage.value;
+                currentData.bannerEnabled = bannerToggle.checked;
+                currentData.bannerText = bannerText.value;
+                await saveSiteData(token, saveStatus);
+            } catch (e) {
+                saveStatus.textContent = 'Hata: ' + e.message;
+            }
+        });
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        addAnnouncementBtn.addEventListener('click', async () => {
+            announcementSaveStatus.textContent = '';
+            const title = newTitle.value.trim();
+            const description = newDescription.value.trim();
+            const link = newLink.value.trim();
+            const file = newImage.files[0];
+
+            if (!title) { announcementSaveStatus.textContent = 'Başlık gerekli.'; return; }
+
+            try {
+                const token = requireToken();
+                announcementSaveStatus.textContent = 'Kaydediliyor...';
+
+                let imagePath = '';
+                if (file) {
+                    const base64 = await readFileAsBase64(file);
+                    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+                    imagePath = 'duyuru-images/' + Date.now() + '-' + safeName;
+                    await putFile(imagePath, base64, 'Duyuru görseli eklendi: ' + safeName, token, null);
+                }
+
+                const newItem = {
+                    id: 'a' + Date.now(),
+                    title,
+                    description,
+                    image: imagePath,
+                    link,
+                    date: new Date().toISOString().slice(0, 10)
+                };
+
+                if (!currentData.announcements) currentData.announcements = [];
+                currentData.announcements.unshift(newItem);
+
+                await saveSiteData(token, null);
+
+                renderAnnouncements();
+                newTitle.value = '';
+                newDescription.value = '';
+                newLink.value = '';
+                newImage.value = '';
+                newForm.style.display = 'none';
+                announcementSaveStatus.textContent = 'Duyuru eklendi ve yayınlandı.';
+            } catch (e) {
+                announcementSaveStatus.textContent = 'Hata: ' + e.message;
+            }
+        });
+
+        async function deleteAnnouncement(id) {
+            if (!confirm('Bu duyuruyu silmek istediğinize emin misiniz?')) return;
+            try {
+                const token = requireToken();
+                currentData.announcements = (currentData.announcements || []).filter(a => a.id !== id);
+                await saveSiteData(token, null);
+                renderAnnouncements();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        }
+    })();
+    </script>
+</body>
+</html>
