@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FinTeClub Yönetim Paneli">
+    <title>Yönetim Paneli - FinTeClub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Admin Panel Custom Styles are loaded from style.css -->
+</head>
+<body class="admin-body">
+    <nav class="navbar">
+        <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Anasayfa</a></li>
+            <li><a href="duyurular.html">Duyurular</a></li>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li class="dropdown">
+                <a href="ekip.html" class="dropdown-toggle">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                </ul>
+            </li>
+            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
+            <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>FinTeClub Yönetim Paneli</h1>
+            <a href="ekip.html" class="btn-admin btn-admin-secondary">Ekip Sayfası &rarr;</a>
+        </div>
+
+        <div class="admin-action-bar">
+            <div class="action-bar-left">
+                <span class="conn-status">
+                    <span class="status-dot" id="status-dot"></span>
+                    <span id="status-text">GitHub Bağlantısı Yok</span>
+                </span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-admin btn-admin-secondary" id="btn-download-json">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    JSON İndir (Yedek)
+                </button>
+                <button class="btn-admin btn-admin-primary" id="btn-commit-github">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    GitHub'a Kaydet
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Form Column -->
+            <div>
+                <div class="admin-card">
+                    <h3 class="admin-card-title">GitHub Entegrasyon Ayarları</h3>
+                    <form id="github-settings-form">
+                        <div class="form-group">
+                            <label for="gh-token">GitHub Personal Access Token (PAT)</label>
+                            <input type="password" class="form-control" id="gh-token" placeholder="ghp_...">
+                        </div>
+                        <div class="form-group">
+                            <label for="gh-repo">Repository (Sahip/Depo Adı)</label>
+                            <input type="text" class="form-control" id="gh-repo" value="sukocrc06-cmd/Finteclub">
+                        </div>
+                        <div class="form-group">
+                            <label for="gh-branch">Branch</label>
+                            <input type="text" class="form-control" id="gh-branch" value="main">
+                        </div>
+                        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%;">Ayarları Kaydet & Bağlan</button>
+                    </form>
+                </div>
+
+                <div class="admin-card">
+                    <h3 class="admin-card-title" id="form-mode-title">Üye Ekle</h3>
+                    <form id="member-form">
+                        <input type="hidden" id="edit-board">
+                        <input type="hidden" id="edit-index">
+
+                        <div class="form-group">
+                            <label for="member-name">Ad Soyad</label>
+                            <input type="text" class="form-control" id="member-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-role">Görev/Unvan</label>
+                            <input type="text" class="form-control" id="member-role" placeholder="Örn: Kurul Üyesi, Başkan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-board">Kurul / Kategori</label>
+                            <select class="form-control" id="member-board" required>
+                                <option value="yonetim-kurulu">Yönetim Kurulu</option>
+                                <option value="denetleme-kurulu">Denetleme Kurulu</option>
+                                <option value="sosyal-medya">Sosyal Medya Kurulu</option>
+                                <option value="kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</option>
+                                <option value="etkinlik-kurulu">Etkinlik Kurulu</option>
+                                <option value="yazilim-proje">Yazılım ve Proje Kurulu</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-image">Fotoğraf Yolu / URL</label>
+                            <input type="text" class="form-control" id="member-image" placeholder="Örn: images/sukru-cerci.jpg veya boş bırakın">
+                            <div class="img-preview-box" id="img-preview-container" style="display: none;">
+                                <img src="" id="img-preview" alt="Önizleme">
+                                <span style="font-size: 0.8rem; color: #9ca3af;">Fotoğraf Önizlemesi</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-linkedin">LinkedIn URL</label>
+                            <input type="url" class="form-control" id="member-linkedin" placeholder="https://www.linkedin.com/in/...">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-email">E-posta</label>
+                            <input type="email" class="form-control" id="member-email" placeholder="example@mail.com">
+                        </div>
+                        <div class="btn-group-row">
+                            <button type="button" class="btn-admin btn-admin-secondary" id="btn-cancel-edit" style="display: none; flex: 1;">Vazgeç</button>
+                            <button type="submit" class="btn-admin btn-admin-primary" id="btn-submit-member" style="flex: 2;">Üye Ekle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- List Column -->
+            <div>
+                <div class="admin-card" style="min-height: 600px;">
+                    <h3 class="admin-card-title">Mevcut Ekip Üyeleri</h3>
+                    <div id="members-list-container">
+                        <!-- Grouped members list will render here -->
+                        <p style="color: #9ca3af; text-align: center; margin-top: 40px;">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="logger-box" id="logger">
+            <div class="logger-line info">[Sistem] Yönetim paneli başlatıldı. Yerel veri ekip.json dosyasından okunuyor...</div>
+        </div>
+    </div>
+
+    <!-- JS Scripts -->
+    <script>
+        // Hamburger Menu Logic
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                hamburger.classList.toggle('active');
+            });
+        }
+
+        // Dropdown Logic for Mobile
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        if (dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992) {
+                    e.preventDefault();
+                    this.parentElement.classList.toggle('open');
+                }
+            });
+        }
+
+        // Helper to encode/decode UTF-8 strings safely to Base64 in browser
+        function utf8_to_b64(str) {
+            return window.btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+
+        // State variables
+        let ekipData = {};
+        let isEditing = false;
+
+        // Logging helper
+        const logger = document.getElementById('logger');
+        function log(message, type = 'info') {
+            const line = document.createElement('div');
+            line.className = `logger-line ${type}`;
+            const now = new Date().toLocaleTimeString();
+            line.textContent = `[${now}] ${message}`;
+            logger.appendChild(line);
+            logger.scrollTop = logger.scrollHeight;
+        }
+
+        // Image preview logic
+        const imgInput = document.getElementById('member-image');
+        const imgPreviewContainer = document.getElementById('img-preview-container');
+        const imgPreview = document.getElementById('img-preview');
+
+        imgInput.addEventListener('input', () => {
+            const val = imgInput.value.trim();
+            if (val && val !== 'avatar-placeholder') {
+                imgPreview.src = val;
+                imgPreviewContainer.style.display = 'flex';
+            } else {
+                imgPreviewContainer.style.display = 'none';
+            }
+        });
+
+        // Load credentials from localStorage
+        const tokenInput = document.getElementById('gh-token');
+        const repoInput = document.getElementById('gh-repo');
+        const branchInput = document.getElementById('gh-branch');
+
+        if (localStorage.getItem('finteclub_gh_token')) {
+            tokenInput.value = localStorage.getItem('finteclub_gh_token');
+            log('GitHub token bilgisi localStorage üzerinden yüklendi.', 'info');
+        }
+        if (localStorage.getItem('finteclub_gh_repo')) {
+            repoInput.value = localStorage.getItem('finteclub_gh_repo');
+        }
+        if (localStorage.getItem('finteclub_gh_branch')) {
+            branchInput.value = localStorage.getItem('finteclub_gh_branch');
+        }
+
+        // GitHub settings save
+        document.getElementById('github-settings-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const token = tokenInput.value.trim();
+            const repo = repoInput.value.trim();
+            const branch = branchInput.value.trim();
+
+            if (!token) {
+                log('Hata: GitHub Token boş olamaz.', 'err');
+                return;
+            }
+
+            localStorage.setItem('finteclub_gh_token', token);
+            localStorage.setItem('finteclub_gh_repo', repo);
+            localStorage.setItem('finteclub_gh_branch', branch);
+
+            log('GitHub Entegrasyon Ayarları kaydedildi. Bağlantı test ediliyor...', 'info');
+            testConnection(token, repo, branch);
+        });
+
+        function testConnection(token, repo, branch) {
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+
+            statusDot.className = 'status-dot';
+            statusText.textContent = 'Bağlanılıyor...';
+
+            fetch(`https://api.github.com/repos/${repo}/contents/ekip.json?ref=${branch}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    statusDot.className = 'status-dot connected';
+                    statusText.textContent = 'GitHub Bağlandı';
+                    log(`Başarılı: Repository ${repo} bağlantısı sağlandı.`, 'info');
+                    return res.json();
+                } else {
+                    throw new Error(`HTTP Hata: ${res.status}`);
+                }
+            })
+            .catch(err => {
+                statusDot.className = 'status-dot';
+                statusText.textContent = 'Bağlantı Hatası';
+                log(`Bağlantı Hatası: ${err.message}. Token geçerliliğini veya Repository adını kontrol edin.`, 'err');
+            });
+        }
+
+        // Fetch team members locally
+        function fetchLocalData() {
+            fetch('ekip.json')
+                .then(res => {
+                    if (!res.ok) throw new Error('Yerel ekip.json dosyası yüklenemedi.');
+                    return res.json();
+                })
+                .then(data => {
+                    ekipData = data;
+                    log('Yerel ekip.json verileri yüklendi.', 'info');
+                    renderMembersList();
+                })
+                .catch(err => {
+                    log(`Veri Yükleme Hatası: ${err.message}`, 'err');
+                });
+        }
+
+        const boardNamesTurkish = {
+            'yonetim-kurulu': 'Yönetim Kurulu',
+            'denetleme-kurulu': 'Denetleme Kurulu',
+            'sosyal-medya': 'Sosyal Medya Kurulu',
+            'kurumsal-iletisim': 'Kurumsal İletişim ve Sponsorluk Kurulu',
+            'etkinlik-kurulu': 'Etkinlik Kurulu',
+            'yazilim-proje': 'Yazılım ve Proje Kurulu'
+        };
+
+        // Render member listing
+        function renderMembersList() {
+            const container = document.getElementById('members-list-container');
+            if (!container) return;
+
+            let html = '';
+
+            for (const [boardKey, members] of Object.entries(ekipData)) {
+                const title = boardNamesTurkish[boardKey] || boardKey;
+                html += `
+                    <div class="admin-board-section">
+                        <div class="admin-board-title">${title} (${members.length} Üye)</div>
+                        <div class="admin-members-list">
+                `;
+
+                if (members.length === 0) {
+                    html += `<p style="color: #9ca3af; font-size: 0.9rem; font-style: italic; padding: 10px 20px;">Bu kurulda üye bulunmamaktadır.</p>`;
+                } else {
+                    members.forEach((member, index) => {
+                        const imgHtml = (member.image && member.image !== 'avatar-placeholder')
+                            ? `<img src="${member.image}" alt="${member.name}">`
+                            : `<div class="admin-member-avatar-placeholder">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                                </svg>
+                               </div>`;
+
+                        html += `
+                            <div class="admin-member-row">
+                                <div class="admin-member-info">
+                                    ${imgHtml}
+                                    <div class="admin-member-details">
+                                        <h4>${member.name}</h4>
+                                        <p>${member.role}</p>
+                                    </div>
+                                </div>
+                                <div class="admin-member-actions">
+                                    <button class="btn-admin btn-admin-secondary" onclick="editMember('${boardKey}', ${index})">Düzenle</button>
+                                    <button class="btn-admin btn-admin-danger" onclick="deleteMember('${boardKey}', ${index})">Sil</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Form reset & state reset
+        function resetForm() {
+            document.getElementById('member-form').reset();
+            document.getElementById('edit-board').value = '';
+            document.getElementById('edit-index').value = '';
+            imgPreviewContainer.style.display = 'none';
+            isEditing = false;
+            document.getElementById('form-mode-title').textContent = 'Üye Ekle';
+            document.getElementById('btn-submit-member').textContent = 'Üye Ekle';
+            document.getElementById('btn-cancel-edit').style.display = 'none';
+        }
+
+        document.getElementById('btn-cancel-edit').addEventListener('click', resetForm);
+
+        // Edit member
+        window.editMember = function(boardKey, index) {
+            const member = ekipData[boardKey][index];
+            if (!member) return;
+
+            isEditing = true;
+            document.getElementById('form-mode-title').textContent = 'Üyeyi Düzenle';
+            document.getElementById('btn-submit-member').textContent = 'Değişiklikleri Kaydet';
+            document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
+
+            document.getElementById('edit-board').value = boardKey;
+            document.getElementById('edit-index').value = index;
+
+            document.getElementById('member-name').value = member.name;
+            document.getElementById('member-role').value = member.role;
+            document.getElementById('member-board').value = boardKey;
+            document.getElementById('member-image').value = member.image === 'avatar-placeholder' ? '' : (member.image || '');
+            document.getElementById('member-linkedin').value = member.linkedin || '';
+            document.getElementById('member-email').value = member.email || '';
+
+            // trigger image preview
+            imgInput.dispatchEvent(new Event('input'));
+            
+            // Scroll form into view
+            document.getElementById('member-form').scrollIntoView({ behavior: 'smooth' });
+            log(`Düzenleme moduna alındı: ${member.name}`, 'info');
+        };
+
+        // Delete member
+        window.deleteMember = function(boardKey, index) {
+            const member = ekipData[boardKey][index];
+            if (!member) return;
+
+            if (confirm(`${member.name} isimli üyeyi silmek istediğinize emin misiniz?`)) {
+                ekipData[boardKey].splice(index, 1);
+                log(`Üye silindi: ${member.name}. Değişiklikleri kaydetmek için lütfen 'GitHub'a Kaydet' butonuna tıklayın.`, 'info');
+                renderMembersList();
+                resetForm();
+            }
+        };
+
+        // Add/Update member form submission
+        document.getElementById('member-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('member-name').value.trim();
+            const role = document.getElementById('member-role').value.trim();
+            const board = document.getElementById('member-board').value;
+            let image = document.getElementById('member-image').value.trim();
+            const linkedin = document.getElementById('member-linkedin').value.trim();
+            const email = document.getElementById('member-email').value.trim();
+
+            if (!image) {
+                image = 'avatar-placeholder';
+            }
+
+            const newMember = { name, role, image, linkedin, email };
+
+            if (isEditing) {
+                const oldBoard = document.getElementById('edit-board').value;
+                const oldIndex = parseInt(document.getElementById('edit-index').value, 10);
+
+                if (oldBoard === board) {
+                    // updated in same board
+                    ekipData[board][oldIndex] = newMember;
+                } else {
+                    // moved to a new board
+                    ekipData[oldBoard].splice(oldIndex, 1);
+                    ekipData[board].push(newMember);
+                }
+                log(`Üye güncellendi: ${name}. Kaydetmek için 'GitHub'a Kaydet' butonunu kullanın.`, 'info');
+            } else {
+                // Add new member
+                if (!ekipData[board]) ekipData[board] = [];
+                ekipData[board].push(newMember);
+                log(`Yeni üye eklendi: ${name}. Kaydetmek için 'GitHub'a Kaydet' butonunu kullanın.`, 'info');
+            }
+
+            renderMembersList();
+            resetForm();
+        });
+
+        // Download JSON backup locally
+        document.getElementById('btn-download-json').addEventListener('click', () => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ekipData, null, 4));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "ekip.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            log('ekip.json yedek dosyası yerel olarak indirildi.', 'info');
+        });
+
+        // Commit to GitHub REST API
+        document.getElementById('btn-commit-github').addEventListener('click', () => {
+            const token = tokenInput.value.trim();
+            const repo = repoInput.value.trim();
+            const branch = branchInput.value.trim();
+
+            if (!token || !repo) {
+                log('Hata: GitHub Token ve Repository ayarları doldurulmuş olmalıdır.', 'err');
+                alert('Lütfen GitHub Token ve Repository ayarlarını doldurup kaydedin.');
+                return;
+            }
+
+            log('GitHub Kaydetme İşlemi Başlatıldı...', 'info');
+            
+            // 1. Get current sha of ekip.json
+            fetch(`https://api.github.com/repos/${repo}/contents/ekip.json?ref=${branch}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else if (res.status === 404) {
+                    log('Bilgi: ekip.json bulunamadı. Yeni bir dosya oluşturulacak.', 'info');
+                    return { sha: null };
+                } else {
+                    throw new Error(`Dosya sha bilgisi alınamadı. HTTP ${res.status}`);
+                }
+            })
+            .then(fileMeta => {
+                const sha = fileMeta.sha;
+                const jsonContent = JSON.stringify(ekipData, null, 4);
+                // Safe UTF-8 encoding for Turkish chars
+                const encodedContent = utf8_to_b64(jsonContent);
+
+                const body = {
+                    message: "Yönetim Paneli üzerinden ekip.json güncellemesi",
+                    content: encodedContent,
+                    branch: branch
+                };
+                if (sha) {
+                    body.sha = sha;
+                }
+
+                log(`SHA alındı: ${sha || 'Yeni dosya'}. Değişiklikler commit ediliyor...`, 'info');
+
+                // 2. Put contents to GitHub
+                return fetch(`https://api.github.com/repos/${repo}/contents/ekip.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify(body)
+                });
+            })
+            .then(res => {
+                if (res.ok) {
+                    log('Başarılı! Değişiklikler GitHub reposuna kaydedildi ve commit oluşturuldu.', 'info');
+                    alert('Değişiklikler başarıyla GitHub\'a kaydedildi!');
+                    // Test connection again to refresh status indicator
+                    testConnection(token, repo, branch);
+                } else {
+                    return res.json().then(errData => {
+                        throw new Error(errData.message || `HTTP ${res.status}`);
+                    });
+                }
+            })
+            .catch(err => {
+                log(`GitHub Kaydetme Hatası: ${err.message}`, 'err');
+                alert(`Değişiklikler kaydedilemedi: ${err.message}`);
+            });
+        });
+
+        // Initialize connection test on load if token exists
+        window.addEventListener('load', () => {
+            fetchLocalData();
+
+            const token = tokenInput.value.trim();
+            const repo = repoInput.value.trim();
+            const branch = branchInput.value.trim();
+
+            if (token && repo) {
+                testConnection(token, repo, branch);
+            }
+        });
+    </script>
+</body>
+</html>
