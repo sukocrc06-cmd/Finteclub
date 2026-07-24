@@ -4,5 +4,36 @@
   "maintenanceMessage": "Sitemizde şu anda bakım çalışması yapılmaktadır. Kısa süre içinde tekrar hizmetinizdeyiz!",
   "bannerEnabled": false,
   "bannerText": "",
-  "announcements": []
+  "announcements": [],
+  "events": [],
+  "documents": [],
+  "messages": [
+    {
+      "id": "m1784893431859",
+      "name": "Mert Aksoy",
+      "email": "mert12@hotmail.com",
+      "subject": "İş Birliği Teklifi",
+      "body": "Şirketimiz bünyesindeki finans teknolojileri departmanı ile ortak bir eğitim/seminer planlayabiliriz. Detaylar için iletişime geçebilirsiniz.",
+      "date": "2026-07-24",
+      "unread": true
+    },
+    {
+      "id": "m1",
+      "name": "Ahmet Yılmaz",
+      "email": "ahmetyilmaz@gmail.com",
+      "subject": "Sponsorluk Görüşmesi",
+      "body": "Merhaba, FinTeClub faaliyetlerini çok beğeniyoruz. Zirve etkinliğinize sponsor olmak istiyoruz. İletişime geçebilir misiniz?",
+      "date": "2026-07-24",
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "name": "Elif Kaya",
+      "email": "elifkaya@aybu.edu.tr",
+      "subject": "Yazılım Kurulu Katılımı",
+      "body": "Kulübünüz bünyesindeki Yazılım ve Proje kurulunda aktif rol almak istiyorum. Başvurular ne zaman açılacak?",
+      "date": "2026-07-23",
+      "unread": false
+    }
+  ]
 }
