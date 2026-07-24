@@ -1287,5 +1287,704 @@
         }
     })();
     </script>
+    <!-- ============ COMPREHENSIVE MANAGEMENT MODULES (Events, Documents, Inbox) ============ -->
+    <div id="comprehensive-dashboard" style="max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; display: none;">
+        <style>
+            #comprehensive-dashboard .item-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                padding: 14px 0;
+                border-bottom: 1px solid #eef0f4;
+            }
+            #comprehensive-dashboard .item-row .i-info {
+                flex: 1;
+                min-width: 0;
+            }
+            #comprehensive-dashboard .item-row .i-info strong {
+                display: block;
+                font-size: 0.98rem;
+                color: #1a2233;
+                margin-bottom: 3px;
+            }
+            #comprehensive-dashboard .item-row .i-info .i-meta {
+                font-size: 0.82rem;
+                color: #5a6478;
+                margin-bottom: 4px;
+            }
+            #comprehensive-dashboard .item-row .i-info .i-links {
+                display: flex;
+                gap: 10px;
+                font-size: 0.8rem;
+            }
+            #comprehensive-dashboard .item-row .i-info .i-links a {
+                color: #0f766e;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            #comprehensive-dashboard .item-row .i-info .i-links a:hover {
+                text-decoration: underline;
+            }
+            #comprehensive-dashboard .item-row .i-info .i-links span.no-link {
+                color: #9ca3af;
+            }
+            #comprehensive-dashboard .item-row .i-actions {
+                display: flex;
+                gap: 8px;
+            }
+            #comprehensive-dashboard .item-row .i-actions button.btn-edit {
+                background: #e0f2fe;
+                color: #0369a1;
+                border: none;
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                font-weight: 600;
+                transition: opacity 0.15s;
+            }
+            #comprehensive-dashboard .item-row .i-actions button.btn-delete {
+                background: #fee2e2;
+                color: #dc2626;
+                border: none;
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                font-weight: 600;
+                transition: opacity 0.15s;
+            }
+            #comprehensive-dashboard .item-row .i-actions button.btn-read {
+                background: #d1fae5;
+                color: #065f46;
+                border: none;
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                font-weight: 600;
+                transition: opacity 0.15s;
+            }
+            #comprehensive-dashboard .item-row .i-actions button:hover {
+                opacity: 0.85;
+            }
+            #comprehensive-dashboard .msg-row.unread {
+                background: rgba(15, 118, 110, 0.05);
+                border-left: 4px solid #0f766e;
+                padding-left: 10px;
+            }
+        </style>
+
+        <!-- 1. ETKİNLİKLER YÖNETİMİ PANELİ -->
+        <div class="panel" style="margin-top: 28px;">
+            <div class="panel-header">
+                <h2>Etkinlikler Yönetimi</h2>
+                <button class="btn btn-primary" id="event-toggle-form-btn">+ Yeni Etkinlik</button>
+            </div>
+
+            <!-- Form to Add/Edit Event -->
+            <div id="event-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                <h3 id="event-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Etkinlik Ekle</h3>
+                <input type="hidden" id="event-edit-id">
+
+                <div class="field">
+                    <label>Etkinlik Adı (Başlık)</label>
+                    <input type="text" id="event-title" placeholder="Etkinlik başlığı">
+                </div>
+                <div class="field">
+                    <label>Tarih & Saat</label>
+                    <input type="text" id="event-datetime" placeholder="Örn: 25 Ekim 2026, 14:00">
+                </div>
+                <div class="field">
+                    <label>Konum veya Online Bilgisi</label>
+                    <input type="text" id="event-location" placeholder="Örn: BIST Konferans Salonu veya Zoom Online">
+                </div>
+                <div class="field">
+                    <label>Açıklama</label>
+                    <textarea id="event-description" rows="3" placeholder="Etkinlik detayları" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
+                </div>
+                <div class="field">
+                    <label>Afiş Görseli / Yolu (İsteğe bağlı)</label>
+                    <input type="text" id="event-image" placeholder="Örn: images/etkinlik-afis.jpg veya boş bırakın">
+                </div>
+                <div class="field">
+                    <label>Kayıt Ol URL'si (İsteğe bağlı)</label>
+                    <input type="url" id="event-link" placeholder="https://forms.gle/... veya https://...">
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="event-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                    <button class="btn btn-primary" id="event-submit-btn">Etkinliği Kaydet</button>
+                </div>
+                <div id="event-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+            </div>
+
+            <!-- Events List -->
+            <div id="events-list" style="margin-top: 20px;">
+                <div class="empty-state" id="events-empty">Etkinlikler yükleniyor...</div>
+            </div>
+        </div>
+
+        <!-- 2. DOKÜMANLAR & RAPORLAR ARŞİVİ PANELİ -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Dokümanlar &amp; Raporlar Arşivi</h2>
+                <button class="btn btn-primary" id="doc-toggle-form-btn">+ Yeni Doküman</button>
+            </div>
+
+            <!-- Form to Add/Edit Document -->
+            <div id="doc-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                <h3 id="doc-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Doküman Ekle</h3>
+                <input type="hidden" id="doc-edit-id">
+
+                <div class="field">
+                    <label>Doküman Adı</label>
+                    <input type="text" id="doc-title" placeholder="Doküman başlığı">
+                </div>
+                <div class="field">
+                    <label>Kategori</label>
+                    <select id="doc-category" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
+                        <option value="tuzuk">Tüzük</option>
+                        <option value="rapor">Faaliyet Raporu</option>
+                        <option value="sablon">Sunum / Dosya Şablonu</option>
+                        <option value="diger">Diğer</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>İndirme Linki / Dosya URL'si</label>
+                    <input type="text" id="doc-link" placeholder="Örn: btk-afis.pdf veya https://...">
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="doc-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                    <button class="btn btn-primary" id="doc-submit-btn">Dokümanı Kaydet</button>
+                </div>
+                <div id="doc-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+            </div>
+
+            <!-- Documents List -->
+            <div id="docs-list" style="margin-top: 20px;">
+                <div class="empty-state" id="docs-empty">Dokümanlar yükleniyor...</div>
+            </div>
+        </div>
+
+        <!-- 3. GELEN KUTUSU / İLETİŞİM MESAJLARI PANELİ -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Gelen Kutusu / İletişim Mesajları</h2>
+                <button class="btn btn-primary" id="msg-seed-btn">Örnek Mesaj Üret</button>
+            </div>
+
+            <!-- Messages List -->
+            <div id="messages-list" style="margin-top: 20px;">
+                <div class="empty-state" id="messages-empty">Mesajlar yükleniyor...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        const DATA_PATH = 'site-data.json';
+        const REPO = 'sukocrc06-cmd/Finteclub';
+        const BRANCH = 'main';
+        const TOKEN_KEY = 'finteclub_gh_token';
+
+        const compDashboard = document.getElementById('comprehensive-dashboard');
+        
+        // Event Bindings
+        const eventToggleFormBtn = document.getElementById('event-toggle-form-btn');
+        const eventForm = document.getElementById('event-form');
+        const eventFormTitle = document.getElementById('event-form-title');
+        const eventEditId = document.getElementById('event-edit-id');
+        const eventTitle = document.getElementById('event-title');
+        const eventDatetime = document.getElementById('event-datetime');
+        const eventLocation = document.getElementById('event-location');
+        const eventDescription = document.getElementById('event-description');
+        const eventImage = document.getElementById('event-image');
+        const eventLink = document.getElementById('event-link');
+        const eventCancelBtn = document.getElementById('event-cancel-btn');
+        const eventSubmitBtn = document.getElementById('event-submit-btn');
+        const eventSaveStatus = document.getElementById('event-save-status');
+        const eventsList = document.getElementById('events-list');
+        const eventsEmpty = document.getElementById('events-empty');
+
+        // Document Bindings
+        const docToggleFormBtn = document.getElementById('doc-toggle-form-btn');
+        const docForm = document.getElementById('doc-form');
+        const docFormTitle = document.getElementById('doc-form-title');
+        const docEditId = document.getElementById('doc-edit-id');
+        const docTitle = document.getElementById('doc-title');
+        const docCategory = document.getElementById('doc-category');
+        const docLink = document.getElementById('doc-link');
+        const docCancelBtn = document.getElementById('doc-cancel-btn');
+        const docSubmitBtn = document.getElementById('doc-submit-btn');
+        const docSaveStatus = document.getElementById('doc-save-status');
+        const docsList = document.getElementById('docs-list');
+        const docsEmpty = document.getElementById('docs-empty');
+
+        // Messages Bindings
+        const messagesList = document.getElementById('messages-list');
+        const messagesEmpty = document.getElementById('messages-empty');
+        const msgSeedBtn = document.getElementById('msg-seed-btn');
+
+        let siteData = null;
+
+        // Mutation Observer to watch dashboard login state
+        const observer = new MutationObserver(() => {
+            const dashboard = document.getElementById('dashboard');
+            if (dashboard && dashboard.style.display === 'block') {
+                compDashboard.style.display = 'block';
+                if (!siteData) loadSiteDataFile();
+            } else {
+                compDashboard.style.display = 'none';
+            }
+        });
+        const targetDashboard = document.getElementById('dashboard');
+        if (targetDashboard) {
+            observer.observe(targetDashboard, { attributes: true, attributeFilter: ['style'] });
+            if (targetDashboard.style.display === 'block') {
+                compDashboard.style.display = 'block';
+                loadSiteDataFile();
+            } else {
+                compDashboard.style.display = 'none';
+            }
+        }
+
+        async function loadSiteDataFile() {
+            try {
+                const res = await fetch(DATA_PATH + '?t=' + Date.now());
+                siteData = await res.json();
+            } catch (e) {
+                siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+            }
+            
+            // Seed defaults if empty/undefined
+            if (!siteData.events) siteData.events = [];
+            if (!siteData.documents) siteData.documents = [];
+            if (!siteData.messages) {
+                siteData.messages = [
+                    {
+                        id: 'm1',
+                        name: 'Ahmet Yılmaz',
+                        email: 'ahmetyilmaz@gmail.com',
+                        subject: 'Sponsorluk Görüşmesi',
+                        body: 'Merhaba, FinTeClub faaliyetlerini çok beğeniyoruz. Zirve etkinliğinize sponsor olmak istiyoruz. İletişime geçebilir misiniz?',
+                        date: '2026-07-24',
+                        unread: true
+                    },
+                    {
+                        id: 'm2',
+                        name: 'Elif Kaya',
+                        email: 'elifkaya@aybu.edu.tr',
+                        subject: 'Yazılım Kurulu Katılımı',
+                        body: 'Kulübünüz bünyesindeki Yazılım ve Proje kurulunda aktif rol almak istiyorum. Başvurular ne zaman açılacak?',
+                        date: '2026-07-23',
+                        unread: false
+                    }
+                ];
+            }
+
+            renderAllModules();
+        }
+
+        function renderAllModules() {
+            renderEvents();
+            renderDocuments();
+            renderMessages();
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function getGitHubToken() {
+            const tokenInput = document.getElementById('github-token');
+            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
+            if (!token) throw new Error('GitHub token gerekli. Lütfen üstteki alana girin.');
+            return token;
+        }
+
+        async function getFileSha(path, token) {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                headers: { Authorization: `token ${token}` }
+            });
+            if (res.status === 404) return null;
+            if (!res.ok) throw new Error('Dosya sha bilgisi alınamadı (' + path + ', HTTP ' + res.status + ')');
+            const data = await res.json();
+            return data.sha;
+        }
+
+        async function putFile(path, base64Content, message, token, sha) {
+            const body = { message, content: base64Content, branch: BRANCH };
+            if (sha) body.sha = sha;
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                method: 'PUT',
+                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || ('HTTP ' + res.status));
+            }
+        }
+
+        async function commitSiteData(commitMsg) {
+            const token = getGitHubToken();
+            const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
+            const sha = await getFileSha(DATA_PATH, token);
+            await putFile(DATA_PATH, contentB64, commitMsg, token, sha);
+        }
+
+        // ==================== 1. EVENTS MANAGEMENT FUNCTIONS ====================
+        function renderEvents() {
+            eventsList.querySelectorAll('.item-row').forEach(el => el.remove());
+            const items = siteData.events || [];
+
+            if (items.length === 0) {
+                eventsEmpty.style.display = 'block';
+                eventsEmpty.textContent = 'Henüz etkinlik eklenmedi.';
+                return;
+            }
+            eventsEmpty.style.display = 'none';
+
+            items.forEach((item) => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                
+                let regLink = item.link ? `<a href="${item.link}" target="_blank">Kayıt Linki</a>` : 'Kayıt Linki Yok';
+
+                row.innerHTML =
+                    `<div class="i-info">
+                        <strong>${escapeHtml(item.title || '')}</strong>
+                        <div class="i-meta">${escapeHtml(item.datetime || '')} — ${escapeHtml(item.location || '')}</div>
+                        <div class="i-links">${regLink}</div>
+                     </div>` +
+                    `<div class="i-actions">
+                        <button class="btn-edit" id="event-edit-${item.id}">Düzenle</button>
+                        <button class="btn-delete" id="event-del-${item.id}">Sil</button>
+                     </div>`;
+
+                row.querySelector(`#event-edit-${item.id}`).addEventListener('click', () => startEventEdit(item.id));
+                row.querySelector(`#event-del-${item.id}`).addEventListener('click', () => deleteEvent(item.id));
+                eventsList.appendChild(row);
+            });
+        }
+
+        eventToggleFormBtn.addEventListener('click', () => {
+            if (eventForm.style.display === 'block') {
+                resetEventForm();
+            } else {
+                resetEventForm();
+                eventForm.style.display = 'block';
+                eventFormTitle.textContent = 'Yeni Etkinlik Ekle';
+            }
+        });
+
+        eventCancelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetEventForm();
+        });
+
+        function resetEventForm() {
+            eventEditId.value = '';
+            eventTitle.value = '';
+            eventDatetime.value = '';
+            eventLocation.value = '';
+            eventDescription.value = '';
+            eventImage.value = '';
+            eventLink.value = '';
+            eventForm.style.display = 'none';
+            eventSaveStatus.textContent = '';
+        }
+
+        function startEventEdit(id) {
+            const item = siteData.events.find(e => e.id === id);
+            if (!item) return;
+
+            eventFormTitle.textContent = 'Etkinliği Düzenle';
+            eventEditId.value = id;
+            eventTitle.value = item.title || '';
+            eventDatetime.value = item.datetime || '';
+            eventLocation.value = item.location || '';
+            eventDescription.value = item.description || '';
+            eventImage.value = item.image || '';
+            eventLink.value = item.link || '';
+
+            eventForm.style.display = 'block';
+            eventForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        eventSubmitBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            eventSaveStatus.textContent = '';
+
+            const title = eventTitle.value.trim();
+            const datetime = eventDatetime.value.trim();
+            const location = eventLocation.value.trim();
+            const description = eventDescription.value.trim();
+            const image = eventImage.value.trim();
+            const link = eventLink.value.trim();
+
+            if (!title) { eventSaveStatus.textContent = 'Etkinlik Adı gerekli.'; return; }
+
+            try {
+                eventSaveStatus.textContent = 'Kaydediliyor...';
+                const id = eventEditId.value || 'e' + Date.now();
+                const newItem = { id, title, datetime, location, description, image, link };
+
+                if (eventEditId.value) {
+                    const idx = siteData.events.findIndex(ev => ev.id === id);
+                    if (idx !== -1) siteData.events[idx] = newItem;
+                } else {
+                    siteData.events.push(newItem);
+                }
+
+                await commitSiteData('Etkinlik güncellendi: ' + title);
+                renderEvents();
+                resetEventForm();
+                eventSaveStatus.textContent = 'Etkinlik başarıyla kaydedildi!';
+            } catch (e) {
+                eventSaveStatus.textContent = 'Hata: ' + e.message;
+            }
+        });
+
+        async function deleteEvent(id) {
+            const item = siteData.events.find(ev => ev.id === id);
+            if (!item) return;
+            if (!confirm(`${item.title} isimli etkinliği silmek istediğinize emin misiniz?`)) return;
+
+            try {
+                siteData.events = siteData.events.filter(ev => ev.id !== id);
+                await commitSiteData('Etkinlik silindi: ' + item.title);
+                renderEvents();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        }
+
+        // ==================== 2. DOCUMENTS ARCHIVE FUNCTIONS ====================
+        const categoryNames = {
+            'tuzuk': 'Tüzük',
+            'rapor': 'Faaliyet Raporu',
+            'sablon': 'Sunum / Şablon',
+            'diger': 'Diğer'
+        };
+
+        function renderDocuments() {
+            docsList.querySelectorAll('.item-row').forEach(el => el.remove());
+            const items = siteData.documents || [];
+
+            if (items.length === 0) {
+                docsEmpty.style.display = 'block';
+                docsEmpty.textContent = 'Henüz doküman eklenmedi.';
+                return;
+            }
+            docsEmpty.style.display = 'none';
+
+            items.forEach((item) => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                
+                let catText = categoryNames[item.category] || item.category;
+                let downloadBtn = item.link ? `<a href="${item.link}" target="_blank">İndir / Görüntüle</a>` : 'Dosya Yok';
+
+                row.innerHTML =
+                    `<div class="i-info">
+                        <strong>${escapeHtml(item.title || '')}</strong>
+                        <div class="i-meta">Kategori: ${escapeHtml(catText)}</div>
+                        <div class="i-links">${downloadBtn}</div>
+                     </div>` +
+                    `<div class="i-actions">
+                        <button class="btn-edit" id="doc-edit-${item.id}">Düzenle</button>
+                        <button class="btn-delete" id="doc-del-${item.id}">Sil</button>
+                     </div>`;
+
+                row.querySelector(`#doc-edit-${item.id}`).addEventListener('click', () => startDocEdit(item.id));
+                row.querySelector(`#doc-del-${item.id}`).addEventListener('click', () => deleteDoc(item.id));
+                docsList.appendChild(row);
+            });
+        }
+
+        docToggleFormBtn.addEventListener('click', () => {
+            if (docForm.style.display === 'block') {
+                resetDocForm();
+            } else {
+                resetDocForm();
+                docForm.style.display = 'block';
+                docFormTitle.textContent = 'Yeni Doküman Ekle';
+            }
+        });
+
+        docCancelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetDocForm();
+        });
+
+        function resetDocForm() {
+            docEditId.value = '';
+            docTitle.value = '';
+            docCategory.value = 'tuzuk';
+            docLink.value = '';
+            docForm.style.display = 'none';
+            docSaveStatus.textContent = '';
+        }
+
+        function startDocEdit(id) {
+            const item = siteData.documents.find(d => d.id === id);
+            if (!item) return;
+
+            docFormTitle.textContent = 'Dokümanı Düzenle';
+            docEditId.value = id;
+            docTitle.value = item.title || '';
+            docCategory.value = item.category || 'tuzuk';
+            docLink.value = item.link || '';
+
+            docForm.style.display = 'block';
+            docForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        docSubmitBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            docSaveStatus.textContent = '';
+
+            const title = docTitle.value.trim();
+            const category = docCategory.value;
+            const link = docLink.value.trim();
+
+            if (!title) { docSaveStatus.textContent = 'Doküman Adı gerekli.'; return; }
+            if (!link) { docSaveStatus.textContent = 'Dosya indirme linki gerekli.'; return; }
+
+            try {
+                docSaveStatus.textContent = 'Kaydediliyor...';
+                const id = docEditId.value || 'd' + Date.now();
+                const newItem = { id, title, category, link };
+
+                if (docEditId.value) {
+                    const idx = siteData.documents.findIndex(dc => dc.id === id);
+                    if (idx !== -1) siteData.documents[idx] = newItem;
+                } else {
+                    siteData.documents.push(newItem);
+                }
+
+                await commitSiteData('Doküman güncellendi: ' + title);
+                renderDocuments();
+                resetDocForm();
+                docSaveStatus.textContent = 'Doküman başarıyla kaydedildi!';
+            } catch (e) {
+                docSaveStatus.textContent = 'Hata: ' + e.message;
+            }
+        });
+
+        async function deleteDoc(id) {
+            const item = siteData.documents.find(dc => dc.id === id);
+            if (!item) return;
+            if (!confirm(`${item.title} başlıklı dokümanı silmek istediğinize emin misiniz?`)) return;
+
+            try {
+                siteData.documents = siteData.documents.filter(dc => dc.id !== id);
+                await commitSiteData('Doküman silindi: ' + item.title);
+                renderDocuments();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        }
+
+        // ==================== 3. CONTACT MESSAGES / INBOX FUNCTIONS ====================
+        function renderMessages() {
+            messagesList.querySelectorAll('.item-row').forEach(el => el.remove());
+            const items = siteData.messages || [];
+
+            if (items.length === 0) {
+                messagesEmpty.style.display = 'block';
+                messagesEmpty.textContent = 'Gelen kutunuz boş.';
+                return;
+            }
+            messagesEmpty.style.display = 'none';
+
+            items.forEach((item) => {
+                const row = document.createElement('div');
+                row.className = 'item-row msg-row' + (item.unread ? ' unread' : '');
+                
+                let readBtnText = item.unread ? 'Okundu İşaretle' : 'Okunmadı İşaretle';
+
+                row.innerHTML =
+                    `<div class="i-info">
+                        <strong>${escapeHtml(item.name || '')} (${escapeHtml(item.email || '')})</strong>
+                        <div class="i-meta" style="font-weight:600; color:#14204a;">Konu: ${escapeHtml(item.subject || 'Konu Yok')} — ${escapeHtml(item.date || '')}</div>
+                        <div style="font-size:0.87rem; color:#4b5563; margin: 6px 0; line-height:1.4; white-space: pre-wrap;">${escapeHtml(item.body || '')}</div>
+                     </div>` +
+                    `<div class="i-actions" style="flex-direction:column; align-items:flex-end; gap:6px;">
+                        <button class="btn-read" id="msg-read-${item.id}">${readBtnText}</button>
+                        <button class="btn-delete" id="msg-del-${item.id}">Sil</button>
+                     </div>`;
+
+                row.querySelector(`#msg-read-${item.id}`).addEventListener('click', () => toggleMessageReadStatus(item.id));
+                row.querySelector(`#msg-del-${item.id}`).addEventListener('click', () => deleteMessage(item.id));
+                messagesList.appendChild(row);
+            });
+        }
+
+        async function toggleMessageReadStatus(id) {
+            const item = siteData.messages.find(m => m.id === id);
+            if (!item) return;
+
+            try {
+                item.unread = !item.unread;
+                await commitSiteData('Mesaj durum güncellemesi: ' + item.name);
+                renderMessages();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        }
+
+        async function deleteMessage(id) {
+            const item = siteData.messages.find(m => m.id === id);
+            if (!item) return;
+            if (!confirm(`${item.name} tarafından gönderilen mesajı silmek istediğinize emin misiniz?`)) return;
+
+            try {
+                siteData.messages = siteData.messages.filter(m => m.id !== id);
+                await commitSiteData('Mesaj silindi: ' + item.name);
+                renderMessages();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        }
+
+        // Seed random test message
+        msgSeedBtn.addEventListener('click', async () => {
+            const names = ['Kaan Çelik', 'Selin Öztürk', 'Mert Aksoy', 'Zeynep Yılmaz'];
+            const emails = ['kaan.celik@gmail.com', 'selinozturk@outlook.com', 'mert12@hotmail.com', 'zeynepy@aybu.edu.tr'];
+            const subjects = ['Üyelik Başvurusu', 'Web Siteniz Hakkında', 'İş Birliği Teklifi', 'Etkinlik Kayıt Sorunu'];
+            const bodies = [
+                'Merhaba, sitenizdeki üyelik formunu doldurdum ancak onay maili gelmedi. Yardımcı olur musunuz?',
+                'Web sitenizin tasarımı ve responsive yapısı çok güzel görünüyor. Emeği geçen arkadaşları tebrik ederim.',
+                'Şirketimiz bünyesindeki finans teknolojileri departmanı ile ortak bir eğitim/seminer planlayabiliriz. Detaylar için iletişime geçebilirsiniz.',
+                'Yarın düzenlenecek olan zirveye kayıt yaptırmak istedim fakat kontenjan dolmuş. Ek bir kontenjan açılacak mı?'
+            ];
+
+            const idx = Math.floor(Math.random() * names.length);
+            const newMsg = {
+                id: 'm' + Date.now(),
+                name: names[idx],
+                email: emails[idx],
+                subject: subjects[idx],
+                body: bodies[idx],
+                date: new Date().toISOString().slice(0, 10),
+                unread: true
+            };
+
+            try {
+                if (!siteData.messages) siteData.messages = [];
+                siteData.messages.unshift(newMsg);
+                await commitSiteData('Yeni örnek mesaj üretildi');
+                renderMessages();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
