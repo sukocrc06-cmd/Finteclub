@@ -471,83 +471,115 @@
     <!-- ============ EKİP YÖNETİMİ PANELİ (Completely Separate Block) ============ -->
     <div id="ekip-dashboard" style="max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; display: none;">
         <style>
-            #ekip-dashboard .ekip-panel {
-                background: #fff;
-                border-radius: 14px;
-                padding: 28px 30px;
-                box-shadow: 0 4px 18px rgba(0,0,0,0.06);
-                margin-bottom: 28px;
-                font-family: -apple-system, 'Inter', Arial, sans-serif;
-                color: #1a2233;
-            }
-            #ekip-dashboard .ekip-panel-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 22px;
-            }
-            #ekip-dashboard .ekip-panel-header h2 { margin: 0; font-size: 1.25rem; color: #14204a; }
-            #ekip-dashboard .ekip-field { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
-            #ekip-dashboard .ekip-field label { font-size: 0.85rem; font-weight: 600; color: #333; }
-            #ekip-dashboard .ekip-field input, #ekip-dashboard .ekip-field select {
-                border: 1px solid #d7dce5;
-                border-radius: 8px;
-                padding: 11px 13px;
-                font-size: 0.95rem;
-                font-family: inherit;
-                color: #1a2233;
-                background: #fafbfd;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            #ekip-dashboard .ekip-btn {
-                border: none;
-                border-radius: 8px;
-                padding: 11px 20px;
-                font-weight: 600;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: opacity 0.15s;
-            }
-            #ekip-dashboard .ekip-btn:hover { opacity: 0.88; }
-            #ekip-dashboard .ekip-btn-primary { background: #0f766e; color: #fff; }
-            #ekip-dashboard .ekip-btn-secondary { background: #6b7280; color: #fff; margin-right: 8px; }
-            #ekip-dashboard .ekip-btn-danger { background: #fee2e2; color: #dc2626; }
-            #ekip-dashboard .ekip-member-row {
+            #ekip-dashboard .member-row {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
                 gap: 14px;
-                padding: 12px 0;
+                padding: 14px 0;
                 border-bottom: 1px solid #eef0f4;
             }
-            #ekip-dashboard .ekip-member-row img { width: 52px; height: 52px; object-fit: cover; border-radius: 50%; flex-shrink: 0; background: #eee; border: 1px solid #d7dce5; }
-            #ekip-dashboard .ekip-member-row .ekip-avatar-placeholder { width: 52px; height: 52px; border-radius: 50%; background: #eef0f4; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; color: #64748b; }
-            #ekip-dashboard .ekip-member-row .m-info { flex: 1; min-width: 0; }
-            #ekip-dashboard .ekip-member-row .m-info strong { display: block; font-size: 0.95rem; color: #1a2233; }
-            #ekip-dashboard .ekip-member-row .m-info span { font-size: 0.82rem; color: #8791a3; }
-            #ekip-dashboard .ekip-action-btns { display: flex; gap: 8px; }
+            #ekip-dashboard .member-row img {
+                width: 52px;
+                height: 52px;
+                object-fit: cover;
+                border-radius: 50%;
+                flex-shrink: 0;
+                background: #eee;
+                border: 1px solid #eef0f4;
+            }
+            #ekip-dashboard .member-row .member-avatar-placeholder {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                background: #eef0f4;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px dashed #cbd5e1;
+                color: #64748b;
+            }
+            #ekip-dashboard .member-row .m-info {
+                flex: 1;
+                min-width: 0;
+            }
+            #ekip-dashboard .member-row .m-info strong {
+                display: block;
+                font-size: 0.98rem;
+                color: #1a2233;
+                margin-bottom: 3px;
+            }
+            #ekip-dashboard .member-row .m-info .m-meta {
+                font-size: 0.82rem;
+                color: #5a6478;
+                margin-bottom: 4px;
+            }
+            #ekip-dashboard .member-row .m-info .m-links {
+                display: flex;
+                gap: 10px;
+                font-size: 0.8rem;
+            }
+            #ekip-dashboard .member-row .m-info .m-links a {
+                color: #0f766e;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            #ekip-dashboard .member-row .m-info .m-links a:hover {
+                text-decoration: underline;
+            }
+            #ekip-dashboard .member-row .m-info .m-links span.no-link {
+                color: #9ca3af;
+            }
+            #ekip-dashboard .member-row .ekip-actions {
+                display: flex;
+                gap: 8px;
+            }
+            #ekip-dashboard .member-row .ekip-actions button.btn-edit {
+                background: #e0f2fe;
+                color: #0369a1;
+                border: none;
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                font-weight: 600;
+                transition: opacity 0.15s;
+            }
+            #ekip-dashboard .member-row .ekip-actions button.btn-delete {
+                background: #fee2e2;
+                color: #dc2626;
+                border: none;
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                font-weight: 600;
+                transition: opacity 0.15s;
+            }
+            #ekip-dashboard .member-row .ekip-actions button:hover {
+                opacity: 0.85;
+            }
         </style>
 
-        <div class="ekip-panel">
-            <div class="ekip-panel-header">
+        <div class="panel">
+            <div class="panel-header">
                 <h2>Ekip Yönetimi</h2>
-                <button class="ekip-btn ekip-btn-primary" id="ekip-toggle-form-btn">+ Yeni Üye</button>
+                <button class="btn btn-primary" id="ekip-toggle-form-btn">+ Yeni Üye</button>
             </div>
 
-            <!-- Form to Add/Edit Member -->
-            <div id="ekip-member-form" style="display: none; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #eef0f4;">
-                <h3 id="ekip-form-title" style="margin-top: 0; color: #14204a; font-size: 1.1rem;">Yeni Üye Ekle</h3>
+            <!-- Form to Add/Edit Member (Matches main design panel) -->
+            <div id="ekip-member-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                <h3 id="ekip-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Üye Ekle</h3>
                 <input type="hidden" id="ekip-edit-board">
                 <input type="hidden" id="ekip-edit-index">
 
-                <div class="ekip-field">
+                <div class="field">
                     <label>Ad Soyad</label>
                     <input type="text" id="ekip-name" placeholder="Üye adı ve soyadı">
                 </div>
-                <div class="ekip-field">
+                <div class="field">
                     <label>Kurul / Kategori</label>
-                    <select id="ekip-board">
+                    <select id="ekip-board" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
                         <option value="yonetim-kurulu">Yönetim Kurulu</option>
                         <option value="denetleme-kurulu">Denetleme Kurulu</option>
                         <option value="sosyal-medya">Sosyal Medya Kurulu</option>
@@ -556,32 +588,33 @@
                         <option value="yazilim-proje">Yazılım ve Proje Kurulu</option>
                     </select>
                 </div>
-                <div class="ekip-field">
-                    <label>Görev/Unvan</label>
-                    <input type="text" id="ekip-role" placeholder="Örn: Kurul Üyesi, Başkan">
+                <div class="field">
+                    <label>Görev / Unvan</label>
+                    <input type="text" id="ekip-role" placeholder="Örn: Kurul Üyesi, Başkan, Yazılım AR-GE">
                 </div>
-                <div class="ekip-field">
+                <div class="field">
                     <label>Fotoğraf (Görsel Yükle veya Dosya Yolu)</label>
                     <input type="file" id="ekip-image-file" accept="image/*">
                     <input type="text" id="ekip-image-path" placeholder="images/berkay-arslanargun.jpg veya boş bırakın" style="margin-top: 8px;">
                 </div>
-                <div class="ekip-field">
-                    <label>LinkedIn URL</label>
-                    <input type="url" id="ekip-linkedin" placeholder="https://www.linkedin.com/in/... (isteğe bağlı)">
+                <div class="field">
+                    <label>LinkedIn Profil URL</label>
+                    <input type="url" id="ekip-linkedin" placeholder="https://www.linkedin.com/in/...">
                 </div>
-                <div class="ekip-field">
-                    <label>E-posta</label>
-                    <input type="email" id="ekip-email" placeholder="example@mail.com (isteğe bağlı)">
+                <div class="field">
+                    <label>E-posta Adresi</label>
+                    <input type="email" id="ekip-email" placeholder="ornek@gmail.com">
                 </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button class="ekip-btn" id="ekip-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
-                    <button class="ekip-btn ekip-btn-primary" id="ekip-submit-btn">Üyeyi Kaydet</button>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="ekip-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                    <button class="btn btn-primary" id="ekip-submit-btn">Üyeyi Kaydet</button>
                 </div>
                 <div id="ekip-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
             </div>
 
             <!-- Existing Members List -->
-            <div id="ekip-members-list">
+            <div id="ekip-members-list" style="margin-top: 20px;">
                 <div class="empty-state" id="ekip-members-empty">Ekip listesi yükleniyor...</div>
             </div>
         </div>
@@ -667,32 +700,37 @@
         }
 
         function renderMembers() {
-            listContainer.querySelectorAll('.ekip-member-row').forEach(el => el.remove());
+            listContainer.querySelectorAll('.member-row').forEach(el => el.remove());
             let totalMembers = 0;
 
             for (const [boardKey, members] of Object.entries(currentEkip)) {
                 totalMembers += members.length;
                 members.forEach((member, index) => {
                     const row = document.createElement('div');
-                    row.className = 'ekip-member-row';
+                    row.className = 'member-row';
 
                     const boardName = boardNames[boardKey] || boardKey;
                     const imgHtml = (member.image && member.image !== 'avatar-placeholder')
                         ? `<img src="${member.image}" alt="">`
-                        : `<div class="ekip-avatar-placeholder">
+                        : `<div class="member-avatar-placeholder">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                             </svg>
                            </div>`;
 
+                    // Format Contact Links
+                    let linkedinLink = member.linkedin ? `<a href="${member.linkedin}" target="_blank">LinkedIn</a>` : `<span class="no-link">LinkedIn Yok</span>`;
+                    let emailLink = member.email ? `<a href="mailto:${member.email}">E-posta</a>` : `<span class="no-link">E-posta Yok</span>`;
+
                     row.innerHTML = imgHtml +
                         `<div class="m-info">
                             <strong>${escapeHtml(member.name || '')}</strong>
-                            <span>${escapeHtml(boardName)} - ${escapeHtml(member.role || '')}</span>
+                            <div class="m-meta">${escapeHtml(boardName)} — ${escapeHtml(member.role || '')}</div>
+                            <div class="m-links">${linkedinLink} • ${emailLink}</div>
                          </div>` +
-                        `<div class="ekip-action-btns">
-                            <button class="ekip-btn" style="background:#e5e7eb; color:#374151; padding: 6px 10px; font-size: 0.8rem;" id="edit-${boardKey}-${index}">Düzenle</button>
-                            <button class="ekip-btn ekip-btn-danger" style="padding: 6px 10px; font-size: 0.8rem;" id="del-${boardKey}-${index}">Sil</button>
+                        `<div class="ekip-actions">
+                            <button class="btn-edit" id="edit-${boardKey}-${index}">Düzenle</button>
+                            <button class="btn-delete" id="del-${boardKey}-${index}">Sil</button>
                          </div>`;
 
                     row.querySelector(`#edit-${boardKey}-${index}`).addEventListener('click', () => startEdit(boardKey, index));
@@ -754,8 +792,13 @@
         }
 
         toggleFormBtn.addEventListener('click', () => {
-            resetForm();
-            memberForm.style.display = memberForm.style.display === 'block' ? 'none' : 'block';
+            if (memberForm.style.display === 'block') {
+                resetForm();
+            } else {
+                resetForm();
+                memberForm.style.display = 'block';
+                formTitle.textContent = 'Yeni Üye Ekle';
+            }
         });
 
         cancelBtn.addEventListener('click', (e) => {
