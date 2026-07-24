@@ -605,10 +605,126 @@
                     #comprehensive-dashboard .item-row .i-actions button:hover {
                         opacity: 0.85;
                     }
-                    #comprehensive-dashboard .msg-row.unread {
-                        background: rgba(15, 118, 110, 0.05);
+                    /* New Beautiful Message Card Design */
+                    #comprehensive-dashboard .message-card {
+                        background: #fff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin-bottom: 16px;
+                        position: relative;
+                        transition: all 0.2s ease;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+                    }
+                    #comprehensive-dashboard .message-card:hover {
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                        border-color: #cbd5e1;
+                    }
+                    #comprehensive-dashboard .message-card.unread {
                         border-left: 4px solid #0f766e;
-                        padding-left: 10px;
+                        background: #f8fafc;
+                    }
+                    #comprehensive-dashboard .message-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        margin-bottom: 12px;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                    }
+                    #comprehensive-dashboard .sender-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2px;
+                    }
+                    #comprehensive-dashboard .sender-name {
+                        font-size: 1.05rem;
+                        font-weight: 700;
+                        color: #1e293b;
+                    }
+                    #comprehensive-dashboard .sender-email {
+                        font-size: 0.85rem;
+                        color: #64748b;
+                    }
+                    #comprehensive-dashboard .message-date {
+                        font-size: 0.82rem;
+                        color: #94a3b8;
+                        font-weight: 500;
+                    }
+                    #comprehensive-dashboard .message-subject {
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        color: #0f766e;
+                        margin-bottom: 8px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    #comprehensive-dashboard .unread-badge {
+                        background: #0f766e;
+                        color: #fff;
+                        font-size: 0.72rem;
+                        font-weight: 700;
+                        padding: 2px 8px;
+                        border-radius: 9999px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                    #comprehensive-dashboard .message-body {
+                        font-size: 0.9rem;
+                        color: #334155;
+                        line-height: 1.5;
+                        margin-bottom: 16px;
+                        white-space: pre-wrap;
+                        background: #f8fafc;
+                        padding: 12px 14px;
+                        border-radius: 8px;
+                        border: 1px solid #f1f5f9;
+                    }
+                    #comprehensive-dashboard .message-card.unread .message-body {
+                        background: #fff;
+                        border-color: #e2e8f0;
+                    }
+                    #comprehensive-dashboard .message-footer {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 8px;
+                    }
+                    #comprehensive-dashboard .btn-msg-read {
+                        background: #f1f5f9;
+                        color: #475569;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 6px;
+                        padding: 7px 14px;
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.15s;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }
+                    #comprehensive-dashboard .btn-msg-read:hover {
+                        background: #e2e8f0;
+                        color: #1e293b;
+                    }
+                    #comprehensive-dashboard .btn-msg-delete {
+                        background: #fff;
+                        color: #ef4444;
+                        border: 1px solid #fee2e2;
+                        border-radius: 6px;
+                        padding: 7px 14px;
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.15s;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }
+                    #comprehensive-dashboard .btn-msg-delete:hover {
+                        background: #fef2f2;
+                        border-color: #fca5a5;
                     }
                 </style>
 
@@ -1940,7 +2056,7 @@
         }
 
         function renderMessages() {
-            messagesList.querySelectorAll('.item-row').forEach(el => el.remove());
+            messagesList.querySelectorAll('.item-row, .message-card').forEach(el => el.remove());
             const items = siteData.messages || [];
 
             if (items.length === 0) {
@@ -1951,25 +2067,40 @@
             messagesEmpty.style.display = 'none';
 
             items.forEach((item) => {
-                const row = document.createElement('div');
-                row.className = 'item-row msg-row' + (item.unread ? ' unread' : '');
+                const card = document.createElement('div');
+                card.className = 'message-card' + (item.unread ? ' unread' : '');
                 
                 let readBtnText = item.unread ? 'Okundu İşaretle' : 'Okunmadı İşaretle';
+                let unreadBadgeHtml = item.unread ? '<span class="unread-badge" style="margin-right: 8px;">Yeni</span>' : '';
 
-                row.innerHTML =
-                    `<div class="i-info">
-                        <strong>${escapeHtml(item.name || '')} (${escapeHtml(item.email || '')})</strong>
-                        <div class="i-meta" style="font-weight:600; color:#14204a;">Konu: ${escapeHtml(item.subject || 'Konu Yok')} — ${escapeHtml(item.date || '')}</div>
-                        <div style="font-size:0.87rem; color:#4b5563; margin: 6px 0; line-height:1.4; white-space: pre-wrap;">${escapeHtml(item.body || '')}</div>
-                     </div>` +
-                    `<div class="i-actions" style="flex-direction:column; align-items:flex-end; gap:6px;">
-                        <button class="btn-read" id="msg-read-${item.id}">${readBtnText}</button>
-                        <button class="btn-delete" id="msg-del-${item.id}">Sil</button>
-                     </div>`;
+                card.innerHTML = `
+                    <div class="message-header">
+                        <div class="sender-info">
+                            <span class="sender-name">${escapeHtml(item.name || '')}</span>
+                            <span class="sender-email">${escapeHtml(item.email || '')}</span>
+                        </div>
+                        <span class="message-date">${escapeHtml(item.date || '')}</span>
+                    </div>
+                    <div class="message-subject">
+                        ${unreadBadgeHtml}
+                        <span>${escapeHtml(item.subject || 'Konu Yok')}</span>
+                    </div>
+                    <div class="message-body">${escapeHtml(item.body || '')}</div>
+                    <div class="message-footer">
+                        <button class="btn-msg-read" id="msg-read-${item.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                            ${readBtnText}
+                        </button>
+                        <button class="btn-msg-delete" id="msg-del-${item.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                            Sil
+                        </button>
+                    </div>
+                `;
 
-                row.querySelector(`#msg-read-${item.id}`).addEventListener('click', () => toggleMessageReadStatus(item.id));
-                row.querySelector(`#msg-del-${item.id}`).addEventListener('click', () => deleteMessage(item.id));
-                messagesList.appendChild(row);
+                card.querySelector(`#msg-read-${item.id}`).addEventListener('click', () => toggleMessageReadStatus(item.id));
+                card.querySelector(`#msg-del-${item.id}`).addEventListener('click', () => deleteMessage(item.id));
+                messagesList.appendChild(card);
             });
         }
 
