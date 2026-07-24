@@ -134,6 +134,12 @@
     #gh-token-row input { width: 100%; margin-top: 6px; }
 
     #save-status { font-size: 0.85rem; color: #6b7280; margin-top: 10px; min-height: 1.2em; text-align: right; }
+    
+    /* Tabs styling */
+    .tab-btn.active {
+        color: #0f766e !important;
+        border-bottom-color: #0f766e !important;
+    }
 </style>
 </head>
 <body>
@@ -204,40 +210,537 @@
             <div id="save-status"></div>
         </div>
 
-        <!-- Duyurular -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Duyurular</h2>
-                <button class="btn btn-primary" id="toggle-new-announcement-btn">+ Yeni Duyuru</button>
+        <!-- Tab Navigation Bar -->
+        <div class="admin-tabs" style="display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">
+            <button class="tab-btn active" data-tab="ekip" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Ekip Yönetimi</button>
+            <button class="tab-btn" data-tab="duyurular" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Duyurular / Sosyal Medya</button>
+            <button class="tab-btn" data-tab="etkinlikler" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Etkinlikler</button>
+            <button class="tab-btn" data-tab="dokumanlar" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Dokümanlar &amp; Raporlar</button>
+            <button class="tab-btn" data-tab="inbox" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Gelen Kutusu</button>
+        </div>
+
+        <!-- Tab Content 1: Ekip Yönetimi -->
+        <div id="tab-content-ekip" class="tab-content" style="display: block;">
+            <div id="ekip-dashboard">
+                <style>
+                    #ekip-dashboard .member-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        padding: 14px 0;
+                        border-bottom: 1px solid #eef0f4;
+                    }
+                    #ekip-dashboard .member-row img {
+                        width: 52px;
+                        height: 52px;
+                        object-fit: cover;
+                        border-radius: 50%;
+                        flex-shrink: 0;
+                        background: #eee;
+                        border: 1px solid #eef0f4;
+                    }
+                    #ekip-dashboard .member-row .member-avatar-placeholder {
+                        width: 52px;
+                        height: 52px;
+                        border-radius: 50%;
+                        background: #eef0f4;
+                        flex-shrink: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px dashed #cbd5e1;
+                        color: #64748b;
+                    }
+                    #ekip-dashboard .member-row .m-info {
+                        flex: 1;
+                        min-width: 0;
+                    }
+                    #ekip-dashboard .member-row .m-info strong {
+                        display: block;
+                        font-size: 0.98rem;
+                        color: #1a2233;
+                        margin-bottom: 3px;
+                    }
+                    #ekip-dashboard .member-row .m-info .m-meta {
+                        font-size: 0.82rem;
+                        color: #5a6478;
+                        margin-bottom: 4px;
+                    }
+                    #ekip-dashboard .member-row .m-info .m-links {
+                        display: flex;
+                        gap: 10px;
+                        font-size: 0.8rem;
+                    }
+                    #ekip-dashboard .member-row .m-info .m-links a {
+                        color: #0f766e;
+                        text-decoration: none;
+                        font-weight: 500;
+                    }
+                    #ekip-dashboard .member-row .m-info .m-links a:hover {
+                        text-decoration: underline;
+                    }
+                    #ekip-dashboard .member-row .m-info .m-links span.no-link {
+                        color: #9ca3af;
+                    }
+                    #ekip-dashboard .member-row .ekip-actions {
+                        display: flex;
+                        gap: 8px;
+                    }
+                    #ekip-dashboard .member-row .ekip-actions button.btn-edit {
+                        background: #e0f2fe;
+                        color: #0369a1;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #ekip-dashboard .member-row .ekip-actions button.btn-delete {
+                        background: #fee2e2;
+                        color: #dc2626;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #ekip-dashboard .member-row .ekip-actions button:hover {
+                        opacity: 0.85;
+                    }
+                </style>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>Ekip Yönetimi</h2>
+                        <button class="btn btn-primary" id="ekip-toggle-form-btn">+ Yeni Üye</button>
+                    </div>
+
+                    <div id="ekip-member-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                        <h3 id="ekip-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Üye Ekle</h3>
+                        <input type="hidden" id="ekip-edit-board">
+                        <input type="hidden" id="ekip-edit-index">
+
+                        <div class="field">
+                            <label>Ad Soyad</label>
+                            <input type="text" id="ekip-name" placeholder="Üye adı ve soyadı">
+                        </div>
+                        <div class="field">
+                            <label>Kurul / Kategori</label>
+                            <select id="ekip-board" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
+                                <option value="yonetim-kurulu">Yönetim Kurulu</option>
+                                <option value="denetleme-kurulu">Denetleme Kurulu</option>
+                                <option value="sosyal-medya">Sosyal Medya Kurulu</option>
+                                <option value="kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</option>
+                                <option value="etkinlik-kurulu">Etkinlik Kurulu</option>
+                                <option value="yazilim-proje">Yazılım ve Proje Kurulu</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Görev / Unvan</label>
+                            <input type="text" id="ekip-role" placeholder="Örn: Kurul Üyesi, Başkan, Yazılım AR-GE">
+                        </div>
+                        <div class="field">
+                            <label>Fotoğraf (Görsel Yükle veya Dosya Yolu)</label>
+                            <input type="file" id="ekip-image-file" accept="image/*">
+                            <input type="text" id="ekip-image-path" placeholder="images/berkay-arslanargun.jpg veya boş bırakın" style="margin-top: 8px;">
+                        </div>
+                        <div class="field">
+                            <label>LinkedIn Profil URL</label>
+                            <input type="url" id="ekip-linkedin" placeholder="https://www.linkedin.com/in/...">
+                        </div>
+                        <div class="field">
+                            <label>E-posta Adresi</label>
+                            <input type="email" id="ekip-email" placeholder="ornek@gmail.com">
+                        </div>
+                        
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                            <button class="btn" id="ekip-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                            <button class="btn btn-primary" id="ekip-submit-btn">Üyeyi Kaydet</button>
+                        </div>
+                        <div id="ekip-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+                    </div>
+
+                    <div id="ekip-members-list" style="margin-top: 20px;">
+                        <div class="empty-state" id="ekip-members-empty">Ekip listesi yükleniyor...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content 2: Duyurular / Sosyal Medya -->
+        <div id="tab-content-duyurular" class="tab-content" style="display: none;">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Duyurular</h2>
+                    <button class="btn btn-primary" id="toggle-new-announcement-btn">+ Yeni Duyuru</button>
+                </div>
+
+                <div id="announcements-list">
+                    <div class="empty-state" id="announcements-empty">Henüz duyuru yok.</div>
+                </div>
+
+                <div id="new-announcement-form">
+                    <div class="field">
+                        <label>Başlık</label>
+                        <input type="text" id="new-title" placeholder="Duyuru başlığı">
+                    </div>
+                    <div class="field">
+                        <label>Açıklama</label>
+                        <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Görsel (isteğe bağlı)</label>
+                        <input type="file" id="new-image" accept="image/*">
+                    </div>
+                    <div class="field">
+                        <label>Link (isteğe bağlı)</label>
+                        <input type="text" id="new-link" placeholder="https://...">
+                    </div>
+                    <button class="btn btn-primary" id="add-announcement-btn">Duyuruyu Ekle</button>
+                    <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+                </div>
             </div>
 
-            <div id="announcements-list">
-                <div class="empty-state" id="announcements-empty">Henüz duyuru yok.</div>
-            </div>
+            <div id="sosyal-dashboard">
+                <style>
+                    #sosyal-dashboard .social-row {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 14px;
+                        padding: 14px 0;
+                        border-bottom: 1px solid #eef0f4;
+                    }
+                    #sosyal-dashboard .social-row .s-info {
+                        flex: 1;
+                        min-width: 0;
+                    }
+                    #sosyal-dashboard .social-row .s-info strong {
+                        display: block;
+                        font-size: 0.98rem;
+                        color: #1a2233;
+                        margin-bottom: 3px;
+                    }
+                    #sosyal-dashboard .social-row .s-info .s-meta {
+                        font-size: 0.82rem;
+                        color: #5a6478;
+                        margin-bottom: 4px;
+                    }
+                    #sosyal-dashboard .social-row .s-info .s-links {
+                        display: flex;
+                        gap: 10px;
+                        font-size: 0.8rem;
+                    }
+                    #sosyal-dashboard .social-row .s-info .s-links a {
+                        color: #0f766e;
+                        text-decoration: none;
+                        font-weight: 500;
+                    }
+                    #sosyal-dashboard .social-row .s-info .s-links a:hover {
+                        text-decoration: underline;
+                    }
+                    #sosyal-dashboard .social-row .s-info .s-links span.no-link {
+                        color: #9ca3af;
+                    }
+                    #sosyal-dashboard .social-row .s-actions {
+                        display: flex;
+                        gap: 8px;
+                    }
+                    #sosyal-dashboard .social-row .s-actions button.btn-edit {
+                        background: #e0f2fe;
+                        color: #0369a1;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #sosyal-dashboard .social-row .s-actions button.btn-delete {
+                        background: #fee2e2;
+                        color: #dc2626;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #sosyal-dashboard .social-row .s-actions button:hover {
+                        opacity: 0.85;
+                    }
+                </style>
 
-            <div id="new-announcement-form">
-                <div class="field">
-                    <label>Başlık</label>
-                    <input type="text" id="new-title" placeholder="Duyuru başlığı">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>Sosyal Medya / Hızlı Duyuru Ekle</h2>
+                        <button class="btn btn-primary" id="social-toggle-form-btn">+ Yeni Hızlı Duyuru</button>
+                    </div>
+
+                    <div id="social-announcement-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                        <h3 id="social-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Hızlı Duyuru Ekle</h3>
+                        <input type="hidden" id="social-edit-id">
+
+                        <div class="field">
+                            <label>Başlık (Duyuru Başlığı)</label>
+                            <input type="text" id="social-title" placeholder="Sosyal medya gönderi başlığı">
+                        </div>
+                        <div class="field">
+                            <label>Açıklama (Kısa İçerik)</label>
+                            <textarea id="social-description" rows="3" placeholder="Gönderi açıklaması veya kısa içerik" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Gönderi veya Reel URL'si (Instagram / Sosyal Medya Linki)</label>
+                            <input type="url" id="social-link" placeholder="https://www.instagram.com/p/... veya https://...">
+                        </div>
+                        <div class="field">
+                            <label>Buton Metni (Call-to-Action - CTA)</label>
+                            <input type="text" id="social-cta" placeholder="Örn: İncele, Katıl, Detaylar (Varsayılan: Daha fazlası)">
+                        </div>
+                        <div class="field">
+                            <label>Görsel Dosya / Placeholder Yolu (İsteğe bağlı)</label>
+                            <input type="text" id="social-image" placeholder="Örn: images/instagram-logo.png veya boş bırakın">
+                        </div>
+                        
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                            <button class="btn" id="social-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                            <button class="btn btn-primary" id="social-submit-btn">Duyuruyu Kaydet</button>
+                        </div>
+                        <div id="social-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+                    </div>
+
+                    <div id="social-announcements-list" style="margin-top: 20px;">
+                        <div class="empty-state" id="social-announcements-empty">Hızlı duyurular yükleniyor...</div>
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Açıklama</label>
-                    <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması"></textarea>
+            </div>
+        </div>
+
+        <!-- Tab Content 3: Etkinlikler -->
+        <div id="tab-content-etkinlikler" class="tab-content" style="display: none;">
+            <div id="comprehensive-dashboard">
+                <style>
+                    #comprehensive-dashboard .item-row {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 14px;
+                        padding: 14px 0;
+                        border-bottom: 1px solid #eef0f4;
+                    }
+                    #comprehensive-dashboard .item-row .i-info {
+                        flex: 1;
+                        min-width: 0;
+                    }
+                    #comprehensive-dashboard .item-row .i-info strong {
+                        display: block;
+                        font-size: 0.98rem;
+                        color: #1a2233;
+                        margin-bottom: 3px;
+                    }
+                    #comprehensive-dashboard .item-row .i-info .i-meta {
+                        font-size: 0.82rem;
+                        color: #5a6478;
+                        margin-bottom: 4px;
+                    }
+                    #comprehensive-dashboard .item-row .i-info .i-links {
+                        display: flex;
+                        gap: 10px;
+                        font-size: 0.8rem;
+                    }
+                    #comprehensive-dashboard .item-row .i-info .i-links a {
+                        color: #0f766e;
+                        text-decoration: none;
+                        font-weight: 500;
+                    }
+                    #comprehensive-dashboard .item-row .i-info .i-links a:hover {
+                        text-decoration: underline;
+                    }
+                    #comprehensive-dashboard .item-row .i-info .i-links span.no-link {
+                        color: #9ca3af;
+                    }
+                    #comprehensive-dashboard .item-row .i-actions {
+                        display: flex;
+                        gap: 8px;
+                    }
+                    #comprehensive-dashboard .item-row .i-actions button.btn-edit {
+                        background: #e0f2fe;
+                        color: #0369a1;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #comprehensive-dashboard .item-row .i-actions button.btn-delete {
+                        background: #fee2e2;
+                        color: #dc2626;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #comprehensive-dashboard .item-row .i-actions button.btn-read {
+                        background: #d1fae5;
+                        color: #065f46;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        font-size: 0.8rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: opacity 0.15s;
+                    }
+                    #comprehensive-dashboard .item-row .i-actions button:hover {
+                        opacity: 0.85;
+                    }
+                    #comprehensive-dashboard .msg-row.unread {
+                        background: rgba(15, 118, 110, 0.05);
+                        border-left: 4px solid #0f766e;
+                        padding-left: 10px;
+                    }
+                </style>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>Etkinlikler Yönetimi</h2>
+                        <button class="btn btn-primary" id="event-toggle-form-btn">+ Yeni Etkinlik</button>
+                    </div>
+
+                    <div id="event-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                        <h3 id="event-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Etkinlik Ekle</h3>
+                        <input type="hidden" id="event-edit-id">
+
+                        <div class="field">
+                            <label>Etkinlik Adı (Başlık)</label>
+                            <input type="text" id="event-title" placeholder="Etkinlik başlığı">
+                        </div>
+                        <div class="field">
+                            <label>Tarih & Saat</label>
+                            <input type="text" id="event-datetime" placeholder="Örn: 25 Ekim 2026, 14:00">
+                        </div>
+                        <div class="field">
+                            <label>Konum veya Online Bilgisi</label>
+                            <input type="text" id="event-location" placeholder="Örn: BIST Konferans Salonu veya Zoom Online">
+                        </div>
+                        <div class="field">
+                            <label>Açıklama</label>
+                            <textarea id="event-description" rows="3" placeholder="Etkinlik detayları" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Afiş Görseli / Yolu (İsteğe bağlı)</label>
+                            <input type="text" id="event-image" placeholder="Örn: images/etkinlik-afis.jpg veya boş bırakın">
+                        </div>
+                        <div class="field">
+                            <label>Kayıt Ol URL'si (İsteğe bağlı)</label>
+                            <input type="url" id="event-link" placeholder="https://forms.gle/... veya https://...">
+                        </div>
+                        
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                            <button class="btn" id="event-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                            <button class="btn btn-primary" id="event-submit-btn">Etkinliği Kaydet</button>
+                        </div>
+                        <div id="event-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+                    </div>
+
+                    <div id="events-list" style="margin-top: 20px;">
+                        <div class="empty-state" id="events-empty">Etkinlikler yükleniyor...</div>
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Görsel (isteğe bağlı)</label>
-                    <input type="file" id="new-image" accept="image/*">
+            </div>
+        </div>
+
+        <!-- Tab Content 4: Dokümanlar & Raporlar -->
+        <div id="tab-content-dokumanlar" class="tab-content" style="display: none;">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Dokümanlar &amp; Raporlar Arşivi</h2>
+                    <button class="btn btn-primary" id="doc-toggle-form-btn">+ Yeni Doküman</button>
                 </div>
-                <div class="field">
-                    <label>Link (isteğe bağlı)</label>
-                    <input type="text" id="new-link" placeholder="https://...">
+
+                <div id="doc-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                    <h3 id="doc-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Doküman Ekle</h3>
+                    <input type="hidden" id="doc-edit-id">
+
+                    <div class="field">
+                        <label>Doküman Adı</label>
+                        <input type="text" id="doc-title" placeholder="Doküman başlığı">
+                    </div>
+                    <div class="field">
+                        <label>Kategori</label>
+                        <select id="doc-category" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
+                            <option value="tuzuk">Tüzük</option>
+                            <option value="rapor">Faaliyet Raporu</option>
+                            <option value="sablon">Sunum / Dosya Şablonu</option>
+                            <option value="diger">Diğer</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>İndirme Linki / Dosya URL'si</label>
+                        <input type="text" id="doc-link" placeholder="Örn: btk-afis.pdf veya https://...">
+                    </div>
+                    
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                        <button class="btn" id="doc-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                        <button class="btn btn-primary" id="doc-submit-btn">Dokümanı Kaydet</button>
+                    </div>
+                    <div id="doc-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
                 </div>
-                <button class="btn btn-primary" id="add-announcement-btn">Duyuruyu Ekle</button>
-                <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+
+                <div id="docs-list" style="margin-top: 20px;">
+                    <div class="empty-state" id="docs-empty">Dokümanlar yükleniyor...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content 5: Gelen Kutusu -->
+        <div id="tab-content-inbox" class="tab-content" style="display: none;">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Gelen Kutusu / İletişim Mesajları</h2>
+                    <button class="btn btn-primary" id="msg-seed-btn">Örnek Mesaj Üret</button>
+                </div>
+
+                <div id="messages-list" style="margin-top: 20px;">
+                    <div class="empty-state" id="messages-empty">Mesajlar yükleniyor...</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- ============ TAB SWITCHER LOGIC ============ -->
+    <script>
+    (function () {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.style.display = 'none');
+
+                tab.classList.add('active');
+                const target = document.getElementById('tab-content-' + tab.dataset.tab);
+                if (target) {
+                    target.style.display = 'block';
+                }
+            });
+        });
+    })();
+    </script>
+
+    <!-- ============ FIRST SCRIPT: LOGIN & SYSTEM SETTINGS ============ -->
     <script>
     (function () {
         const CRED_HASH = 'a5444748c68bbe12b7f593a7c0859e3e0bf5b7247ce0df5bf97ea1f60e522dc0';
@@ -264,7 +767,7 @@
 
         const announcementsList = document.getElementById('announcements-list');
         const announcementsEmpty = document.getElementById('announcements-empty');
-        const toggleNewBtn = document.getElementById('toggle-new-announcement-btn');
+        const toggleNewAnnouncementBtn = document.getElementById('toggle-new-announcement-btn');
         const newForm = document.getElementById('new-announcement-form');
         const newTitle = document.getElementById('new-title');
         const newDescription = document.getElementById('new-description');
@@ -305,23 +808,66 @@
         });
         passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginBtn.click(); });
 
+        function requireToken() {
+            const token = tokenInput.value.trim();
+            if (!token) throw new Error('GitHub token girmelisiniz.');
+            localStorage.setItem(TOKEN_KEY, token);
+            return token;
+        }
+
+        async function getFileSha(token) {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            if (!res.ok) throw new Error('SHA okunamadı. Token doğru mu?');
+            const data = await res.json();
+            return data.sha;
+        }
+
+        async function saveSiteData(token, sha) {
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Site data update via panel',
+                    content: content,
+                    sha: sha,
+                    branch: BRANCH
+                })
+            });
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.message || 'API Hatası');
+            }
+        }
+
         async function loadData() {
             try {
                 const res = await fetch(DATA_PATH + '?t=' + Date.now());
                 currentData = await res.json();
+                
+                maintenanceToggle.checked = !!currentData.maintenanceMode;
+                maintenanceMessage.value = currentData.maintenanceMessage || '';
+                bannerToggle.checked = !!currentData.bannerEnabled;
+                bannerText.value = currentData.bannerText || '';
+
+                renderAnnouncements();
             } catch (e) {
-                currentData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+                alert('Veriler yüklenirken hata oluştu: ' + e.message);
             }
-            maintenanceToggle.checked = !!currentData.maintenanceMode;
-            maintenanceMessage.value = currentData.maintenanceMessage || '';
-            bannerToggle.checked = !!currentData.bannerEnabled;
-            bannerText.value = currentData.bannerText || '';
-            renderAnnouncements();
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
         function renderAnnouncements() {
-            const items = currentData.announcements || [];
             announcementsList.querySelectorAll('.announcement-row').forEach(el => el.remove());
+            const items = (currentData.announcements || []).filter(item => !item.isSocial);
             if (items.length === 0) {
                 announcementsEmpty.style.display = 'block';
                 return;
@@ -339,111 +885,89 @@
             });
         }
 
-        function escapeHtml(str) {
-            return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        }
-
-        toggleNewBtn.addEventListener('click', () => {
-            newForm.style.display = newForm.style.display === 'block' ? 'none' : 'block';
-        });
-
-        async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                headers: { Authorization: `token ${token}` }
-            });
-            if (res.status === 404) return null;
-            if (!res.ok) throw new Error('Dosya okunamadı (' + path + ', HTTP ' + res.status + ')');
-            const data = await res.json();
-            return data.sha;
-        }
-
-        async function putFile(path, base64Content, message, token, sha) {
-            const body = { message, content: base64Content, branch: BRANCH };
-            if (sha) body.sha = sha;
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || ('HTTP ' + res.status));
-            }
-        }
-
-        function requireToken() {
-            const token = tokenInput.value.trim();
-            if (!token) throw new Error('GitHub token gerekli.');
-            localStorage.setItem(TOKEN_KEY, token);
-            return token;
-        }
-
-        async function saveSiteData(token, statusEl) {
-            const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
-            const sha = await getFileSha(DATA_PATH, token);
-            await putFile(DATA_PATH, contentB64, 'Site ayarları güncellendi', token, sha);
-            if (statusEl) statusEl.textContent = 'Kaydedildi! Değişiklik birkaç saniye içinde yayında olacak.';
-        }
-
         saveSettingsBtn.addEventListener('click', async () => {
             saveStatus.textContent = 'Kaydediliyor...';
             try {
                 const token = requireToken();
+                const sha = await getFileSha(token);
+                
                 currentData.maintenanceMode = maintenanceToggle.checked;
-                currentData.maintenanceMessage = maintenanceMessage.value;
+                currentData.maintenanceMessage = maintenanceMessage.value.trim();
                 currentData.bannerEnabled = bannerToggle.checked;
-                currentData.bannerText = bannerText.value;
-                await saveSiteData(token, saveStatus);
+                currentData.bannerText = bannerText.value.trim();
+
+                await saveSiteData(token, sha);
+                saveStatus.textContent = 'Ayarlar başarıyla kaydedildi.';
             } catch (e) {
                 saveStatus.textContent = 'Hata: ' + e.message;
             }
         });
 
-        function readFileAsBase64(file) {
+        toggleNewAnnouncementBtn.addEventListener('click', () => {
+            newForm.style.display = newForm.style.display === 'block' ? 'none' : 'block';
+        });
+
+        function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
                 reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
             });
         }
 
+        async function uploadImage(file, token) {
+            const ext = file.name.split('.').pop();
+            const filename = `images/${Date.now()}.${ext}`;
+            const b64 = await fileToBase64(file);
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Upload announcement image',
+                    content: b64,
+                    branch: BRANCH
+                })
+            });
+            if (!res.ok) throw new Error('Görsel yüklenemedi.');
+            return filename;
+        }
+
         addAnnouncementBtn.addEventListener('click', async () => {
-            announcementSaveStatus.textContent = '';
-            const title = newTitle.value.trim();
-            const description = newDescription.value.trim();
-            const link = newLink.value.trim();
-            const file = newImage.files[0];
-
-            if (!title) { announcementSaveStatus.textContent = 'Başlık gerekli.'; return; }
-
+            announcementSaveStatus.textContent = 'Yükleniyor...';
             try {
                 const token = requireToken();
-                announcementSaveStatus.textContent = 'Kaydediliyor...';
+                const title = newTitle.value.trim();
+                const desc = newDescription.value.trim();
+                const linkVal = newLink.value.trim();
+                
+                if (!title || !desc) throw new Error('Başlık ve açıklama gereklidir.');
 
-                let imagePath = '';
-                if (file) {
-                    const base64 = await readFileAsBase64(file);
-                    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
-                    imagePath = 'duyuru-images/' + Date.now() + '-' + safeName;
-                    await putFile(imagePath, base64, 'Duyuru görseli eklendi: ' + safeName, token, null);
+                let imgUrl = '';
+                if (newImage.files.length > 0) {
+                    imgUrl = await uploadImage(newImage.files[0], token);
                 }
 
-                const newItem = {
+                const sha = await getFileSha(token);
+                
+                const newAnn = {
                     id: 'a' + Date.now(),
-                    title,
-                    description,
-                    image: imagePath,
-                    link,
+                    title: title,
+                    description: desc,
+                    image: imgUrl,
+                    link: linkVal,
                     date: new Date().toISOString().slice(0, 10)
                 };
 
                 if (!currentData.announcements) currentData.announcements = [];
-                currentData.announcements.unshift(newItem);
+                currentData.announcements.unshift(newAnn);
 
-                await saveSiteData(token, null);
-
+                await saveSiteData(token, sha);
                 renderAnnouncements();
+                
                 newTitle.value = '';
                 newDescription.value = '';
                 newLink.value = '';
@@ -460,7 +984,8 @@
             try {
                 const token = requireToken();
                 currentData.announcements = (currentData.announcements || []).filter(a => a.id !== id);
-                await saveSiteData(token, null);
+                const sha = await getFileSha(token);
+                await saveSiteData(token, sha);
                 renderAnnouncements();
             } catch (e) {
                 alert('Hata: ' + e.message);
@@ -468,158 +993,8 @@
         }
     })();
     </script>
-    <!-- ============ EKİP YÖNETİMİ PANELİ (Completely Separate Block) ============ -->
-    <div id="ekip-dashboard" style="max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; display: none;">
-        <style>
-            #ekip-dashboard .member-row {
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 14px 0;
-                border-bottom: 1px solid #eef0f4;
-            }
-            #ekip-dashboard .member-row img {
-                width: 52px;
-                height: 52px;
-                object-fit: cover;
-                border-radius: 50%;
-                flex-shrink: 0;
-                background: #eee;
-                border: 1px solid #eef0f4;
-            }
-            #ekip-dashboard .member-row .member-avatar-placeholder {
-                width: 52px;
-                height: 52px;
-                border-radius: 50%;
-                background: #eef0f4;
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px dashed #cbd5e1;
-                color: #64748b;
-            }
-            #ekip-dashboard .member-row .m-info {
-                flex: 1;
-                min-width: 0;
-            }
-            #ekip-dashboard .member-row .m-info strong {
-                display: block;
-                font-size: 0.98rem;
-                color: #1a2233;
-                margin-bottom: 3px;
-            }
-            #ekip-dashboard .member-row .m-info .m-meta {
-                font-size: 0.82rem;
-                color: #5a6478;
-                margin-bottom: 4px;
-            }
-            #ekip-dashboard .member-row .m-info .m-links {
-                display: flex;
-                gap: 10px;
-                font-size: 0.8rem;
-            }
-            #ekip-dashboard .member-row .m-info .m-links a {
-                color: #0f766e;
-                text-decoration: none;
-                font-weight: 500;
-            }
-            #ekip-dashboard .member-row .m-info .m-links a:hover {
-                text-decoration: underline;
-            }
-            #ekip-dashboard .member-row .m-info .m-links span.no-link {
-                color: #9ca3af;
-            }
-            #ekip-dashboard .member-row .ekip-actions {
-                display: flex;
-                gap: 8px;
-            }
-            #ekip-dashboard .member-row .ekip-actions button.btn-edit {
-                background: #e0f2fe;
-                color: #0369a1;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #ekip-dashboard .member-row .ekip-actions button.btn-delete {
-                background: #fee2e2;
-                color: #dc2626;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #ekip-dashboard .member-row .ekip-actions button:hover {
-                opacity: 0.85;
-            }
-        </style>
 
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Ekip Yönetimi</h2>
-                <button class="btn btn-primary" id="ekip-toggle-form-btn">+ Yeni Üye</button>
-            </div>
-
-            <!-- Form to Add/Edit Member (Matches main design panel) -->
-            <div id="ekip-member-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
-                <h3 id="ekip-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Üye Ekle</h3>
-                <input type="hidden" id="ekip-edit-board">
-                <input type="hidden" id="ekip-edit-index">
-
-                <div class="field">
-                    <label>Ad Soyad</label>
-                    <input type="text" id="ekip-name" placeholder="Üye adı ve soyadı">
-                </div>
-                <div class="field">
-                    <label>Kurul / Kategori</label>
-                    <select id="ekip-board" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
-                        <option value="yonetim-kurulu">Yönetim Kurulu</option>
-                        <option value="denetleme-kurulu">Denetleme Kurulu</option>
-                        <option value="sosyal-medya">Sosyal Medya Kurulu</option>
-                        <option value="kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</option>
-                        <option value="etkinlik-kurulu">Etkinlik Kurulu</option>
-                        <option value="yazilim-proje">Yazılım ve Proje Kurulu</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Görev / Unvan</label>
-                    <input type="text" id="ekip-role" placeholder="Örn: Kurul Üyesi, Başkan, Yazılım AR-GE">
-                </div>
-                <div class="field">
-                    <label>Fotoğraf (Görsel Yükle veya Dosya Yolu)</label>
-                    <input type="file" id="ekip-image-file" accept="image/*">
-                    <input type="text" id="ekip-image-path" placeholder="images/berkay-arslanargun.jpg veya boş bırakın" style="margin-top: 8px;">
-                </div>
-                <div class="field">
-                    <label>LinkedIn Profil URL</label>
-                    <input type="url" id="ekip-linkedin" placeholder="https://www.linkedin.com/in/...">
-                </div>
-                <div class="field">
-                    <label>E-posta Adresi</label>
-                    <input type="email" id="ekip-email" placeholder="ornek@gmail.com">
-                </div>
-                
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button class="btn" id="ekip-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
-                    <button class="btn btn-primary" id="ekip-submit-btn">Üyeyi Kaydet</button>
-                </div>
-                <div id="ekip-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
-            </div>
-
-            <!-- Existing Members List -->
-            <div id="ekip-members-list" style="margin-top: 20px;">
-                <div class="empty-state" id="ekip-members-empty">Ekip listesi yükleniyor...</div>
-            </div>
-        </div>
-    </div>
-
+    <!-- ============ SECOND SCRIPT: EKİP YÖNETİMİ ============ -->
     <script>
     (function () {
         const EKIP_PATH = 'ekip.json';
@@ -627,7 +1002,6 @@
         const BRANCH = 'main';
         const TOKEN_KEY = 'finteclub_gh_token';
 
-        const ekipDashboard = document.getElementById('ekip-dashboard');
         const toggleFormBtn = document.getElementById('ekip-toggle-form-btn');
         const memberForm = document.getElementById('ekip-member-form');
         const formTitle = document.getElementById('ekip-form-title');
@@ -661,25 +1035,19 @@
             'yazilim-proje': 'Yazılım ve Proje Kurulu'
         };
 
-        // Initialize / Load data when visible
         const observer = new MutationObserver(() => {
             const dashboard = document.getElementById('dashboard');
-            if (dashboard && dashboard.style.display === 'block') {
-                ekipDashboard.style.display = 'block';
+            const tab = document.getElementById('tab-content-ekip');
+            if (dashboard && dashboard.style.display === 'block' && tab && tab.style.display === 'block') {
                 if (!currentEkip) loadEkip();
-            } else {
-                ekipDashboard.style.display = 'none';
             }
         });
-        const targetDashboard = document.getElementById('dashboard');
-        if (targetDashboard) {
-            observer.observe(targetDashboard, { attributes: true, attributeFilter: ['style'] });
-            if (targetDashboard.style.display === 'block') {
-                ekipDashboard.style.display = 'block';
-                loadEkip();
-            } else {
-                ekipDashboard.style.display = 'none';
-            }
+        const dashboardEl = document.getElementById('dashboard');
+        const tabEl = document.getElementById('tab-content-ekip');
+        if (dashboardEl) observer.observe(dashboardEl, { attributes: true, attributeFilter: ['style'] });
+        if (tabEl) observer.observe(tabEl, { attributes: true, attributeFilter: ['style'] });
+        if (dashboardEl && dashboardEl.style.display === 'block' && tabEl && tabEl.style.display === 'block') {
+            loadEkip();
         }
 
         async function loadEkip() {
@@ -718,7 +1086,6 @@
                             </svg>
                            </div>`;
 
-                    // Format Contact Links
                     let linkedinLink = member.linkedin ? `<a href="${member.linkedin}" target="_blank">LinkedIn</a>` : `<span class="no-link">LinkedIn Yok</span>`;
                     let emailLink = member.email ? `<a href="mailto:${member.email}">E-posta</a>` : `<span class="no-link">E-posta Yok</span>`;
 
@@ -754,7 +1121,7 @@
         function getGitHubToken() {
             const tokenInput = document.getElementById('github-token');
             const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli. Lütfen üstteki alana girin.');
+            if (!token) throw new Error('GitHub token gerekli.');
             return token;
         }
 
@@ -885,7 +1252,6 @@
                     currentEkip[board].push(newItem);
                 }
 
-                // UTF-8 base64 encoding
                 const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(currentEkip, null, 2))));
                 const sha = await getFileSha(EKIP_PATH, token);
                 await putFile(EKIP_PATH, contentB64, (isEditing ? 'Ekip üyesi güncellendi: ' : 'Ekip üyesi eklendi: ') + name, token, sha);
@@ -919,125 +1285,8 @@
         }
     })();
     </script>
-    <!-- ============ SOSYAL MEDYA / HIZLI DUYURU PANELİ (Completely Separate Block) ============ -->
-    <div id="sosyal-dashboard" style="max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; display: none;">
-        <style>
-            #sosyal-dashboard .social-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 14px;
-                padding: 14px 0;
-                border-bottom: 1px solid #eef0f4;
-            }
-            #sosyal-dashboard .social-row .s-info {
-                flex: 1;
-                min-width: 0;
-            }
-            #sosyal-dashboard .social-row .s-info strong {
-                display: block;
-                font-size: 0.98rem;
-                color: #1a2233;
-                margin-bottom: 3px;
-            }
-            #sosyal-dashboard .social-row .s-info .s-meta {
-                font-size: 0.82rem;
-                color: #5a6478;
-                margin-bottom: 4px;
-            }
-            #sosyal-dashboard .social-row .s-info .s-links {
-                display: flex;
-                gap: 10px;
-                font-size: 0.8rem;
-            }
-            #sosyal-dashboard .social-row .s-info .s-links a {
-                color: #0f766e;
-                text-decoration: none;
-                font-weight: 500;
-            }
-            #sosyal-dashboard .social-row .s-info .s-links a:hover {
-                text-decoration: underline;
-            }
-            #sosyal-dashboard .social-row .s-info .s-links span.no-link {
-                color: #9ca3af;
-            }
-            #sosyal-dashboard .social-row .s-actions {
-                display: flex;
-                gap: 8px;
-            }
-            #sosyal-dashboard .social-row .s-actions button.btn-edit {
-                background: #e0f2fe;
-                color: #0369a1;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #sosyal-dashboard .social-row .s-actions button.btn-delete {
-                background: #fee2e2;
-                color: #dc2626;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #sosyal-dashboard .social-row .s-actions button:hover {
-                opacity: 0.85;
-            }
-        </style>
 
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Sosyal Medya / Hızlı Duyuru Ekle</h2>
-                <button class="btn btn-primary" id="social-toggle-form-btn">+ Yeni Hızlı Duyuru</button>
-            </div>
-
-            <!-- Form to Add/Edit Social Announcement -->
-            <div id="social-announcement-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
-                <h3 id="social-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Hızlı Duyuru Ekle</h3>
-                <input type="hidden" id="social-edit-id">
-
-                <div class="field">
-                    <label>Başlık (Duyuru Başlığı)</label>
-                    <input type="text" id="social-title" placeholder="Sosyal medya gönderi başlığı">
-                </div>
-                <div class="field">
-                    <label>Açıklama (Kısa İçerik)</label>
-                    <textarea id="social-description" rows="3" placeholder="Gönderi açıklaması veya kısa içerik" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
-                </div>
-                <div class="field">
-                    <label>Gönderi veya Reel URL'si (Instagram / Sosyal Medya Linki)</label>
-                    <input type="url" id="social-link" placeholder="https://www.instagram.com/p/... veya https://...">
-                </div>
-                <div class="field">
-                    <label>Buton Metni (Call-to-Action - CTA)</label>
-                    <input type="text" id="social-cta" placeholder="Örn: İncele, Katıl, Detaylar (Varsayılan: Daha fazlası)">
-                </div>
-                <div class="field">
-                    <label>Görsel Dosya / Placeholder Yolu (İsteğe bağlı)</label>
-                    <input type="text" id="social-image" placeholder="Örn: images/instagram-logo.png veya boş bırakın">
-                </div>
-                
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button class="btn" id="social-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
-                    <button class="btn btn-primary" id="social-submit-btn">Duyuruyu Kaydet</button>
-                </div>
-                <div id="social-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
-            </div>
-
-            <!-- Existing Social Announcements List -->
-            <div id="social-announcements-list" style="margin-top: 20px;">
-                <div class="empty-state" id="social-announcements-empty">Hızlı duyurular yükleniyor...</div>
-            </div>
-        </div>
-    </div>
-
+    <!-- ============ THIRD SCRIPT: SOSYAL MEDYA / HIZLI DUYURU ============ -->
     <script>
     (function () {
         const DATA_PATH = 'site-data.json';
@@ -1045,7 +1294,6 @@
         const BRANCH = 'main';
         const TOKEN_KEY = 'finteclub_gh_token';
 
-        const socialDashboard = document.getElementById('sosyal-dashboard');
         const toggleFormBtn = document.getElementById('social-toggle-form-btn');
         const announcementForm = document.getElementById('social-announcement-form');
         const formTitle = document.getElementById('social-form-title');
@@ -1067,25 +1315,19 @@
         let siteData = null;
         let isEditing = false;
 
-        // Initialize / Load data when visible
         const observer = new MutationObserver(() => {
             const dashboard = document.getElementById('dashboard');
-            if (dashboard && dashboard.style.display === 'block') {
-                socialDashboard.style.display = 'block';
+            const tab = document.getElementById('tab-content-duyurular');
+            if (dashboard && dashboard.style.display === 'block' && tab && tab.style.display === 'block') {
                 if (!siteData) loadData();
-            } else {
-                socialDashboard.style.display = 'none';
             }
         });
-        const targetDashboard = document.getElementById('dashboard');
-        if (targetDashboard) {
-            observer.observe(targetDashboard, { attributes: true, attributeFilter: ['style'] });
-            if (targetDashboard.style.display === 'block') {
-                socialDashboard.style.display = 'block';
-                loadData();
-            } else {
-                socialDashboard.style.display = 'none';
-            }
+        const dashboardEl = document.getElementById('dashboard');
+        const tabEl = document.getElementById('tab-content-duyurular');
+        if (dashboardEl) observer.observe(dashboardEl, { attributes: true, attributeFilter: ['style'] });
+        if (tabEl) observer.observe(tabEl, { attributes: true, attributeFilter: ['style'] });
+        if (dashboardEl && dashboardEl.style.display === 'block' && tabEl && tabEl.style.display === 'block') {
+            loadData();
         }
 
         async function loadData() {
@@ -1140,7 +1382,7 @@
         function getGitHubToken() {
             const tokenInput = document.getElementById('github-token');
             const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli. Lütfen üstteki alana girin.');
+            if (!token) throw new Error('GitHub token gerekli.');
             return token;
         }
 
@@ -1237,7 +1479,7 @@
                     description,
                     link,
                     cta: cta || 'Daha fazlası',
-                    image: image || 'images/instagram-placeholder.png', // Fallback placeholder
+                    image: image || 'images/instagram-placeholder.png',
                     isSocial: true,
                     date: new Date().toISOString().slice(0, 10)
                 };
@@ -1253,7 +1495,6 @@
                     siteData.announcements.unshift(newItem);
                 }
 
-                // UTF-8 base64 encoding
                 const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
                 const sha = await getFileSha(DATA_PATH, token);
                 await putFile(DATA_PATH, contentB64, (isEditing ? 'Hızlı duyuru güncellendi: ' : 'Hızlı duyuru eklendi: ') + title, token, sha);
@@ -1287,212 +1528,15 @@
         }
     })();
     </script>
-    <!-- ============ COMPREHENSIVE MANAGEMENT MODULES (Events, Documents, Inbox) ============ -->
-    <div id="comprehensive-dashboard" style="max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; display: none;">
-        <style>
-            #comprehensive-dashboard .item-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 14px;
-                padding: 14px 0;
-                border-bottom: 1px solid #eef0f4;
-            }
-            #comprehensive-dashboard .item-row .i-info {
-                flex: 1;
-                min-width: 0;
-            }
-            #comprehensive-dashboard .item-row .i-info strong {
-                display: block;
-                font-size: 0.98rem;
-                color: #1a2233;
-                margin-bottom: 3px;
-            }
-            #comprehensive-dashboard .item-row .i-info .i-meta {
-                font-size: 0.82rem;
-                color: #5a6478;
-                margin-bottom: 4px;
-            }
-            #comprehensive-dashboard .item-row .i-info .i-links {
-                display: flex;
-                gap: 10px;
-                font-size: 0.8rem;
-            }
-            #comprehensive-dashboard .item-row .i-info .i-links a {
-                color: #0f766e;
-                text-decoration: none;
-                font-weight: 500;
-            }
-            #comprehensive-dashboard .item-row .i-info .i-links a:hover {
-                text-decoration: underline;
-            }
-            #comprehensive-dashboard .item-row .i-info .i-links span.no-link {
-                color: #9ca3af;
-            }
-            #comprehensive-dashboard .item-row .i-actions {
-                display: flex;
-                gap: 8px;
-            }
-            #comprehensive-dashboard .item-row .i-actions button.btn-edit {
-                background: #e0f2fe;
-                color: #0369a1;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #comprehensive-dashboard .item-row .i-actions button.btn-delete {
-                background: #fee2e2;
-                color: #dc2626;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #comprehensive-dashboard .item-row .i-actions button.btn-read {
-                background: #d1fae5;
-                color: #065f46;
-                border: none;
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-                cursor: pointer;
-                font-weight: 600;
-                transition: opacity 0.15s;
-            }
-            #comprehensive-dashboard .item-row .i-actions button:hover {
-                opacity: 0.85;
-            }
-            #comprehensive-dashboard .msg-row.unread {
-                background: rgba(15, 118, 110, 0.05);
-                border-left: 4px solid #0f766e;
-                padding-left: 10px;
-            }
-        </style>
 
-        <!-- 1. ETKİNLİKLER YÖNETİMİ PANELİ -->
-        <div class="panel" style="margin-top: 28px;">
-            <div class="panel-header">
-                <h2>Etkinlikler Yönetimi</h2>
-                <button class="btn btn-primary" id="event-toggle-form-btn">+ Yeni Etkinlik</button>
-            </div>
-
-            <!-- Form to Add/Edit Event -->
-            <div id="event-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
-                <h3 id="event-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Etkinlik Ekle</h3>
-                <input type="hidden" id="event-edit-id">
-
-                <div class="field">
-                    <label>Etkinlik Adı (Başlık)</label>
-                    <input type="text" id="event-title" placeholder="Etkinlik başlığı">
-                </div>
-                <div class="field">
-                    <label>Tarih & Saat</label>
-                    <input type="text" id="event-datetime" placeholder="Örn: 25 Ekim 2026, 14:00">
-                </div>
-                <div class="field">
-                    <label>Konum veya Online Bilgisi</label>
-                    <input type="text" id="event-location" placeholder="Örn: BIST Konferans Salonu veya Zoom Online">
-                </div>
-                <div class="field">
-                    <label>Açıklama</label>
-                    <textarea id="event-description" rows="3" placeholder="Etkinlik detayları" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
-                </div>
-                <div class="field">
-                    <label>Afiş Görseli / Yolu (İsteğe bağlı)</label>
-                    <input type="text" id="event-image" placeholder="Örn: images/etkinlik-afis.jpg veya boş bırakın">
-                </div>
-                <div class="field">
-                    <label>Kayıt Ol URL'si (İsteğe bağlı)</label>
-                    <input type="url" id="event-link" placeholder="https://forms.gle/... veya https://...">
-                </div>
-                
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button class="btn" id="event-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
-                    <button class="btn btn-primary" id="event-submit-btn">Etkinliği Kaydet</button>
-                </div>
-                <div id="event-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
-            </div>
-
-            <!-- Events List -->
-            <div id="events-list" style="margin-top: 20px;">
-                <div class="empty-state" id="events-empty">Etkinlikler yükleniyor...</div>
-            </div>
-        </div>
-
-        <!-- 2. DOKÜMANLAR & RAPORLAR ARŞİVİ PANELİ -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Dokümanlar &amp; Raporlar Arşivi</h2>
-                <button class="btn btn-primary" id="doc-toggle-form-btn">+ Yeni Doküman</button>
-            </div>
-
-            <!-- Form to Add/Edit Document -->
-            <div id="doc-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
-                <h3 id="doc-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Doküman Ekle</h3>
-                <input type="hidden" id="doc-edit-id">
-
-                <div class="field">
-                    <label>Doküman Adı</label>
-                    <input type="text" id="doc-title" placeholder="Doküman başlığı">
-                </div>
-                <div class="field">
-                    <label>Kategori</label>
-                    <select id="doc-category" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
-                        <option value="tuzuk">Tüzük</option>
-                        <option value="rapor">Faaliyet Raporu</option>
-                        <option value="sablon">Sunum / Dosya Şablonu</option>
-                        <option value="diger">Diğer</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>İndirme Linki / Dosya URL'si</label>
-                    <input type="text" id="doc-link" placeholder="Örn: btk-afis.pdf veya https://...">
-                </div>
-                
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button class="btn" id="doc-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
-                    <button class="btn btn-primary" id="doc-submit-btn">Dokümanı Kaydet</button>
-                </div>
-                <div id="doc-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
-            </div>
-
-            <!-- Documents List -->
-            <div id="docs-list" style="margin-top: 20px;">
-                <div class="empty-state" id="docs-empty">Dokümanlar yükleniyor...</div>
-            </div>
-        </div>
-
-        <!-- 3. GELEN KUTUSU / İLETİŞİM MESAJLARI PANELİ -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Gelen Kutusu / İletişim Mesajları</h2>
-                <button class="btn btn-primary" id="msg-seed-btn">Örnek Mesaj Üret</button>
-            </div>
-
-            <!-- Messages List -->
-            <div id="messages-list" style="margin-top: 20px;">
-                <div class="empty-state" id="messages-empty">Mesajlar yükleniyor...</div>
-            </div>
-        </div>
-    </div>
-
+    <!-- ============ FOURTH SCRIPT: EVENTS, DOCUMENTS & MESSAGES ============ -->
     <script>
     (function () {
         const DATA_PATH = 'site-data.json';
         const REPO = 'sukocrc06-cmd/Finteclub';
         const BRANCH = 'main';
         const TOKEN_KEY = 'finteclub_gh_token';
-
-        const compDashboard = document.getElementById('comprehensive-dashboard');
         
-        // Event Bindings
         const eventToggleFormBtn = document.getElementById('event-toggle-form-btn');
         const eventForm = document.getElementById('event-form');
         const eventFormTitle = document.getElementById('event-form-title');
@@ -1509,7 +1553,6 @@
         const eventsList = document.getElementById('events-list');
         const eventsEmpty = document.getElementById('events-empty');
 
-        // Document Bindings
         const docToggleFormBtn = document.getElementById('doc-toggle-form-btn');
         const docForm = document.getElementById('doc-form');
         const docFormTitle = document.getElementById('doc-form-title');
@@ -1523,32 +1566,41 @@
         const docsList = document.getElementById('docs-list');
         const docsEmpty = document.getElementById('docs-empty');
 
-        // Messages Bindings
         const messagesList = document.getElementById('messages-list');
         const messagesEmpty = document.getElementById('messages-empty');
         const msgSeedBtn = document.getElementById('msg-seed-btn');
 
         let siteData = null;
 
-        // Mutation Observer to watch dashboard login state
         const observer = new MutationObserver(() => {
             const dashboard = document.getElementById('dashboard');
-            if (dashboard && dashboard.style.display === 'block') {
-                compDashboard.style.display = 'block';
+            const tabEtkinlik = document.getElementById('tab-content-etkinlikler');
+            const tabDokuman = document.getElementById('tab-content-dokumanlar');
+            const tabInbox = document.getElementById('tab-content-inbox');
+            
+            const dashboardVisible = dashboard && dashboard.style.display === 'block';
+            const tabVisible = (tabEtkinlik && tabEtkinlik.style.display === 'block') ||
+                               (tabDokuman && tabDokuman.style.display === 'block') ||
+                               (tabInbox && tabInbox.style.display === 'block');
+                               
+            if (dashboardVisible && tabVisible) {
                 if (!siteData) loadSiteDataFile();
-            } else {
-                compDashboard.style.display = 'none';
             }
         });
-        const targetDashboard = document.getElementById('dashboard');
-        if (targetDashboard) {
-            observer.observe(targetDashboard, { attributes: true, attributeFilter: ['style'] });
-            if (targetDashboard.style.display === 'block') {
-                compDashboard.style.display = 'block';
-                loadSiteDataFile();
-            } else {
-                compDashboard.style.display = 'none';
-            }
+        const dashboardEl = document.getElementById('dashboard');
+        const tabEl1 = document.getElementById('tab-content-etkinlikler');
+        const tabEl2 = document.getElementById('tab-content-dokumanlar');
+        const tabEl3 = document.getElementById('tab-content-inbox');
+        if (dashboardEl) observer.observe(dashboardEl, { attributes: true, attributeFilter: ['style'] });
+        if (tabEl1) observer.observe(tabEl1, { attributes: true, attributeFilter: ['style'] });
+        if (tabEl2) observer.observe(tabEl2, { attributes: true, attributeFilter: ['style'] });
+        if (tabEl3) observer.observe(tabEl3, { attributes: true, attributeFilter: ['style'] });
+
+        if (dashboardEl && dashboardEl.style.display === 'block' && 
+            ((tabEl1 && tabEl1.style.display === 'block') || 
+             (tabEl2 && tabEl2.style.display === 'block') || 
+             (tabEl3 && tabEl3.style.display === 'block'))) {
+            loadSiteDataFile();
         }
 
         async function loadSiteDataFile() {
@@ -1559,7 +1611,6 @@
                 siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
             }
             
-            // Seed defaults if empty/undefined
             if (!siteData.events) siteData.events = [];
             if (!siteData.documents) siteData.documents = [];
             if (!siteData.messages) {
@@ -1601,7 +1652,7 @@
         function getGitHubToken() {
             const tokenInput = document.getElementById('github-token');
             const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli. Lütfen üstteki alana girin.');
+            if (!token) throw new Error('GitHub token gerekli.');
             return token;
         }
 
@@ -1636,7 +1687,6 @@
             await putFile(DATA_PATH, contentB64, commitMsg, token, sha);
         }
 
-        // ==================== 1. EVENTS MANAGEMENT FUNCTIONS ====================
         function renderEvents() {
             eventsList.querySelectorAll('.item-row').forEach(el => el.remove());
             const items = siteData.events || [];
@@ -1763,7 +1813,6 @@
             }
         }
 
-        // ==================== 2. DOCUMENTS ARCHIVE FUNCTIONS ====================
         const categoryNames = {
             'tuzuk': 'Tüzük',
             'rapor': 'Faaliyet Raporu',
@@ -1890,7 +1939,6 @@
             }
         }
 
-        // ==================== 3. CONTACT MESSAGES / INBOX FUNCTIONS ====================
         function renderMessages() {
             messagesList.querySelectorAll('.item-row').forEach(el => el.remove());
             const items = siteData.messages || [];
@@ -1952,7 +2000,6 @@
             }
         }
 
-        // Seed random test message
         msgSeedBtn.addEventListener('click', async () => {
             const names = ['Kaan Çelik', 'Selin Öztürk', 'Mert Aksoy', 'Zeynep Yılmaz'];
             const emails = ['kaan.celik@gmail.com', 'selinozturk@outlook.com', 'mert12@hotmail.com', 'zeynepy@aybu.edu.tr'];
