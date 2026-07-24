@@ -7,15 +7,5 @@
   "announcements": [],
   "events": [],
   "documents": [],
-  "messages": [
-    {
-      "id": "m2",
-      "name": "Elif Kaya",
-      "email": "elifkaya@aybu.edu.tr",
-      "subject": "Yazılım Kurulu Katılımı",
-      "body": "Kulübünüz bünyesindeki Yazılım ve Proje kurulunda aktif rol almak istiyorum. Başvurular ne zaman açılacak?",
-      "date": "2026-07-23",
-      "unread": false
-    }
-  ]
+  "messages": []
 }
