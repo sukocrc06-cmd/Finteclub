@@ -90,6 +90,7 @@
     </style>
 </head>
 <body>
+    <script src="maintenance-check.js"></script>
     <nav class="navbar">
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
@@ -123,6 +124,42 @@
         <div class="container">
             <h2 class="section-title">Duyurular</h2>
             <div class="cards-grid">
+                <div id="dynamic-announcements"></div>
+
+                <!-- AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 2/2 -->
+                <div class="card">
+                    <div class="announcement-image-col">
+                        <img src="Insta Duyuru-1.jpg" alt="AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 2/2" class="img-fluid rounded">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 2/2</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Finans eğitimi yalnızca teorik bilgiyle sınırlı kalmamalı; öğrenciyi gerçek piyasa koşullarına ve değişen mesleki gerekliliklere hazırlamalıdır.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">BISTLAB, uygulamalı dersler, güncel finans alanları ve sektör deneyimiyle öğrencilerimizin öğrendiklerini pratiğe dönüştürebilecekleri bir eğitim ortamı sunuyoruz.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Finansı yalnızca öğrenmeyin; analiz edin, uygulayın ve geleceğe taşıyın.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">🔗 <a href="https://aybu.edu.tr/fb" target="_blank" style="color: #93c5fd; text-decoration: none;">aybu.edu.tr/fb</a></p>
+                        </div>
+                        <a href="insta-duyuru-2.html" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 1/2 -->
+                <div class="card">
+                    <div class="announcement-image-col">
+                        <img src="Insta Duyuru-2.jpg" alt="AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 1/2" class="img-fluid rounded">
+                    </div>
+                    <div class="announcement-content-col">
+                        <div>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 1/2</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Doğru bölüm tercihi, mezuniyet sonrasında yalnızca bir diploma değil, farklı kariyer yollarına açılan güçlü bir başlangıç sunmalıdır.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Bankacılık, sermaye piyasaları, fintech, denetim ve danışmanlıktan kamu kurumlarına kadar uzanan kariyer seçenekleri; analitik düşünme, İngilizce iletişim ve teknoloji yetkinlikleriyle daha güçlü hâle geliyor.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Finans dünyasındaki kariyerinizi bugünden şekillendirin.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">🔗 <a href="https://aybu.edu.tr/fb" target="_blank" style="color: #93c5fd; text-decoration: none;">aybu.edu.tr/fb</a></p>
+                        </div>
+                        <a href="insta-duyuru-1.html" class="card-link">Daha fazlası &rarr;</a>
+                    </div>
+                </div>
+
                 <!-- BTK Akademi İş Birliği -->
                 <div class="card">
                     <div class="announcement-image-col">
@@ -391,6 +428,46 @@
                 }
             });
         }
+    </script>
+
+    <!-- Admin panelinden eklenen duyuruları göster -->
+    <script>
+    (function () {
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        fetch('site-data.json?t=' + Date.now())
+            .then(res => res.json())
+            .then(data => {
+                const items = data.announcements || [];
+                if (items.length === 0) return;
+                const container = document.getElementById('dynamic-announcements');
+                if (!container) return;
+
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const imageHtml = item.image
+                        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" class="img-fluid rounded">`
+                        : '';
+                    const linkHtml = item.link
+                        ? `<a href="${escapeHtml(item.link)}" target="_blank" class="card-link">Daha fazlası &rarr;</a>`
+                        : '';
+                    card.innerHTML =
+                        `<div class="announcement-image-col">${imageHtml}</div>` +
+                        `<div class="announcement-content-col">` +
+                            `<div>` +
+                                `<h3 class="card-title" style="text-align:left; margin-top:0; margin-bottom:10px;">${escapeHtml(item.title || '')}</h3>` +
+                                `<p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom:10px;">${escapeHtml(item.description || '')}</p>` +
+                            `</div>` +
+                            linkHtml +
+                        `</div>`;
+                    container.appendChild(card);
+                });
+            })
+            .catch(() => {});
+    })();
     </script>
 </body>
 </html>
