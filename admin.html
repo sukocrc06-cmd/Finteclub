@@ -167,9 +167,13 @@
         <h1>Sistem Ayarları &amp; Duyurular</h1>
         <p class="subtitle">Bakım modu, site geneli banner ve öğrencilere yönelik duyurular.</p>
 
-        <div id="gh-token-row">
-            <label style="font-weight:600; color:#333;">GitHub Token (sadece bu tarayıcıda saklanır)</label>
-            <input type="password" id="github-token" placeholder="ghp_...">
+        <div id="gh-token-row" style="margin-bottom: 20px; background: #f8fafc; padding: 16px; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <label style="font-weight:600; color:#334155; display:block; margin-bottom:6px;">GitHub Token (sadece bu tarayıcıda saklanır)</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="password" id="github-token" placeholder="ghp_..." style="flex: 1; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; outline: none; transition: border 0.15s;" onfocus="this.style.borderColor='#0f766e'" onblur="this.style.borderColor='#cbd5e1'">
+                <button id="save-token-btn" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem; border-radius: 6px;">Token Kaydet</button>
+            </div>
+            <span id="token-status" style="font-size: 0.8rem; display: block; margin-top: 6px; font-weight: 500; color: #0f766e;"></span>
         </div>
 
         <!-- Sistem Durumu -->
@@ -878,6 +882,14 @@
         const loginBtn = document.getElementById('login-btn');
         const loginError = document.getElementById('login-error');
         const tokenInput = document.getElementById('github-token');
+        if (tokenInput) {
+            const savedToken = localStorage.getItem(TOKEN_KEY);
+            if (savedToken) {
+                tokenInput.value = savedToken;
+            } else {
+                tokenInput.value = '';
+            }
+        }
 
         const maintenanceToggle = document.getElementById('maintenance-toggle');
         const maintenanceMessage = document.getElementById('maintenance-message');
@@ -928,6 +940,30 @@
             }
         });
         passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+
+        const saveTokenBtn = document.getElementById('save-token-btn');
+        const tokenStatus = document.getElementById('token-status');
+
+        if (saveTokenBtn) {
+            saveTokenBtn.addEventListener('click', () => {
+                const tokenVal = tokenInput.value.trim();
+                if (tokenVal) {
+                    localStorage.setItem(TOKEN_KEY, tokenVal);
+                    if (tokenStatus) {
+                        tokenStatus.textContent = 'Token tarayıcıya başarıyla kaydedildi!';
+                        tokenStatus.style.color = '#0f766e';
+                        setTimeout(() => { tokenStatus.textContent = ''; }, 3000);
+                    }
+                } else {
+                    localStorage.removeItem(TOKEN_KEY);
+                    if (tokenStatus) {
+                        tokenStatus.textContent = 'Token temizlendi.';
+                        tokenStatus.style.color = '#dc2626';
+                        setTimeout(() => { tokenStatus.textContent = ''; }, 3000);
+                    }
+                }
+            });
+        }
 
         function requireToken() {
             const token = tokenInput.value.trim();
