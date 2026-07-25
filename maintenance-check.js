@@ -1,4 +1,39 @@
 (function () {
+    // ---- Google Translate (EN/TR) - bakım modunda bile çalışır ----
+    try {
+        document.write(
+            '<div id="google_translate_element" style="position:fixed;top:14px;right:14px;z-index:999997;"></div>' +
+            '<style>' +
+            '.goog-te-banner-frame{display:none !important;}' +
+            'body{top:0 !important;}' +
+            '#goog-gt-tt, .goog-te-balloon-frame{display:none !important;}' +
+            '.goog-text-highlight{background:none !important; box-shadow:none !important;}' +
+            '.goog-te-gadget{font-family:Inter,Arial,sans-serif !important; color:transparent !important; font-size:0 !important;}' +
+            '.goog-te-gadget .goog-te-combo{' +
+            'font-size:0.8rem;color:#fff;background:#10141f;' +
+            'border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:4px 6px;' +
+            '}' +
+            '</style>'
+        );
+
+        window.googleTranslateElementInit = function () {
+            new google.translate.TranslateElement({
+                pageLanguage: 'tr',
+                includedLanguages: 'tr,en',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        };
+
+        var gtScript = document.createElement('script');
+        gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.head.appendChild(gtScript);
+    } catch (e) {
+        console.error('Çeviri widget hatası:', e);
+    }
+})();
+
+(function () {
     try {
         // Admin panelinden bakım modu açıkken siteye erişmek için:
         // sayfa adresine ?panel=1 ekleyerek bakım ekranını atlayabilirsin.
