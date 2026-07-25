@@ -1,29 +1,19 @@
 (function () {
-    // ---- Tarayıcının kendi Chrome Translate barını engelle ----
-    try {
-        if (!document.querySelector('meta[name="google"][content="notranslate"]')) {
-            var metaNoTranslate = document.createElement('meta');
-            metaNoTranslate.name = 'google';
-            metaNoTranslate.content = 'notranslate';
-            document.head.appendChild(metaNoTranslate);
-        }
-        document.documentElement.classList.add('notranslate');
-    } catch (e) {}
-
-    // ---- Çeviri (TR/EN) - Widget Mantığı ----
+    // ---- Çeviri (TR/EN) - Google widget'ı çakışmasız arka planda çalışır ----
     try {
         document.write(
             '<div id="google_translate_element" style="position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;"></div>' +
-            '<div id="lang-switcher" style="position:fixed;bottom:14px;right:14px;z-index:999997;' +
+            '<div id="lang-switcher" class="notranslate" translate="no" style="position:fixed;bottom:14px;right:14px;z-index:999997;' +
             'display:flex;background:#10141f;border:1px solid rgba(255,255,255,0.18);' +
             'border-radius:8px;overflow:hidden;font-family:Inter,Arial,sans-serif;' +
             'font-size:0.78rem;box-shadow:0 4px 14px rgba(0,0,0,0.35);">' +
-            '<button id="lang-tr" type="button" style="padding:7px 13px;background:#3b82f6;color:#fff;' +
+            '<button id="lang-tr" type="button" class="notranslate" translate="no" style="padding:7px 13px;background:#3b82f6;color:#fff;' +
             'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">TR</button>' +
-            '<button id="lang-en" type="button" style="padding:7px 13px;background:transparent;color:#cbd5e1;' +
+            '<button id="lang-en" type="button" class="notranslate" translate="no" style="padding:7px 13px;background:transparent;color:#cbd5e1;' +
             'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">EN</button>' +
             '</div>' +
             '<style>' +
+            '/* Google Banner iframe-ini kaldırmıyoruz, ekran dışına itiyoruz ki Google çıldırmasın */' +
             'iframe.goog-te-banner-frame, .goog-te-banner-frame {' +
             '    position: absolute !important;' +
             '    top: -9999px !important;' +
@@ -31,15 +21,18 @@
             '    width: 0 !important;' +
             '    height: 0 !important;' +
             '}' +
+            '/* Body nin üste boşluk bırakmasını engelle */' +
             'body, html {' +
             '    top: 0px !important;' +
             '    position: static !important;' +
             '    margin-top: 0px !important;' +
             '}' +
+            '/* Tooltip ve Baloncukları tamamen kapat */' +
             '#goog-gt-tt, .goog-te-balloon-frame, .goog-tooltip, .goog-tooltip:hover {' +
             '    display: none !important;' +
             '    visibility: hidden !important;' +
             '}' +
+            '/* Mavi metin vurgusunu temizle */' +
             '.goog-text-highlight {' +
             '    background: transparent !important;' +
             '    box-shadow: none !important;' +
@@ -79,15 +72,24 @@
         }
 
         function setLang(lang) {
-            var cookieValue = (lang === 'tr') ? '/tr/tr' : '/tr/en';
-            document.cookie = 'googtrans=' + cookieValue + '; path=/;';
-            document.cookie = 'googtrans=' + cookieValue + '; domain=' + window.location.hostname + '; path=/;';
-
-            waitForCombo(function (select) {
-                select.value = lang;
-                select.dispatchEvent(new Event('change', { bubbles: true }));
-                updateButtons(lang);
-            });
+            if (lang === 'tr') {
+                // Orijinal Türkçe'ye dön: çerezi sil, çeviriyi tetikleme
+                document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                document.cookie = 'googtrans=; domain=' + window.location.hostname + '; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                waitForCombo(function (select) {
+                    select.value = '';
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    updateButtons('tr');
+                });
+            } else {
+                document.cookie = 'googtrans=/tr/en; path=/;';
+                document.cookie = 'googtrans=/tr/en; domain=' + window.location.hostname + '; path=/;';
+                waitForCombo(function (select) {
+                    select.value = 'en';
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    updateButtons('en');
+                });
+            }
         }
 
         document.addEventListener('click', function (e) {
@@ -95,6 +97,8 @@
             if (e.target && e.target.id === 'lang-tr') setLang('tr');
         });
 
+        // Sayfa her yüklendiğinde (geri tuşu dahil) önceki dil tercihini oku ve
+        // hem buton görünümünü hem de gerçek çeviriyi buna göre senkronize et
         function getCookie(name) {
             var match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
             return match ? decodeURIComponent(match[2]) : null;
@@ -102,7 +106,7 @@
 
         var savedTrans = getCookie('googtrans');
         if (savedTrans && savedTrans.indexOf('/en') !== -1) {
-            setLang('en');
+            setLang('en'); // buton + gerçek çeviri birlikte senkron olsun
         } else {
             updateButtons('tr');
         }
