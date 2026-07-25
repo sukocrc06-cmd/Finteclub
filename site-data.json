@@ -7,5 +7,15 @@
   "announcements": [],
   "events": [],
   "documents": [],
-  "messages": []
+  "messages": [
+    {
+      "id": "m1785006588572",
+      "name": "şükrü çerçi",
+      "email": "cerci_suko@hotmail.com",
+      "subject": "Bize Soru Sor Formu",
+      "body": "yeni açılan sistem için mesaj denemesi !!!!!!!!",
+      "date": "2026-07-25",
+      "unread": true
+    }
+  ]
 }
