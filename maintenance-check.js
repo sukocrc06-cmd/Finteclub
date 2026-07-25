@@ -24,7 +24,7 @@
             new google.translate.TranslateElement({
                 pageLanguage: 'tr',
                 includedLanguages: 'tr,en',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
                 autoDisplay: false
             }, 'google_translate_element');
         };
