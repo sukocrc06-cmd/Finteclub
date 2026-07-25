@@ -3,7 +3,7 @@
     try {
         document.write(
             '<div id="google_translate_element" style="position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;"></div>' +
-            '<div id="lang-switcher" class="notranslate" translate="no" style="position:fixed;top:38px;left:14px;z-index:999997;' +
+            '<div id="lang-switcher" class="notranslate" translate="no" style="position:fixed;bottom:14px;left:14px;z-index:999997;' +
             'display:flex;background:#10141f;border:1px solid rgba(255,255,255,0.18);' +
             'border-radius:8px;overflow:hidden;font-family:Inter,Arial,sans-serif;' +
             'font-size:0.78rem;box-shadow:0 4px 14px rgba(0,0,0,0.35);">' +
@@ -38,7 +38,7 @@
             '    box-shadow: none !important;' +
             '}' +
             '@media (max-width: 600px) {' +
-            '    #lang-switcher { top: 38px !important; }' +
+            '    #lang-switcher { bottom: 14px !important; }' +
             '}' +
             '</style>'
         );
