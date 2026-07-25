@@ -6,7 +6,14 @@
   "bannerText": "",
   "announcements": [],
   "events": [],
-  "documents": [],
+  "documents": [
+    {
+      "id": "d1785009871177",
+      "title": "tbt",
+      "category": "sablon",
+      "link": "documents/1785009869929.pdf"
+    }
+  ],
   "messages": [
     {
       "id": "m1785006588572",
