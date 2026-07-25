@@ -1,18 +1,22 @@
 (function () {
-    // ---- Google Translate (EN/TR) - bakım modunda bile çalışır ----
+    // ---- Çeviri (TR/EN) - kendi tasarımımız, Google widget'ı arka planda gizli çalışır ----
     try {
         document.write(
-            '<div id="google_translate_element" style="position:fixed;top:14px;right:14px;z-index:999997;"></div>' +
+            '<div id="google_translate_element" style="display:none;"></div>' +
+            '<div id="lang-switcher" style="position:fixed;top:14px;right:14px;z-index:999997;' +
+            'display:flex;background:#10141f;border:1px solid rgba(255,255,255,0.18);' +
+            'border-radius:8px;overflow:hidden;font-family:Inter,Arial,sans-serif;' +
+            'font-size:0.78rem;box-shadow:0 4px 14px rgba(0,0,0,0.35);">' +
+            '<button id="lang-tr" type="button" style="padding:7px 13px;background:#3b82f6;color:#fff;' +
+            'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">TR</button>' +
+            '<button id="lang-en" type="button" style="padding:7px 13px;background:transparent;color:#cbd5e1;' +
+            'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">EN</button>' +
+            '</div>' +
             '<style>' +
             '.goog-te-banner-frame{display:none !important;}' +
             'body{top:0 !important;}' +
             '#goog-gt-tt, .goog-te-balloon-frame{display:none !important;}' +
             '.goog-text-highlight{background:none !important; box-shadow:none !important;}' +
-            '.goog-te-gadget{font-family:Inter,Arial,sans-serif !important; color:transparent !important; font-size:0 !important;}' +
-            '.goog-te-gadget .goog-te-combo{' +
-            'font-size:0.8rem;color:#fff;background:#10141f;' +
-            'border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:4px 6px;' +
-            '}' +
             '</style>'
         );
 
@@ -28,6 +32,37 @@
         var gtScript = document.createElement('script');
         gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
         document.head.appendChild(gtScript);
+
+        function waitForCombo(callback, attempts) {
+            attempts = attempts || 0;
+            var select = document.querySelector('.goog-te-combo');
+            if (select) { callback(select); return; }
+            if (attempts > 25) return; // ~7,5 saniye sonra vazgeç
+            setTimeout(function () { waitForCombo(callback, attempts + 1); }, 300);
+        }
+
+        function updateButtons(lang) {
+            var trBtn = document.getElementById('lang-tr');
+            var enBtn = document.getElementById('lang-en');
+            if (!trBtn || !enBtn) return;
+            trBtn.style.background = lang === 'tr' ? '#3b82f6' : 'transparent';
+            trBtn.style.color = lang === 'tr' ? '#fff' : '#cbd5e1';
+            enBtn.style.background = lang === 'en' ? '#3b82f6' : 'transparent';
+            enBtn.style.color = lang === 'en' ? '#fff' : '#cbd5e1';
+        }
+
+        function setLang(lang) {
+            waitForCombo(function (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+                updateButtons(lang);
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.id === 'lang-en') setLang('en');
+            if (e.target && e.target.id === 'lang-tr') setLang('tr');
+        });
     } catch (e) {
         console.error('Çeviri widget hatası:', e);
     }
