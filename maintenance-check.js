@@ -59,24 +59,32 @@
             });
         }
 
-        // Google zaman zaman üste kendi bildirim çubuğunu ekliyor; her eklendiğinde gizle
-        var bannerObserver = new MutationObserver(function () {
-            var banner = document.querySelector('iframe.goog-te-banner-frame');
-            if (banner) {
-                banner.style.display = 'none';
-                banner.style.visibility = 'hidden';
-                banner.style.height = '0';
+        // Google zaman zaman üste kendi bildirim çubuğunu ekliyor; her eklendiğinde zorla gizle
+        function killGoogleBanner() {
+            document.querySelectorAll('iframe').forEach(function (f) {
+                var cls = f.className || '';
+                var src = f.src || '';
+                if (cls.indexOf('goog-te-banner-frame') !== -1 ||
+                    (src.indexOf('translate.google') !== -1 && cls.indexOf('goog-te-menu-frame') === -1)) {
+                    f.style.setProperty('display', 'none', 'important');
+                    f.style.setProperty('visibility', 'hidden', 'important');
+                    f.style.setProperty('height', '0px', 'important');
+                }
+            });
+            if (document.body) {
+                document.body.style.setProperty('top', '0px', 'important');
             }
-            if (document.body && document.body.style.top && document.body.style.top !== '0px') {
-                document.body.style.top = '0px';
-            }
-        });
+            document.documentElement.style.setProperty('margin-top', '0px', 'important');
+        }
+
+        var bannerObserver = new MutationObserver(killGoogleBanner);
         bannerObserver.observe(document.documentElement, {
             childList: true,
             subtree: true,
             attributes: true,
-            attributeFilter: ['style']
+            attributeFilter: ['style', 'class']
         });
+        setInterval(killGoogleBanner, 400);
 
         document.addEventListener('click', function (e) {
             if (e.target && e.target.id === 'lang-en') setLang('en');
