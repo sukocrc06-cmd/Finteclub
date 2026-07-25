@@ -2047,3 +2047,104 @@ select.form-control {
 .logger-line.info {
     color: #60a5fa;
 }
+
+/* ================= BİZE SORU SOR SECTION STYLES ================= */
+.question-section {
+    background-color: var(--primary-bg) !important;
+    padding: 100px 20px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.question-card {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    background-color: rgba(30, 58, 138, 0.15) !important;
+    border-radius: 20px;
+    padding: 48px 36px;
+    border: 1px solid rgba(59, 130, 246, 0.25) !important;
+    box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.05), 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-8px);
+    box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.1), 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(59, 130, 246, 0.5) !important;
+}
+
+.question-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.question-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.question-field label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    font-family: 'Inter', sans-serif;
+}
+
+.question-input {
+    width: 100%;
+    padding: 14px 18px;
+    background-color: rgba(5, 13, 29, 0.85) !important;
+    border: 1px solid rgba(59, 130, 246, 0.25) !important;
+    border-radius: 12px;
+    color: #ffffff !important;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+.question-input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+textarea.question-input {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.question-header {
+    text-align: center;
+}
+
+.question-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.question-header p {
+    color: #93c5fd;
+    font-size: 0.98rem;
+    font-family: 'Inter', sans-serif;
+    opacity: 0.85;
+    line-height: 1.5;
+}
