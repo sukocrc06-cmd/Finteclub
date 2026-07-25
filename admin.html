@@ -712,8 +712,12 @@
                         </select>
                     </div>
                     <div class="field">
-                        <label>İndirme Linki / Dosya URL'si</label>
-                        <input type="text" id="doc-link" placeholder="Örn: btk-afis.pdf veya https://...">
+                        <label>Dosya Seç (Dosya Yükle)</label>
+                        <input type="file" id="doc-file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="border: none; padding: 5px 0;">
+                    </div>
+                    <div class="field">
+                        <label>Veya Harici Dosya URL'si Yapıştır</label>
+                        <input type="text" id="doc-link" placeholder="Örn: https://example.com/belge.pdf">
                     </div>
                     
                     <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
@@ -1411,6 +1415,7 @@
         const docTitle = document.getElementById('doc-title');
         const docCategory = document.getElementById('doc-category');
         const docLink = document.getElementById('doc-link');
+        const docFileInput = document.getElementById('doc-file');
         const docCancelBtn = document.getElementById('doc-cancel-btn');
         const docSubmitBtn = document.getElementById('doc-submit-btn');
         const docSaveStatus = document.getElementById('doc-save-status');
@@ -1691,7 +1696,23 @@
                 row.className = 'item-row';
                 
                 let catText = categoryNames[item.category] || item.category;
-                let downloadBtn = item.link ? `<a href="${item.link}" target="_blank">İndir / Görüntüle</a>` : 'Dosya Yok';
+                
+                let absoluteUrl = item.link || '';
+                if (item.link && !item.link.startsWith('http') && !item.link.startsWith('//')) {
+                    absoluteUrl = 'https://sukocrc06-cmd.github.io/Finteclub/' + item.link;
+                }
+
+                let viewLink = absoluteUrl;
+                const ext = item.link ? item.link.split('.').pop().toLowerCase() : '';
+                const officeExtensions = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+                if (officeExtensions.includes(ext)) {
+                    viewLink = 'https://docs.google.com/gview?embedded=true&url=' + encodeURIComponent(absoluteUrl);
+                }
+
+                let downloadBtn = item.link 
+                    ? `<a href="${viewLink}" target="_blank" style="margin-right: 12px; color: #0f766e; font-weight: 600; text-decoration: none;">Görüntüle</a>` +
+                      `<a href="${absoluteUrl}" download style="color: #0369a1; font-weight: 600; text-decoration: none;">İndir</a>`
+                    : 'Dosya Yok';
 
                 row.innerHTML =
                     `<div class="i-info">
@@ -1730,6 +1751,7 @@
             docTitle.value = '';
             docCategory.value = 'tuzuk';
             docLink.value = '';
+            if (docFileInput) docFileInput.value = '';
             docForm.style.display = 'none';
             docSaveStatus.textContent = '';
         }
@@ -1748,18 +1770,55 @@
             docForm.scrollIntoView({ behavior: 'smooth' });
         }
 
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        async function uploadDocument(file, token) {
+            const ext = file.name.split('.').pop();
+            const filename = `documents/${Date.now()}.${ext}`;
+            const b64 = await fileToBase64(file);
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Upload document: ' + file.name,
+                    content: b64,
+                    branch: BRANCH
+                })
+            });
+            if (!res.ok) throw new Error('Dosya yüklenemedi.');
+            return filename;
+        }
+
         docSubmitBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             docSaveStatus.textContent = '';
 
             const title = docTitle.value.trim();
             const category = docCategory.value;
-            const link = docLink.value.trim();
+            let link = docLink.value.trim();
 
             if (!title) { docSaveStatus.textContent = 'Doküman Adı gerekli.'; return; }
-            if (!link) { docSaveStatus.textContent = 'Dosya indirme linki gerekli.'; return; }
 
             try {
+                const token = getGitHubToken();
+
+                if (docFileInput.files.length > 0) {
+                    docSaveStatus.textContent = 'Dosya yükleniyor...';
+                    link = await uploadDocument(docFileInput.files[0], token);
+                }
+
+                if (!link) { docSaveStatus.textContent = 'Lütfen bir dosya seçin veya indirme linki girin.'; return; }
+
                 docSaveStatus.textContent = 'Kaydediliyor...';
                 const id = docEditId.value || 'd' + Date.now();
                 const newItem = { id, title, category, link };
@@ -1772,7 +1831,7 @@
                 }
 
                 await commitSiteData('Doküman güncellendi: ' + title);
-                renderDocuments();
+                await loadSiteDataFile();
                 resetDocForm();
                 docSaveStatus.textContent = 'Doküman başarıyla kaydedildi!';
             } catch (e) {
