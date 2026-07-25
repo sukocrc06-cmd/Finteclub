@@ -1699,7 +1699,7 @@
                 
                 let absoluteUrl = item.link || '';
                 if (item.link && !item.link.startsWith('http') && !item.link.startsWith('//')) {
-                    absoluteUrl = 'https://sukocrc06-cmd.github.io/Finteclub/' + item.link;
+                    absoluteUrl = 'https://raw.githubusercontent.com/sukocrc06-cmd/Finteclub/main/' + item.link;
                 }
 
                 let viewLink = absoluteUrl;
@@ -1781,7 +1781,7 @@
 
         async function uploadDocument(file, token) {
             const ext = file.name.split('.').pop();
-            const filename = `documents/${Date.now()}.${ext}`;
+            const filename = `dokumanlar/${Date.now()}.${ext}`;
             const b64 = await fileToBase64(file);
             const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
                 method: 'PUT',
