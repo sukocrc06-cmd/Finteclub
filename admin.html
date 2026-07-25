@@ -1422,6 +1422,7 @@
         const msgSeedBtn = document.getElementById('msg-seed-btn');
 
         let siteData = null;
+        let isFetching = false;
 
         const observer = new MutationObserver(() => {
             const dashboard = document.getElementById('dashboard');
@@ -1435,7 +1436,7 @@
                                (tabInbox && tabInbox.style.display === 'block');
                                
             if (dashboardVisible && tabVisible) {
-                if (!siteData) loadSiteDataFile();
+                loadSiteDataFile();
             }
         });
         const dashboardEl = document.getElementById('dashboard');
@@ -1455,6 +1456,8 @@
         }
 
         async function loadSiteDataFile() {
+            if (isFetching) return;
+            isFetching = true;
             try {
                 const res = await fetch(DATA_PATH + '?t=' + Date.now());
                 siteData = await res.json();
@@ -1488,6 +1491,7 @@
             }
 
             renderAllModules();
+            isFetching = false;
         }
 
         function renderAllModules() {
