@@ -2,7 +2,7 @@
     // ---- Çeviri (TR/EN) - kendi tasarımımız, Google widget'ı arka planda gizli çalışır ----
     try {
         document.write(
-            '<div id="google_translate_element" style="display:none;"></div>' +
+            '<div id="google_translate_element" style="position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;"></div>' +
             '<div id="lang-switcher" style="position:fixed;top:14px;right:14px;z-index:999997;' +
             'display:flex;background:#10141f;border:1px solid rgba(255,255,255,0.18);' +
             'border-radius:8px;overflow:hidden;font-family:Inter,Arial,sans-serif;' +
@@ -54,7 +54,7 @@
         function setLang(lang) {
             waitForCombo(function (select) {
                 select.value = lang;
-                select.dispatchEvent(new Event('change'));
+                select.dispatchEvent(new Event('change', { bubbles: true }));
                 updateButtons(lang);
             });
         }
