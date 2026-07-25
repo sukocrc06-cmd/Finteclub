@@ -13,10 +13,10 @@
             'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">EN</button>' +
             '</div>' +
             '<style>' +
-            '.goog-te-banner-frame{display:none !important;}' +
-            'body{top:0 !important;}' +
-            '#goog-gt-tt, .goog-te-balloon-frame{display:none !important;}' +
-            '.goog-text-highlight{background:none !important; box-shadow:none !important;}' +
+            '.goog-te-banner-frame, iframe.goog-te-banner-frame{display:none !important; visibility:hidden !important; opacity:0 !important;}' +
+            'body{top:0 !important; position:static !important;}' +
+            '#goog-gt-tt, .goog-te-balloon-frame, .goog-tooltip{display:none !important; visibility:hidden !important;}' +
+            '.goog-text-highlight{background:transparent !important; box-shadow:none !important;}' +
             '</style>'
         );
 
@@ -52,6 +52,9 @@
         }
 
         function setLang(lang) {
+            // Çeviri tercihini çerezle kalıcı hale getir
+            document.cookie = 'googtrans=/tr/' + lang + '; path=/;';
+            document.cookie = 'googtrans=/tr/' + lang + '; domain=' + window.location.hostname + '; path=/;';
             waitForCombo(function (select) {
                 select.value = lang;
                 select.dispatchEvent(new Event('change', { bubbles: true }));
