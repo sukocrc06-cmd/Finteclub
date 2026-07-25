@@ -1,5 +1,16 @@
 (function () {
-    // ---- Çeviri (TR/EN) - Google widget'ı çakışmasız arka planda çalışır ----
+    // ---- Tarayıcının kendi Chrome Translate barını engelle ----
+    try {
+        if (!document.querySelector('meta[name="google"][content="notranslate"]')) {
+            var metaNoTranslate = document.createElement('meta');
+            metaNoTranslate.name = 'google';
+            metaNoTranslate.content = 'notranslate';
+            document.head.appendChild(metaNoTranslate);
+        }
+        document.documentElement.classList.add('notranslate');
+    } catch (e) {}
+
+    // ---- Çeviri (TR/EN) - Widget Mantığı ----
     try {
         document.write(
             '<div id="google_translate_element" style="position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;"></div>' +
@@ -13,7 +24,6 @@
             'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">EN</button>' +
             '</div>' +
             '<style>' +
-            '/* Google Banner iframe-ini kaldırmıyoruz, ekran dışına itiyoruz ki Google çıldırmasın */' +
             'iframe.goog-te-banner-frame, .goog-te-banner-frame {' +
             '    position: absolute !important;' +
             '    top: -9999px !important;' +
@@ -21,18 +31,15 @@
             '    width: 0 !important;' +
             '    height: 0 !important;' +
             '}' +
-            '/* Body nin üste boşluk bırakmasını engelle */' +
             'body, html {' +
             '    top: 0px !important;' +
             '    position: static !important;' +
             '    margin-top: 0px !important;' +
             '}' +
-            '/* Tooltip ve Baloncukları tamamen kapat */' +
             '#goog-gt-tt, .goog-te-balloon-frame, .goog-tooltip, .goog-tooltip:hover {' +
             '    display: none !important;' +
             '    visibility: hidden !important;' +
             '}' +
-            '/* Mavi metin vurgusunu temizle */' +
             '.goog-text-highlight {' +
             '    background: transparent !important;' +
             '    box-shadow: none !important;' +
@@ -72,7 +79,6 @@
         }
 
         function setLang(lang) {
-            // Google cookie'sini doğru formatta yazalım (/tr/tr veya /tr/en)
             var cookieValue = (lang === 'tr') ? '/tr/tr' : '/tr/en';
             document.cookie = 'googtrans=' + cookieValue + '; path=/;';
             document.cookie = 'googtrans=' + cookieValue + '; domain=' + window.location.hostname + '; path=/;';
@@ -89,8 +95,6 @@
             if (e.target && e.target.id === 'lang-tr') setLang('tr');
         });
 
-        // Sayfa her yüklendiğinde (geri tuşu dahil) önceki dil tercihini oku ve
-        // hem buton görünümünü hem de gerçek çeviriyi buna göre senkronize et
         function getCookie(name) {
             var match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
             return match ? decodeURIComponent(match[2]) : null;
@@ -98,7 +102,7 @@
 
         var savedTrans = getCookie('googtrans');
         if (savedTrans && savedTrans.indexOf('/en') !== -1) {
-            setLang('en'); // buton + gerçek çeviri birlikte senkron olsun
+            setLang('en');
         } else {
             updateButtons('tr');
         }
