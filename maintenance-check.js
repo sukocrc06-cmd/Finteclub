@@ -37,6 +37,9 @@
             '    background: transparent !important;' +
             '    box-shadow: none !important;' +
             '}' +
+            '@media (max-width: 600px) {' +
+            '    #lang-switcher { top: 90px !important; }' +
+            '}' +
             '</style>'
         );
 
