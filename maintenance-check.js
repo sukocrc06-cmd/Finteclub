@@ -59,6 +59,25 @@
             });
         }
 
+        // Google zaman zaman üste kendi bildirim çubuğunu ekliyor; her eklendiğinde gizle
+        var bannerObserver = new MutationObserver(function () {
+            var banner = document.querySelector('iframe.goog-te-banner-frame');
+            if (banner) {
+                banner.style.display = 'none';
+                banner.style.visibility = 'hidden';
+                banner.style.height = '0';
+            }
+            if (document.body && document.body.style.top && document.body.style.top !== '0px') {
+                document.body.style.top = '0px';
+            }
+        });
+        bannerObserver.observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style']
+        });
+
         document.addEventListener('click', function (e) {
             if (e.target && e.target.id === 'lang-en') setLang('en');
             if (e.target && e.target.id === 'lang-tr') setLang('tr');
