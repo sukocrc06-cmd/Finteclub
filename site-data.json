@@ -6,7 +6,14 @@
   "bannerText": "",
   "announcements": [],
   "events": [],
-  "documents": [],
+  "documents": [
+    {
+      "id": "d1785009086723",
+      "title": "acadex",
+      "category": "diger",
+      "link": "C:\\Users\\sukru\\OneDrive\\Desktop\\acadex"
+    }
+  ],
   "messages": [
     {
       "id": "m1785006588572",
