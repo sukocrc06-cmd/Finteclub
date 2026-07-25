@@ -388,12 +388,33 @@
                         <input type="text" id="new-title" placeholder="Duyuru başlığı girin">
                     </div>
                     <div class="field">
+                        <label style="font-weight: 600; color: #333;">Kategori</label>
+                        <select id="new-category" style="width: 100%; padding: 10px; border: 1px solid #d7dce5; border-radius: 8px; background: #fff; font-size: 0.95rem;">
+                            <option value="Genel">Genel</option>
+                            <option value="Zirve">Zirve</option>
+                            <option value="Eğitim">Eğitim</option>
+                            <option value="Yarışma">Yarışma</option>
+                        </select>
+                    </div>
+                    <div class="field">
                         <label style="font-weight: 600; color: #333;">Kısa Açıklama</label>
                         <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması veya kısa içerik girin"></textarea>
                     </div>
                     <div class="field">
+                        <label style="font-weight: 600; color: #333;">Afiş / Görsel Seç (Dosya Yükle)</label>
+                        <input type="file" id="new-image-file" accept="image/*" style="border: none; padding: 5px 0;">
+                    </div>
+                    <div class="field">
+                        <label style="font-weight: 600; color: #333;">Veya Görsel URL'si Yapıştır</label>
+                        <input type="text" id="new-image-url" placeholder="https://... (Örn: Bir Instagram afiş resmi veya web görsel linki)">
+                    </div>
+                    <div class="field">
                         <label style="font-weight: 600; color: #333;">Sosyal Medya / Instagram Linki (isteğe bağlı)</label>
                         <input type="text" id="new-link" placeholder="https://www.instagram.com/p/... veya boş bırakın">
+                    </div>
+                    <div class="field" style="display: flex; align-items: center; gap: 8px; margin: 15px 0 10px 0;">
+                        <input type="checkbox" id="new-pinned" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
+                        <label for="new-pinned" style="font-weight: 600; color: #333; margin: 0; cursor: pointer; user-select: none;">Önemli / Sitenin en başında sabitle (Pin)</label>
                     </div>
                     <button class="btn btn-primary" id="add-announcement-btn" style="margin-top: 10px;">Yayınla</button>
                     <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
@@ -782,7 +803,11 @@
         const newForm = document.getElementById('new-announcement-form');
         const newTitle = document.getElementById('new-title');
         const newDescription = document.getElementById('new-description');
+        const newCategory = document.getElementById('new-category');
+        const newImageFile = document.getElementById('new-image-file');
+        const newImageUrl = document.getElementById('new-image-url');
         const newLink = document.getElementById('new-link');
+        const newPinned = document.getElementById('new-pinned');
         const addAnnouncementBtn = document.getElementById('add-announcement-btn');
         const announcementSaveStatus = document.getElementById('announcement-save-status');
 
@@ -912,10 +937,18 @@
                 row.className = 'announcement-row';
                 
                 let linkSnippet = item.link ? ` — <a href="${escapeHtml(item.link)}" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 600;">Linke Git &rarr;</a>` : ' — Link Yok';
+                let categorySnippet = item.category ? `<span style="background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px;">${escapeHtml(item.category)}</span>` : '';
+                let pinSnippet = item.pinned ? `<span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px;">📌 Sabit</span>` : '';
+                let imgSnippet = item.image ? `<img src="${item.image}" style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px; margin-right: 12px; flex-shrink: 0;" />` : `<div style="width: 48px; height: 48px; background: #f1f5f9; border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">📢</div>`;
                 
                 row.innerHTML =
-                    `<div class="a-info">` +
-                        `<strong>${escapeHtml(item.title || '')}</strong>` +
+                    imgSnippet +
+                    `<div class="a-info" style="flex: 1; min-width: 0;">` +
+                        `<div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-bottom: 2px;">` +
+                            pinSnippet +
+                            categorySnippet +
+                            `<strong>${escapeHtml(item.title || '')}</strong>` +
+                        `</div>` +
                         `<span>${escapeHtml(item.description || '')}${linkSnippet}</span>` +
                     `</div>` +
                     `<button data-id="${item.id}">Sil</button>`;
@@ -943,41 +976,94 @@
             }
         });
 
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        async function uploadImage(file, token) {
+            const ext = file.name.split('.').pop();
+            const filename = `images/${Date.now()}.${ext}`;
+            const b64 = await fileToBase64(file);
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Upload announcement image',
+                    content: b64,
+                    branch: BRANCH
+                })
+            });
+            if (!res.ok) throw new Error('Görsel yüklenemedi.');
+            return filename;
+        }
+
         addAnnouncementBtn.addEventListener('click', async () => {
             announcementSaveStatus.textContent = 'Yayınlanıyor...';
             try {
                 const token = requireToken();
                 const title = newTitle.value.trim();
                 const desc = newDescription.value.trim();
+                const category = newCategory.value;
                 const linkVal = newLink.value.trim();
+                const isPinned = newPinned.checked;
                 
                 if (!title || !desc) throw new Error('Başlık ve açıklama gereklidir.');
 
-                let imgUrl = '';
-                if (linkVal && (linkVal.includes('instagram.com') || linkVal.includes('insta'))) {
+                // Determine image URL: either file upload or URL paste
+                let imgUrl = newImageUrl.value.trim();
+                if (newImageFile.files.length > 0) {
+                    announcementSaveStatus.textContent = 'Görsel yükleniyor...';
+                    imgUrl = await uploadImage(newImageFile.files[0], token);
+                }
+
+                if (!imgUrl && linkVal && (linkVal.includes('instagram.com') || linkVal.includes('insta'))) {
                     imgUrl = 'images/instagram-placeholder.png';
                 }
 
+                announcementSaveStatus.textContent = 'Yayınlanıyor...';
                 const sha = await getFileSha(token);
                 
                 const newAnn = {
                     id: 'a' + Date.now(),
                     title: title,
                     description: desc,
+                    category: category,
                     image: imgUrl,
                     link: linkVal,
+                    pinned: isPinned,
                     date: new Date().toISOString().slice(0, 10)
                 };
 
                 if (!currentData.announcements) currentData.announcements = [];
                 currentData.announcements.unshift(newAnn);
 
+                // Sort so pinned are first
+                currentData.announcements.sort((a, b) => {
+                    const pinA = a.pinned ? 1 : 0;
+                    const pinB = b.pinned ? 1 : 0;
+                    if (pinA !== pinB) return pinB - pinA;
+                    return b.id.localeCompare(a.id);
+                });
+
                 await saveSiteData(token, sha);
                 renderAnnouncements();
                 
                 newTitle.value = '';
                 newDescription.value = '';
+                newCategory.value = 'Genel';
+                newImageFile.value = '';
+                newImageUrl.value = '';
                 newLink.value = '';
+                newPinned.checked = false;
+                
                 announcementSaveStatus.textContent = 'Duyuru başarıyla yayınlandı!';
                 setTimeout(() => { announcementSaveStatus.textContent = ''; }, 3000);
             } catch (e) {
