@@ -38,7 +38,7 @@
             '    box-shadow: none !important;' +
             '}' +
             '@media (max-width: 600px) {' +
-            '    #lang-switcher { top: 25px !important; }' +
+            '    #lang-switcher { top: 38px !important; }' +
             '}' +
             '</style>'
         );
