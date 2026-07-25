@@ -76,11 +76,10 @@
 
         function setLang(lang) {
             if (lang === 'tr') {
-                // Orijinal Türkçe'ye dön: çerezi sil, çeviriyi tetikleme
-                document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-                document.cookie = 'googtrans=; domain=' + window.location.hostname + '; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                document.cookie = 'googtrans=/tr/tr; path=/;';
+                document.cookie = 'googtrans=/tr/tr; domain=' + window.location.hostname + '; path=/;';
                 waitForCombo(function (select) {
-                    select.value = '';
+                    select.value = 'tr';
                     select.dispatchEvent(new Event('change', { bubbles: true }));
                     updateButtons('tr');
                 });
