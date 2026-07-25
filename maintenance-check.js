@@ -1,5 +1,5 @@
 (function () {
-    // ---- Çeviri (TR/EN) - kendi tasarımımız, Google widget'ı arka planda gizli çalışır ----
+    // ---- Çeviri (TR/EN) - Google widget'ı çakışmasız arka planda çalışır ----
     try {
         document.write(
             '<div id="google_translate_element" style="position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;"></div>' +
@@ -13,10 +13,30 @@
             'border:none;cursor:pointer;font-weight:600;font-family:inherit;font-size:inherit;">EN</button>' +
             '</div>' +
             '<style>' +
-            '.goog-te-banner-frame, iframe.goog-te-banner-frame{display:none !important; visibility:hidden !important; opacity:0 !important;}' +
-            'body{top:0 !important; position:static !important;}' +
-            '#goog-gt-tt, .goog-te-balloon-frame, .goog-tooltip{display:none !important; visibility:hidden !important;}' +
-            '.goog-text-highlight{background:transparent !important; box-shadow:none !important;}' +
+            '/* Google Banner iframe-ini kaldırmıyoruz, ekran dışına itiyoruz ki Google çıldırmasın */' +
+            'iframe.goog-te-banner-frame, .goog-te-banner-frame {' +
+            '    position: absolute !important;' +
+            '    top: -9999px !important;' +
+            '    left: -9999px !important;' +
+            '    width: 0 !important;' +
+            '    height: 0 !important;' +
+            '}' +
+            '/* Body nin üste boşluk bırakmasını engelle */' +
+            'body, html {' +
+            '    top: 0px !important;' +
+            '    position: static !important;' +
+            '    margin-top: 0px !important;' +
+            '}' +
+            '/* Tooltip ve Baloncukları tamamen kapat */' +
+            '#goog-gt-tt, .goog-te-balloon-frame, .goog-tooltip, .goog-tooltip:hover {' +
+            '    display: none !important;' +
+            '    visibility: hidden !important;' +
+            '}' +
+            '/* Mavi metin vurgusunu temizle */' +
+            '.goog-text-highlight {' +
+            '    background: transparent !important;' +
+            '    box-shadow: none !important;' +
+            '}' +
             '</style>'
         );
 
@@ -37,8 +57,8 @@
             attempts = attempts || 0;
             var select = document.querySelector('.goog-te-combo');
             if (select) { callback(select); return; }
-            if (attempts > 25) return; // ~7,5 saniye sonra vazgeç
-            setTimeout(function () { waitForCombo(callback, attempts + 1); }, 300);
+            if (attempts > 30) return;
+            setTimeout(function () { waitForCombo(callback, attempts + 1); }, 200);
         }
 
         function updateButtons(lang) {
@@ -52,9 +72,11 @@
         }
 
         function setLang(lang) {
-            // Çeviri tercihini çerezle kalıcı hale getir
-            document.cookie = 'googtrans=/tr/' + lang + '; path=/;';
-            document.cookie = 'googtrans=/tr/' + lang + '; domain=' + window.location.hostname + '; path=/;';
+            // Google cookie'sini doğru formatta yazalım (/tr/tr veya /tr/en)
+            var cookieValue = (lang === 'tr') ? '/tr/tr' : '/tr/en';
+            document.cookie = 'googtrans=' + cookieValue + '; path=/;';
+            document.cookie = 'googtrans=' + cookieValue + '; domain=' + window.location.hostname + '; path=/;';
+
             waitForCombo(function (select) {
                 select.value = lang;
                 select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -62,46 +84,21 @@
             });
         }
 
-        // Google zaman zaman üste kendi bildirim çubuğunu ekliyor; her eklendiğinde zorla gizle
-        function killGoogleBanner() {
-            document.querySelectorAll('iframe').forEach(function (f) {
-                var cls = f.className || '';
-                var src = f.src || '';
-                if (cls.indexOf('goog-te-banner-frame') !== -1 ||
-                    (src.indexOf('translate.google') !== -1 && cls.indexOf('goog-te-menu-frame') === -1)) {
-                    f.style.setProperty('display', 'none', 'important');
-                    f.style.setProperty('visibility', 'hidden', 'important');
-                    f.style.setProperty('height', '0px', 'important');
-                }
-            });
-            if (document.body) {
-                document.body.style.setProperty('top', '0px', 'important');
-            }
-            document.documentElement.style.setProperty('margin-top', '0px', 'important');
-        }
-
-        var bannerObserver = new MutationObserver(killGoogleBanner);
-        bannerObserver.observe(document.documentElement, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['style', 'class']
-        });
-        setInterval(killGoogleBanner, 400);
-
         document.addEventListener('click', function (e) {
             if (e.target && e.target.id === 'lang-en') setLang('en');
             if (e.target && e.target.id === 'lang-tr') setLang('tr');
         });
 
-        // Sayfa her yüklendiğinde (geri tuşu dahil) önceki dil tercihini yeniden uygula
+        // Sayfa her yüklendiğinde (geri tuşu dahil) önceki dil tercihini oku ve
+        // hem buton görünümünü hem de gerçek çeviriyi buna göre senkronize et
         function getCookie(name) {
             var match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
             return match ? decodeURIComponent(match[2]) : null;
         }
-        var savedTrans = getCookie('googtrans'); // örn: "/tr/en"
+
+        var savedTrans = getCookie('googtrans');
         if (savedTrans && savedTrans.indexOf('/en') !== -1) {
-            setLang('en');
+            setLang('en'); // buton + gerçek çeviri birlikte senkron olsun
         } else {
             updateButtons('tr');
         }
@@ -112,15 +109,13 @@
 
 (function () {
     try {
-        // Admin panelinden bakım modu açıkken siteye erişmek için:
-        // sayfa adresine ?panel=1 ekleyerek bakım ekranını atlayabilirsin.
         var params = new URLSearchParams(window.location.search);
         var bypassMaintenance =
             params.has('panel') ||
             sessionStorage.getItem('finteclub_admin_session') === 'true';
 
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'site-data.json?t=' + Date.now(), false); // senkron istek
+        xhr.open('GET', 'site-data.json?t=' + Date.now(), false);
         xhr.send(null);
 
         if (xhr.status !== 200) return;
@@ -145,7 +140,7 @@
                 '<p style="font-size:1.1rem;max-width:600px;line-height:1.6;color:#cbd5e1;">' + message + '</p>' +
                 '</div>'
             );
-            return; // bakım ekranı gösterildiyse banner'a gerek yok
+            return;
         }
 
         // ---- SİTE GENELİ BANNER ----
@@ -163,7 +158,6 @@
             );
         }
     } catch (e) {
-        // Bir sorun olursa siteyi kilitleme, normal şekilde açılsın
         console.error('Site kontrol scripti hatası:', e);
     }
 })();
