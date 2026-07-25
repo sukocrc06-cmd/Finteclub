@@ -93,6 +93,18 @@
             if (e.target && e.target.id === 'lang-en') setLang('en');
             if (e.target && e.target.id === 'lang-tr') setLang('tr');
         });
+
+        // Sayfa her yüklendiğinde (geri tuşu dahil) önceki dil tercihini yeniden uygula
+        function getCookie(name) {
+            var match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+            return match ? decodeURIComponent(match[2]) : null;
+        }
+        var savedTrans = getCookie('googtrans'); // örn: "/tr/en"
+        if (savedTrans && savedTrans.indexOf('/en') !== -1) {
+            setLang('en');
+        } else {
+            updateButtons('tr');
+        }
     } catch (e) {
         console.error('Çeviri widget hatası:', e);
     }
