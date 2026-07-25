@@ -128,7 +128,7 @@
         padding: 6px 10px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
     }
 
-    #new-announcement-form { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4; }
+    #new-announcement-form { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4; }
 
     #gh-token-row { font-size: 0.85rem; color: #6b7280; margin-bottom: 18px; }
     #gh-token-row input { width: 100%; margin-top: 6px; }
@@ -379,149 +379,29 @@
         <div id="tab-content-duyurular" class="tab-content" style="display: none;">
             <div class="panel">
                 <div class="panel-header">
-                    <h2>Duyurular</h2>
-                    <button class="btn btn-primary" id="toggle-new-announcement-btn">+ Yeni Duyuru</button>
+                    <h2>Duyuru / Sosyal Medya Yönetimi</h2>
                 </div>
 
-                <div id="announcements-list">
-                    <div class="empty-state" id="announcements-empty">Henüz duyuru yok.</div>
-                </div>
-
-                <div id="new-announcement-form">
+                <div id="new-announcement-form" style="margin-top: 15px; padding-bottom: 20px; border-bottom: 1px solid #eef0f4;">
                     <div class="field">
-                        <label>Başlık</label>
-                        <input type="text" id="new-title" placeholder="Duyuru başlığı">
+                        <label style="font-weight: 600; color: #333;">Başlık</label>
+                        <input type="text" id="new-title" placeholder="Duyuru başlığı girin">
                     </div>
                     <div class="field">
-                        <label>Açıklama</label>
-                        <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması"></textarea>
+                        <label style="font-weight: 600; color: #333;">Kısa Açıklama</label>
+                        <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması veya kısa içerik girin"></textarea>
                     </div>
                     <div class="field">
-                        <label>Görsel (isteğe bağlı)</label>
-                        <input type="file" id="new-image" accept="image/*">
+                        <label style="font-weight: 600; color: #333;">Sosyal Medya / Instagram Linki (isteğe bağlı)</label>
+                        <input type="text" id="new-link" placeholder="https://www.instagram.com/p/... veya boş bırakın">
                     </div>
-                    <div class="field">
-                        <label>Link (isteğe bağlı)</label>
-                        <input type="text" id="new-link" placeholder="https://...">
-                    </div>
-                    <button class="btn btn-primary" id="add-announcement-btn">Duyuruyu Ekle</button>
+                    <button class="btn btn-primary" id="add-announcement-btn" style="margin-top: 10px;">Yayınla</button>
                     <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
                 </div>
-            </div>
 
-            <div id="sosyal-dashboard">
-                <style>
-                    #sosyal-dashboard .social-row {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        gap: 14px;
-                        padding: 14px 0;
-                        border-bottom: 1px solid #eef0f4;
-                    }
-                    #sosyal-dashboard .social-row .s-info {
-                        flex: 1;
-                        min-width: 0;
-                    }
-                    #sosyal-dashboard .social-row .s-info strong {
-                        display: block;
-                        font-size: 0.98rem;
-                        color: #1a2233;
-                        margin-bottom: 3px;
-                    }
-                    #sosyal-dashboard .social-row .s-info .s-meta {
-                        font-size: 0.82rem;
-                        color: #5a6478;
-                        margin-bottom: 4px;
-                    }
-                    #sosyal-dashboard .social-row .s-info .s-links {
-                        display: flex;
-                        gap: 10px;
-                        font-size: 0.8rem;
-                    }
-                    #sosyal-dashboard .social-row .s-info .s-links a {
-                        color: #0f766e;
-                        text-decoration: none;
-                        font-weight: 500;
-                    }
-                    #sosyal-dashboard .social-row .s-info .s-links a:hover {
-                        text-decoration: underline;
-                    }
-                    #sosyal-dashboard .social-row .s-info .s-links span.no-link {
-                        color: #9ca3af;
-                    }
-                    #sosyal-dashboard .social-row .s-actions {
-                        display: flex;
-                        gap: 8px;
-                    }
-                    #sosyal-dashboard .social-row .s-actions button.btn-edit {
-                        background: #e0f2fe;
-                        color: #0369a1;
-                        border: none;
-                        border-radius: 6px;
-                        padding: 6px 12px;
-                        font-size: 0.8rem;
-                        cursor: pointer;
-                        font-weight: 600;
-                        transition: opacity 0.15s;
-                    }
-                    #sosyal-dashboard .social-row .s-actions button.btn-delete {
-                        background: #fee2e2;
-                        color: #dc2626;
-                        border: none;
-                        border-radius: 6px;
-                        padding: 6px 12px;
-                        font-size: 0.8rem;
-                        cursor: pointer;
-                        font-weight: 600;
-                        transition: opacity 0.15s;
-                    }
-                    #sosyal-dashboard .social-row .s-actions button:hover {
-                        opacity: 0.85;
-                    }
-                </style>
-
-                <div class="panel">
-                    <div class="panel-header">
-                        <h2>Sosyal Medya / Hızlı Duyuru Ekle</h2>
-                        <button class="btn btn-primary" id="social-toggle-form-btn">+ Yeni Hızlı Duyuru</button>
-                    </div>
-
-                    <div id="social-announcement-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
-                        <h3 id="social-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Hızlı Duyuru Ekle</h3>
-                        <input type="hidden" id="social-edit-id">
-
-                        <div class="field">
-                            <label>Başlık (Duyuru Başlığı)</label>
-                            <input type="text" id="social-title" placeholder="Sosyal medya gönderi başlığı">
-                        </div>
-                        <div class="field">
-                            <label>Açıklama (Kısa İçerik)</label>
-                            <textarea id="social-description" rows="3" placeholder="Gönderi açıklaması veya kısa içerik" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
-                        </div>
-                        <div class="field">
-                            <label>Gönderi veya Reel URL'si (Instagram / Sosyal Medya Linki)</label>
-                            <input type="url" id="social-link" placeholder="https://www.instagram.com/p/... veya https://...">
-                        </div>
-                        <div class="field">
-                            <label>Buton Metni (Call-to-Action - CTA)</label>
-                            <input type="text" id="social-cta" placeholder="Örn: İncele, Katıl, Detaylar (Varsayılan: Daha fazlası)">
-                        </div>
-                        <div class="field">
-                            <label>Görsel Dosya / Placeholder Yolu (İsteğe bağlı)</label>
-                            <input type="text" id="social-image" placeholder="Örn: images/instagram-logo.png veya boş bırakın">
-                        </div>
-                        
-                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                            <button class="btn" id="social-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
-                            <button class="btn btn-primary" id="social-submit-btn">Duyuruyu Kaydet</button>
-                        </div>
-                        <div id="social-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
-                    </div>
-
-                    <div id="social-announcements-list" style="margin-top: 20px;">
-                        <div class="empty-state" id="social-announcements-empty">Hızlı duyurular yükleniyor...</div>
-                    </div>
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #14204a; font-size: 1.2rem;">Yayınlanan Duyurular</h3>
+                <div id="announcements-list">
+                    <div class="empty-state" id="announcements-empty">Henüz duyuru yayınlanmadı.</div>
                 </div>
             </div>
         </div>
@@ -899,11 +779,9 @@
 
         const announcementsList = document.getElementById('announcements-list');
         const announcementsEmpty = document.getElementById('announcements-empty');
-        const toggleNewAnnouncementBtn = document.getElementById('toggle-new-announcement-btn');
         const newForm = document.getElementById('new-announcement-form');
         const newTitle = document.getElementById('new-title');
         const newDescription = document.getElementById('new-description');
-        const newImage = document.getElementById('new-image');
         const newLink = document.getElementById('new-link');
         const addAnnouncementBtn = document.getElementById('add-announcement-btn');
         const announcementSaveStatus = document.getElementById('announcement-save-status');
@@ -1023,7 +901,7 @@
 
         function renderAnnouncements() {
             announcementsList.querySelectorAll('.announcement-row').forEach(el => el.remove());
-            const items = (currentData.announcements || []).filter(item => !item.isSocial);
+            const items = currentData.announcements || [];
             if (items.length === 0) {
                 announcementsEmpty.style.display = 'block';
                 return;
@@ -1032,10 +910,16 @@
             items.forEach(item => {
                 const row = document.createElement('div');
                 row.className = 'announcement-row';
+                
+                let linkSnippet = item.link ? ` — <a href="${escapeHtml(item.link)}" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 600;">Linke Git &rarr;</a>` : ' — Link Yok';
+                
                 row.innerHTML =
-                    (item.image ? `<img src="${item.image}" alt="">` : `<div style="width:52px;height:52px;border-radius:8px;background:#eef0f4;flex-shrink:0;"></div>`) +
-                    `<div class="a-info"><strong>${escapeHtml(item.title || '')}</strong><span>${escapeHtml((item.description || '').slice(0, 80))}</span></div>` +
+                    `<div class="a-info">` +
+                        `<strong>${escapeHtml(item.title || '')}</strong>` +
+                        `<span>${escapeHtml(item.description || '')}${linkSnippet}</span>` +
+                    `</div>` +
                     `<button data-id="${item.id}">Sil</button>`;
+                
                 row.querySelector('button').addEventListener('click', () => deleteAnnouncement(item.id));
                 announcementsList.appendChild(row);
             });
@@ -1059,41 +943,8 @@
             }
         });
 
-        toggleNewAnnouncementBtn.addEventListener('click', () => {
-            newForm.style.display = newForm.style.display === 'block' ? 'none' : 'block';
-        });
-
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        async function uploadImage(file, token) {
-            const ext = file.name.split('.').pop();
-            const filename = `images/${Date.now()}.${ext}`;
-            const b64 = await fileToBase64(file);
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Upload announcement image',
-                    content: b64,
-                    branch: BRANCH
-                })
-            });
-            if (!res.ok) throw new Error('Görsel yüklenemedi.');
-            return filename;
-        }
-
         addAnnouncementBtn.addEventListener('click', async () => {
-            announcementSaveStatus.textContent = 'Yükleniyor...';
+            announcementSaveStatus.textContent = 'Yayınlanıyor...';
             try {
                 const token = requireToken();
                 const title = newTitle.value.trim();
@@ -1103,8 +954,8 @@
                 if (!title || !desc) throw new Error('Başlık ve açıklama gereklidir.');
 
                 let imgUrl = '';
-                if (newImage.files.length > 0) {
-                    imgUrl = await uploadImage(newImage.files[0], token);
+                if (linkVal && (linkVal.includes('instagram.com') || linkVal.includes('insta'))) {
+                    imgUrl = 'images/instagram-placeholder.png';
                 }
 
                 const sha = await getFileSha(token);
@@ -1127,16 +978,17 @@
                 newTitle.value = '';
                 newDescription.value = '';
                 newLink.value = '';
-                newImage.value = '';
-                newForm.style.display = 'none';
-                announcementSaveStatus.textContent = 'Duyuru eklendi ve yayınlandı.';
+                announcementSaveStatus.textContent = 'Duyuru başarıyla yayınlandı!';
+                setTimeout(() => { announcementSaveStatus.textContent = ''; }, 3000);
             } catch (e) {
                 announcementSaveStatus.textContent = 'Hata: ' + e.message;
             }
         });
 
         async function deleteAnnouncement(id) {
-            if (!confirm('Bu duyuruyu silmek istediğinize emin misiniz?')) return;
+            const item = currentData.announcements.find(a => a.id === id);
+            if (!item) return;
+            if (!confirm(`"${item.title}" başlıklı duyuruyu silmek istediğinize emin misiniz?`)) return;
             try {
                 const token = requireToken();
                 currentData.announcements = (currentData.announcements || []).filter(a => a.id !== id);
@@ -1434,249 +1286,6 @@
                 await putFile(EKIP_PATH, contentB64, 'Ekip üyesi silindi: ' + member.name, token, sha);
 
                 renderMembers();
-                resetForm();
-            } catch (e) {
-                alert('Hata: ' + e.message);
-            }
-        }
-    })();
-    </script>
-
-    <!-- ============ THIRD SCRIPT: SOSYAL MEDYA / HIZLI DUYURU ============ -->
-    <script>
-    (function () {
-        const DATA_PATH = 'site-data.json';
-        const REPO = 'sukocrc06-cmd/Finteclub';
-        const BRANCH = 'main';
-        const TOKEN_KEY = 'finteclub_gh_token';
-
-        const toggleFormBtn = document.getElementById('social-toggle-form-btn');
-        const announcementForm = document.getElementById('social-announcement-form');
-        const formTitle = document.getElementById('social-form-title');
-        const editIdInput = document.getElementById('social-edit-id');
-
-        const inputTitle = document.getElementById('social-title');
-        const inputDescription = document.getElementById('social-description');
-        const inputLink = document.getElementById('social-link');
-        const inputCta = document.getElementById('social-cta');
-        const inputImage = document.getElementById('social-image');
-
-        const cancelBtn = document.getElementById('social-cancel-btn');
-        const submitBtn = document.getElementById('social-submit-btn');
-        const saveStatus = document.getElementById('social-save-status');
-
-        const listContainer = document.getElementById('social-announcements-list');
-        const listEmpty = document.getElementById('social-announcements-empty');
-
-        let siteData = null;
-        let isEditing = false;
-
-        const observer = new MutationObserver(() => {
-            const dashboard = document.getElementById('dashboard');
-            const tab = document.getElementById('tab-content-duyurular');
-            if (dashboard && dashboard.style.display === 'block' && tab && tab.style.display === 'block') {
-                if (!siteData) loadData();
-            }
-        });
-        const dashboardEl = document.getElementById('dashboard');
-        const tabEl = document.getElementById('tab-content-duyurular');
-        if (dashboardEl) observer.observe(dashboardEl, { attributes: true, attributeFilter: ['style'] });
-        if (tabEl) observer.observe(tabEl, { attributes: true, attributeFilter: ['style'] });
-        if (dashboardEl && dashboardEl.style.display === 'block' && tabEl && tabEl.style.display === 'block') {
-            loadData();
-        }
-
-        async function loadData() {
-            try {
-                const res = await fetch(DATA_PATH + '?t=' + Date.now());
-                siteData = await res.json();
-            } catch (e) {
-                siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
-            }
-            renderSocialAnnouncements();
-        }
-
-        function renderSocialAnnouncements() {
-            listContainer.querySelectorAll('.social-row').forEach(el => el.remove());
-            const items = (siteData.announcements || []).filter(item => item.isSocial === true);
-
-            if (items.length === 0) {
-                listEmpty.style.display = 'block';
-                listEmpty.textContent = 'Henüz hızlı duyuru eklenmedi.';
-                return;
-            }
-            listEmpty.style.display = 'none';
-
-            items.forEach((item) => {
-                const row = document.createElement('div');
-                row.className = 'social-row';
-
-                let ctaPreview = item.cta ? ` [CTA: ${item.cta}]` : '';
-                let linkPreview = item.link ? `<a href="${item.link}" target="_blank">Instagram Gönderisi</a>` : 'Link Yok';
-
-                row.innerHTML =
-                    `<div class="s-info">
-                        <strong>${escapeHtml(item.title || '')}</strong>
-                        <div class="s-meta">${escapeHtml((item.description || '').slice(0, 100))}...</div>
-                        <div class="s-links">${linkPreview} ${ctaPreview}</div>
-                     </div>` +
-                    `<div class="s-actions">
-                        <button class="btn-edit" id="social-edit-${item.id}">Düzenle</button>
-                        <button class="btn-delete" id="social-del-${item.id}">Sil</button>
-                     </div>`;
-
-                row.querySelector(`#social-edit-${item.id}`).addEventListener('click', () => startEdit(item.id));
-                row.querySelector(`#social-del-${item.id}`).addEventListener('click', () => deleteAnnouncement(item.id));
-                listContainer.appendChild(row);
-            });
-        }
-
-        function escapeHtml(str) {
-            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        }
-
-        function getGitHubToken() {
-            const tokenInput = document.getElementById('github-token');
-            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli.');
-            return token;
-        }
-
-        async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                headers: { Authorization: `token ${token}` }
-            });
-            if (res.status === 404) return null;
-            if (!res.ok) throw new Error('Dosya sha bilgisi alınamadı (' + path + ', HTTP ' + res.status + ')');
-            const data = await res.json();
-            return data.sha;
-        }
-
-        async function putFile(path, base64Content, message, token, sha) {
-            const body = { message, content: base64Content, branch: BRANCH };
-            if (sha) body.sha = sha;
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || ('HTTP ' + res.status));
-            }
-        }
-
-        toggleFormBtn.addEventListener('click', () => {
-            if (announcementForm.style.display === 'block') {
-                resetForm();
-            } else {
-                resetForm();
-                announcementForm.style.display = 'block';
-                formTitle.textContent = 'Yeni Hızlı Duyuru Ekle';
-            }
-        });
-
-        cancelBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            resetForm();
-        });
-
-        function resetForm() {
-            isEditing = false;
-            formTitle.textContent = 'Yeni Hızlı Duyuru Ekle';
-            editIdInput.value = '';
-            inputTitle.value = '';
-            inputDescription.value = '';
-            inputLink.value = '';
-            inputCta.value = '';
-            inputImage.value = '';
-            announcementForm.style.display = 'none';
-            saveStatus.textContent = '';
-        }
-
-        function startEdit(id) {
-            const item = siteData.announcements.find(a => a.id === id);
-            if (!item) return;
-
-            isEditing = true;
-            formTitle.textContent = 'Hızlı Duyuruyu Düzenle';
-            editIdInput.value = id;
-
-            inputTitle.value = item.title || '';
-            inputDescription.value = item.description || '';
-            inputLink.value = item.link || '';
-            inputCta.value = item.cta || '';
-            inputImage.value = item.image || '';
-
-            announcementForm.style.display = 'block';
-            announcementForm.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        submitBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            saveStatus.textContent = '';
-
-            const title = inputTitle.value.trim();
-            const description = inputDescription.value.trim();
-            const link = inputLink.value.trim();
-            const cta = inputCta.value.trim();
-            const image = inputImage.value.trim();
-
-            if (!title) { saveStatus.textContent = 'Başlık gerekli.'; return; }
-            if (!description) { saveStatus.textContent = 'Açıklama gerekli.'; return; }
-
-            try {
-                const token = getGitHubToken();
-                saveStatus.textContent = 'Kaydediliyor...';
-
-                const newItem = {
-                    id: isEditing ? editIdInput.value : 'a' + Date.now(),
-                    title,
-                    description,
-                    link,
-                    cta: cta || 'Daha fazlası',
-                    image: image || 'images/instagram-placeholder.png',
-                    isSocial: true,
-                    date: new Date().toISOString().slice(0, 10)
-                };
-
-                if (!siteData.announcements) siteData.announcements = [];
-
-                if (isEditing) {
-                    const idx = siteData.announcements.findIndex(a => a.id === editIdInput.value);
-                    if (idx !== -1) {
-                        siteData.announcements[idx] = newItem;
-                    }
-                } else {
-                    siteData.announcements.unshift(newItem);
-                }
-
-                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
-                const sha = await getFileSha(DATA_PATH, token);
-                await putFile(DATA_PATH, contentB64, (isEditing ? 'Hızlı duyuru güncellendi: ' : 'Hızlı duyuru eklendi: ') + title, token, sha);
-
-                renderSocialAnnouncements();
-                resetForm();
-                saveStatus.textContent = 'Duyuru başarıyla kaydedildi!';
-            } catch (e) {
-                saveStatus.textContent = 'Hata: ' + e.message;
-            }
-        });
-
-        async function deleteAnnouncement(id) {
-            const item = siteData.announcements.find(a => a.id === id);
-            if (!item) return;
-            if (!confirm(`${item.title} başlıklı hızlı duyuruyu silmek istediğinize emin misiniz?`)) return;
-
-            try {
-                const token = getGitHubToken();
-                siteData.announcements = siteData.announcements.filter(a => a.id !== id);
-
-                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
-                const sha = await getFileSha(DATA_PATH, token);
-                await putFile(DATA_PATH, contentB64, 'Hızlı duyuru silindi: ' + item.title, token, sha);
-
-                renderSocialAnnouncements();
                 resetForm();
             } catch (e) {
                 alert('Hata: ' + e.message);
