@@ -2148,3 +2148,22 @@ textarea.question-input {
     opacity: 0.85;
     line-height: 1.5;
 }
+
+/* Geliştirici ortamı ön izleme asistan/chat widget'larını gizleme kuralları */
+[id*="antigravity"],
+[class*="antigravity"],
+[id*="gemini"],
+[class*="gemini"],
+[id*="chat-widget"],
+[class*="chat-widget"],
+iframe[src*="gemini"],
+iframe[src*="antigravity"],
+.gemini-chat-container,
+#gemini-chat-container,
+.antigravity-chat-container,
+#antigravity-chat-container {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
