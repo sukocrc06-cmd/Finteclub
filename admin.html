@@ -382,42 +382,67 @@
                     <h2>Duyuru / Sosyal Medya Yönetimi</h2>
                 </div>
 
-                <div id="new-announcement-form" style="margin-top: 15px; padding-bottom: 20px; border-bottom: 1px solid #eef0f4;">
-                    <div class="field">
-                        <label style="font-weight: 600; color: #333;">Başlık</label>
-                        <input type="text" id="new-title" placeholder="Duyuru başlığı girin">
+                <div id="new-announcement-form" style="margin-top: 15px; padding-bottom: 20px; border-bottom: 1px solid #eef0f4; display: flex; flex-wrap: wrap; gap: 30px; align-items: start;">
+                    <!-- Sol Kolon: Form Alanları -->
+                    <div style="flex: 1 1 500px; display: flex; flex-direction: column; gap: 16px;">
+                        <div class="field">
+                            <label style="font-weight: 600; color: #333;">Başlık</label>
+                            <input type="text" id="new-title" placeholder="Duyuru başlığı girin">
+                        </div>
+                        <div class="field">
+                            <label style="font-weight: 600; color: #333;">Kategori</label>
+                            <select id="new-category" style="width: 100%; padding: 10px; border: 1px solid #d7dce5; border-radius: 8px; background: #fff; font-size: 0.95rem;">
+                                <option value="Genel">Genel</option>
+                                <option value="Zirve">Zirve</option>
+                                <option value="Eğitim">Eğitim</option>
+                                <option value="Yarışma">Yarışma</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label style="font-weight: 600; color: #333;">Kısa Açıklama</label>
+                            <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması veya kısa içerik girin"></textarea>
+                        </div>
+                        <div class="field">
+                            <label style="font-weight: 600; color: #333;">Afiş / Görsel Seç (Dosya Yükle)</label>
+                            <input type="file" id="new-image-file" accept="image/*" style="border: none; padding: 5px 0;">
+                        </div>
+                        <div class="field">
+                            <label style="font-weight: 600; color: #333;">Veya Görsel URL'si Yapıştır</label>
+                            <input type="text" id="new-image-url" placeholder="https://... (Örn: Bir Instagram afiş resmi veya web görsel linki)">
+                        </div>
+                        <div class="field">
+                            <label style="font-weight: 600; color: #333;">Sosyal Medya / Instagram Linki (isteğe bağlı)</label>
+                            <input type="text" id="new-link" placeholder="https://www.instagram.com/p/... veya boş bırakın">
+                        </div>
+                        <div class="field" style="display: flex; align-items: center; gap: 8px; margin: 5px 0 5px 0;">
+                            <input type="checkbox" id="new-pinned" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
+                            <label for="new-pinned" style="font-weight: 600; color: #333; margin: 0; cursor: pointer; user-select: none;">Önemli / Sitenin en başında sabitle (Pin)</label>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" id="add-announcement-btn" style="margin-top: 10px;">Yayınla</button>
+                            <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label style="font-weight: 600; color: #333;">Kategori</label>
-                        <select id="new-category" style="width: 100%; padding: 10px; border: 1px solid #d7dce5; border-radius: 8px; background: #fff; font-size: 0.95rem;">
-                            <option value="Genel">Genel</option>
-                            <option value="Zirve">Zirve</option>
-                            <option value="Eğitim">Eğitim</option>
-                            <option value="Yarışma">Yarışma</option>
-                        </select>
+
+                    <!-- Sağ Kolon: Canlı Önizleme -->
+                    <div id="new-announcement-preview-container" style="flex: 1 1 400px; max-width: 550px; background: #fafbfd; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 15px;">
+                        <h4 style="margin: 0 0 5px 0; color: #1a2233; font-size: 1rem; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Canlı Önizleme (Sitedeki Görünüm)</h4>
+                        
+                        <!-- Site Duyuru Kart Tasarım Taklidi (Koyu Tema) -->
+                        <div id="announcement-preview-card" style="background-color: #0b1329; border-radius: 20px; padding: 24px; border: 1px solid rgba(59, 130, 246, 0.25); display: flex; flex-direction: column; gap: 16px; box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05); min-height: 250px; text-align: left;">
+                            <div id="preview-image-container" style="width: 100%; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15); height: 200px; color: #94a3b8; font-size: 0.9rem;">
+                                <span>Görsel Yok</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span id="preview-category-badge" style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Genel</span>
+                                </div>
+                                <h3 id="preview-title" style="text-align: left; margin: 5px 0 0 0; color: #ffffff; font-size: 1.25rem; font-weight: 600; line-height: 1.4;">Başlık</h3>
+                                <p id="preview-description" style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5; margin: 0; white-space: pre-wrap; word-break: break-word;">Açıklama</p>
+                            </div>
+                            <a id="preview-link" href="#" target="_blank" style="text-align: right; color: #93c5fd; text-decoration: none; font-weight: 600; font-size: 0.95rem; align-self: flex-end; margin-top: auto; display: none;">Instagram Gönderisi &rarr;</a>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label style="font-weight: 600; color: #333;">Kısa Açıklama</label>
-                        <textarea id="new-description" rows="4" placeholder="Duyuru açıklaması veya kısa içerik girin"></textarea>
-                    </div>
-                    <div class="field">
-                        <label style="font-weight: 600; color: #333;">Afiş / Görsel Seç (Dosya Yükle)</label>
-                        <input type="file" id="new-image-file" accept="image/*" style="border: none; padding: 5px 0;">
-                    </div>
-                    <div class="field">
-                        <label style="font-weight: 600; color: #333;">Veya Görsel URL'si Yapıştır</label>
-                        <input type="text" id="new-image-url" placeholder="https://... (Örn: Bir Instagram afiş resmi veya web görsel linki)">
-                    </div>
-                    <div class="field">
-                        <label style="font-weight: 600; color: #333;">Sosyal Medya / Instagram Linki (isteğe bağlı)</label>
-                        <input type="text" id="new-link" placeholder="https://www.instagram.com/p/... veya boş bırakın">
-                    </div>
-                    <div class="field" style="display: flex; align-items: center; gap: 8px; margin: 15px 0 10px 0;">
-                        <input type="checkbox" id="new-pinned" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
-                        <label for="new-pinned" style="font-weight: 600; color: #333; margin: 0; cursor: pointer; user-select: none;">Önemli / Sitenin en başında sabitle (Pin)</label>
-                    </div>
-                    <button class="btn btn-primary" id="add-announcement-btn" style="margin-top: 10px;">Yayınla</button>
-                    <div id="announcement-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
                 </div>
 
                 <h3 style="margin-top: 30px; margin-bottom: 15px; color: #14204a; font-size: 1.2rem;">Yayınlanan Duyurular</h3>
@@ -919,10 +944,69 @@
                 bannerText.value = currentData.bannerText || '';
 
                 renderAnnouncements();
+                // Initialize preview on data load
+                updatePreview();
+                updatePreviewImage();
             } catch (e) {
                 alert('Veriler yüklenirken hata oluştu: ' + e.message);
             }
         }
+
+        // --- Live Preview Logic for Announcements ---
+        const previewImageContainer = document.getElementById('preview-image-container');
+        const previewTitle = document.getElementById('preview-title');
+        const previewDescription = document.getElementById('preview-description');
+        const previewCategoryBadge = document.getElementById('preview-category-badge');
+        const previewLink = document.getElementById('preview-link');
+
+        function updatePreview() {
+            previewTitle.textContent = newTitle.value.trim() || 'Duyuru Başlığı';
+            previewDescription.textContent = newDescription.value.trim() || 'Duyuru açıklaması veya kısa içerik...';
+            previewCategoryBadge.textContent = newCategory.value;
+            
+            const linkVal = newLink.value.trim();
+            if (linkVal) {
+                previewLink.href = linkVal;
+                previewLink.style.display = 'block';
+            } else {
+                previewLink.style.display = 'none';
+            }
+        }
+
+        function updatePreviewImage() {
+            const urlVal = newImageUrl.value.trim();
+            if (urlVal) {
+                previewImageContainer.innerHTML = `<img src="${urlVal}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">`;
+            } else if (!newImageFile.files.length) {
+                previewImageContainer.innerHTML = '<span>Görsel Yok</span>';
+            }
+        }
+
+        newTitle.addEventListener('input', updatePreview);
+        newDescription.addEventListener('input', updatePreview);
+        newCategory.addEventListener('change', updatePreview);
+        newLink.addEventListener('input', updatePreview);
+
+        newImageFile.addEventListener('change', () => {
+            const file = newImageFile.files[0];
+            if (file) {
+                newImageUrl.value = ''; // clear url input if file selected
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImageContainer.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                updatePreviewImage();
+            }
+        });
+
+        newImageUrl.addEventListener('input', () => {
+            if (newImageUrl.value.trim()) {
+                newImageFile.value = ''; // clear file if url is input
+            }
+            updatePreviewImage();
+        });
 
         function escapeHtml(str) {
             return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1067,6 +1151,9 @@
                 newImageUrl.value = '';
                 newLink.value = '';
                 newPinned.checked = false;
+                
+                updatePreview();
+                updatePreviewImage();
                 
                 announcementSaveStatus.textContent = 'Duyuru başarıyla yayınlandı!';
                 setTimeout(() => { announcementSaveStatus.textContent = ''; }, 3000);
