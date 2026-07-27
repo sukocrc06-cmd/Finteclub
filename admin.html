@@ -123,9 +123,15 @@
     .announcement-row .a-info { flex: 1; min-width: 0; }
     .announcement-row .a-info strong { display: block; font-size: 0.95rem; color: #1a2233; }
     .announcement-row .a-info span { font-size: 0.82rem; color: #8791a3; }
-    .announcement-row button {
+    .announcement-row .btn-edit {
+        background: #e2e8f0; color: #334155; border: none; border-radius: 6px;
+        padding: 6px 10px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
+        font-weight: 600;
+    }
+    .announcement-row .btn-delete {
         background: #fee2e2; color: #dc2626; border: none; border-radius: 6px;
         padding: 6px 10px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
+        font-weight: 600;
     }
 
     #new-announcement-form { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4; }
@@ -383,6 +389,7 @@
                 </div>
 
                 <div id="new-announcement-form" style="margin-top: 15px; padding-bottom: 20px; border-bottom: 1px solid #eef0f4; display: flex; flex-wrap: wrap; gap: 30px; align-items: start;">
+                    <input type="hidden" id="announcement-edit-id">
                     <!-- Sol Kolon: Form Alanları -->
                     <div style="flex: 1 1 500px; display: flex; flex-direction: column; gap: 16px;">
                         <div class="field">
@@ -839,6 +846,7 @@
         const newPinned = document.getElementById('new-pinned');
         const addAnnouncementBtn = document.getElementById('add-announcement-btn');
         const announcementSaveStatus = document.getElementById('announcement-save-status');
+        const announcementEditId = document.getElementById('announcement-edit-id');
 
         let currentData = null;
 
@@ -1039,11 +1047,56 @@
                         `</div>` +
                         `<span>${escapeHtml(item.description || '')}${linkSnippet}</span>` +
                     `</div>` +
-                    `<button data-id="${item.id}">Sil</button>`;
+                    `<div style="display: flex; gap: 8px; flex-shrink: 0;">` +
+                        `<button class="btn-edit" id="ann-edit-${item.id}">Düzenle</button>` +
+                        `<button class="btn-delete" id="ann-del-${item.id}">Sil</button>` +
+                    `</div>`;
                 
-                row.querySelector('button').addEventListener('click', () => deleteAnnouncement(item.id));
+                row.querySelector(`#ann-edit-${item.id}`).addEventListener('click', () => startAnnouncementEdit(item.id));
+                row.querySelector(`#ann-del-${item.id}`).addEventListener('click', () => deleteAnnouncement(item.id));
                 announcementsList.appendChild(row);
             });
+        }
+
+        function startAnnouncementEdit(id) {
+            const item = currentData.announcements.find(a => a.id === id);
+            if (!item) return;
+
+            announcementEditId.value = id;
+            newTitle.value = item.title || '';
+            newCategory.value = item.category || 'Genel';
+            newDescription.value = item.description || '';
+            newLink.value = item.link || '';
+            newPinned.checked = !!item.pinned;
+
+            if (item.image) {
+                newImageUrl.value = item.image;
+                newImageFile.value = '';
+            } else {
+                newImageUrl.value = '';
+                newImageFile.value = '';
+            }
+
+            addAnnouncementBtn.textContent = 'Güncelle';
+            newForm.scrollIntoView({ behavior: 'smooth' });
+
+            updatePreview();
+            updatePreviewImage();
+        }
+
+        function resetAnnouncementForm() {
+            announcementEditId.value = '';
+            newTitle.value = '';
+            newCategory.value = 'Genel';
+            newDescription.value = '';
+            newImageFile.value = '';
+            newImageUrl.value = '';
+            newLink.value = '';
+            newPinned.checked = false;
+            addAnnouncementBtn.textContent = 'Yayınla';
+
+            updatePreview();
+            updatePreviewImage();
         }
 
         saveSettingsBtn.addEventListener('click', async () => {
@@ -1119,8 +1172,9 @@
                 announcementSaveStatus.textContent = 'Yayınlanıyor...';
                 const sha = await getFileSha(token);
                 
+                const id = announcementEditId.value || 'a' + Date.now();
                 const newAnn = {
-                    id: 'a' + Date.now(),
+                    id: id,
                     title: title,
                     description: desc,
                     category: category,
@@ -1130,8 +1184,21 @@
                     date: new Date().toISOString().slice(0, 10)
                 };
 
+                const isEditing = !!announcementEditId.value;
+
                 if (!currentData.announcements) currentData.announcements = [];
-                currentData.announcements.unshift(newAnn);
+                
+                if (isEditing) {
+                    const idx = currentData.announcements.findIndex(a => a.id === id);
+                    if (idx !== -1) {
+                        if (currentData.announcements[idx].date) {
+                            newAnn.date = currentData.announcements[idx].date;
+                        }
+                        currentData.announcements[idx] = newAnn;
+                    }
+                } else {
+                    currentData.announcements.unshift(newAnn);
+                }
 
                 // Sort so pinned are first
                 currentData.announcements.sort((a, b) => {
@@ -1144,18 +1211,9 @@
                 await saveSiteData(token, sha);
                 renderAnnouncements();
                 
-                newTitle.value = '';
-                newDescription.value = '';
-                newCategory.value = 'Genel';
-                newImageFile.value = '';
-                newImageUrl.value = '';
-                newLink.value = '';
-                newPinned.checked = false;
+                resetAnnouncementForm();
                 
-                updatePreview();
-                updatePreviewImage();
-                
-                announcementSaveStatus.textContent = 'Duyuru başarıyla yayınlandı!';
+                announcementSaveStatus.textContent = isEditing ? 'Duyuru başarıyla güncellendi!' : 'Duyuru başarıyla yayınlandı!';
                 setTimeout(() => { announcementSaveStatus.textContent = ''; }, 3000);
             } catch (e) {
                 announcementSaveStatus.textContent = 'Hata: ' + e.message;
