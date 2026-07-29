@@ -285,15 +285,15 @@ body {
 /* Mobile Navigation */
 @media (max-width: 992px) {
     .lang-switch {
-        right: 95px; /* clears the hamburger button */
+        right: 40px;
     }
 
     .hamburger {
         display: block;
         position: absolute;
-        right: 40px;
+        left: 50%;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translate(-50%, -50%);
     }
 
     .hamburger.active .bar:nth-child(2) {
@@ -348,7 +348,7 @@ body {
 
 @media (max-width: 420px) {
     .lang-switch {
-        right: 95px;
+        right: 40px;
         padding: 3px;
     }
 
