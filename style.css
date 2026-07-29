@@ -285,7 +285,7 @@ body {
 /* Mobile Navigation */
 @media (max-width: 992px) {
     .lang-switch {
-        right: 40px;
+        right: 20px;
     }
 
     .hamburger {
@@ -310,8 +310,8 @@ body {
 
     .nav-links {
         position: fixed;
-        left: -100%;
-        top: 0;
+        left: 0;
+        top: -100%;
         flex-direction: column;
         background: rgba(5, 13, 29, 0.98);
         width: 100%;
@@ -330,7 +330,7 @@ body {
     }
 
     .nav-links.open {
-        left: 0;
+        top: 0;
     }
 
     .nav-links li {
@@ -348,7 +348,7 @@ body {
 
 @media (max-width: 420px) {
     .lang-switch {
-        right: 40px;
+        right: 20px;
         padding: 3px;
     }
 
