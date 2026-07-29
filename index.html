@@ -283,8 +283,6 @@
                     const name = document.getElementById('q-name').value.trim();
                     const email = document.getElementById('q-email').value.trim();
                     const body = document.getElementById('q-message').value.trim();
-                    const date = new Date().toISOString().slice(0, 10);
-                    const id = 'm' + Date.now();
 
                     // 1. Send Email Notification via Formspree
                     const formspreeUrl = 'https://formspree.io/f/placeholder'; // Placeholder, replace with actual ID
@@ -300,72 +298,17 @@
                         console.warn('Formspree gönderimi başarısız:', err);
                     }
 
-                    // 2. Simultaneously save to messages.json via GitHub API if GitHub token is present in localStorage
-                    const TOKEN_KEY = 'finteclub_gh_token';
-                    const token = localStorage.getItem(TOKEN_KEY);
+                    // 2. Save to messages.json via a serverless endpoint (GitHub token stays server-side)
                     let githubSaved = false;
-
-                    if (token) {
-                        try {
-                            const REPO = 'sukocrc06-cmd/Finteclub';
-                            const PATH = 'messages.json';
-                            
-                            // Fetch messages.json SHA
-                            const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                headers: { 'Authorization': `token ${token}` }
-                            });
-                            
-                            let messagesArr = [];
-                            let sha = null;
-                            
-                            if (getRes.ok) {
-                                const fileData = await getRes.json();
-                                sha = fileData.sha;
-                                const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-                                messagesArr = JSON.parse(currentContent);
-                            } else if (getRes.status === 404) {
-                                messagesArr = [];
-                            } else {
-                                throw new Error('API Error: ' + getRes.status);
-                            }
-                            
-                            // Add new message
-                            messagesArr.unshift({
-                                id,
-                                name,
-                                email,
-                                subject: 'Bize Soru Sor Formu',
-                                body,
-                                date,
-                                unread: true
-                            });
-
-                            // Encode base64
-                            const updatedContentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(messagesArr, null, 2))));
-
-                            // PUT update to GitHub repo
-                            const bodyParams = {
-                                message: 'Yeni soru eklendi: ' + name,
-                                content: updatedContentB64,
-                                branch: 'main'
-                            };
-                            if (sha) bodyParams.sha = sha;
-
-                            const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Authorization': `token ${token}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(bodyParams)
-                            });
-
-                            if (putRes.ok) {
-                                githubSaved = true;
-                            }
-                        } catch (githubErr) {
-                            console.error('GitHub API kaydı başarısız:', githubErr);
-                        }
+                    try {
+                        const saveRes = await fetch('/api/ask-question', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, message: body })
+                        });
+                        if (saveRes.ok) githubSaved = true;
+                    } catch (saveErr) {
+                        console.error('Mesaj kaydı başarısız:', saveErr);
                     }
 
                     submitBtn.disabled = false;
@@ -392,13 +335,13 @@
                         }, 4000);
                     }
 
-                    if (emailSent || githubSaved) {
+                    if (githubSaved || emailSent) {
                         showToast('Sorunuz başarıyla gönderildi! Teşekkür ederiz.');
                         questionForm.reset();
                     } else {
-                        // Fallback/Simulation successful toast for offline or testing mode
-                        showToast('Sorunuz başarıyla iletildi! Teşekkür ederiz.');
-                        questionForm.reset();
+                        submitStatus.style.display = 'block';
+                        submitStatus.style.color = '#f87171';
+                        submitStatus.textContent = 'Gönderilirken bir hata oluştu, lütfen tekrar deneyin.';
                     }
                 });
             }
