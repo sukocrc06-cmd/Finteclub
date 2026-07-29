@@ -190,7 +190,7 @@
 
         // Card rendering helpers
         function createMemberCard(member, board, index) {
-            const hasContact = member.email || member.linkedin;
+            const hasContact = member.email || member.linkedin || member.website;
             const contactBtn = hasContact
                 ? `<button class="member-contact-btn" data-board="${board}" data-index="${index}">${t('İletişim')}</button>`
                 : '';
@@ -372,6 +372,21 @@
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                                 <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </a>
+                    `;
+                }
+                if (member.website) {
+                    let websiteUrl = member.website;
+                    if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+                        websiteUrl = 'https://' + websiteUrl;
+                    }
+                    socialsHtml += `
+                        <a href="${websiteUrl}" target="_blank" class="contact-social-btn website" aria-label="Web Sitesi" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.45); color: #93c5fd; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease; text-decoration: none;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                             </svg>
                         </a>
                     `;
