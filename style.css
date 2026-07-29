@@ -1724,6 +1724,13 @@ body.home-page {
     background-attachment: fixed;
 }
 
+@media (max-width: 992px) {
+    body.home-page {
+        /* background-attachment: fixed causes janky/sliding repaint on mobile browsers */
+        background-attachment: scroll;
+    }
+}
+
 #particles-js {
     position: fixed;
     top: 0;
