@@ -2050,7 +2050,7 @@ select.form-control {
 
 /* ================= BİZE SORU SOR SECTION STYLES ================= */
 .question-section {
-    background-color: var(--primary-bg) !important;
+    background-color: transparent !important;
     padding: 100px 20px;
     color: #ffffff;
     display: flex;
