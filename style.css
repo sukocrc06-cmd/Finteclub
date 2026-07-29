@@ -243,7 +243,8 @@ body {
 /* Language Switch (TR/EN) */
 .lang-switch {
     position: absolute;
-    top: 24px;
+    top: 50%;
+    transform: translateY(-50%);
     right: 40px;
     z-index: 102;
     display: flex;
@@ -284,7 +285,6 @@ body {
 /* Mobile Navigation */
 @media (max-width: 992px) {
     .lang-switch {
-        top: 20px;
         right: 95px; /* clears the hamburger button */
     }
 
@@ -292,7 +292,8 @@ body {
         display: block;
         position: absolute;
         right: 40px;
-        top: 24px;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .hamburger.active .bar:nth-child(2) {
@@ -347,7 +348,6 @@ body {
 
 @media (max-width: 420px) {
     .lang-switch {
-        top: 18px;
         right: 95px;
         padding: 3px;
     }
