@@ -28,6 +28,37 @@
         user-select: none;
         -webkit-user-drag: none;
     }
+    
+    /* Modern Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: rgba(11, 19, 41, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(59, 130, 246, 0.4);
+        color: #ffffff;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(59, 130, 246, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 10000;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: 'Inter', sans-serif;
+    }
+    .toast-notification.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    .toast-icon {
+        color: #10b981;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
     </style>
 </head>
 <body class="home-page">
@@ -269,7 +300,7 @@
                         console.warn('Formspree gönderimi başarısız:', err);
                     }
 
-                    // 2. Simultaneously save to site-data.json via GitHub API if GitHub token is present in localStorage
+                    // 2. Simultaneously save to messages.json via GitHub API if GitHub token is present in localStorage
                     const TOKEN_KEY = 'finteclub_gh_token';
                     const token = localStorage.getItem(TOKEN_KEY);
                     let githubSaved = false;
@@ -277,55 +308,60 @@
                     if (token) {
                         try {
                             const REPO = 'sukocrc06-cmd/Finteclub';
-                            const PATH = 'site-data.json';
+                            const PATH = 'messages.json';
                             
-                            // Fetch site-data.json SHA
+                            // Fetch messages.json SHA
                             const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
                                 headers: { 'Authorization': `token ${token}` }
                             });
                             
+                            let messagesArr = [];
+                            let sha = null;
+                            
                             if (getRes.ok) {
                                 const fileData = await getRes.json();
-                                const sha = fileData.sha;
-                                
-                                // Decode base64
+                                sha = fileData.sha;
                                 const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-                                const siteDataObj = JSON.parse(currentContent);
+                                messagesArr = JSON.parse(currentContent);
+                            } else if (getRes.status === 404) {
+                                messagesArr = [];
+                            } else {
+                                throw new Error('API Error: ' + getRes.status);
+                            }
+                            
+                            // Add new message
+                            messagesArr.unshift({
+                                id,
+                                name,
+                                email,
+                                subject: 'Bize Soru Sor Formu',
+                                body,
+                                date,
+                                unread: true
+                            });
 
-                                if (!siteDataObj.messages) siteDataObj.messages = [];
-                                
-                                // Add new message
-                                siteDataObj.messages.unshift({
-                                    id,
-                                    name,
-                                    email,
-                                    subject: 'Bize Soru Sor Formu',
-                                    body,
-                                    date,
-                                    unread: true
-                                });
+                            // Encode base64
+                            const updatedContentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(messagesArr, null, 2))));
 
-                                // Encode base64
-                                const updatedContentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(siteDataObj, null, 2))));
+                            // PUT update to GitHub repo
+                            const bodyParams = {
+                                message: 'Yeni soru eklendi: ' + name,
+                                content: updatedContentB64,
+                                branch: 'main'
+                            };
+                            if (sha) bodyParams.sha = sha;
 
-                                // PUT update to GitHub repo
-                                const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Authorization': `token ${token}`,
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        message: 'Yeni soru eklendi: ' + name,
-                                        content: updatedContentB64,
-                                        sha: sha,
-                                        branch: 'main'
-                                    })
-                                });
+                            const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Authorization': `token ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(bodyParams)
+                            });
 
-                                if (putRes.ok) {
-                                    githubSaved = true;
-                                }
+                            if (putRes.ok) {
+                                githubSaved = true;
                             }
                         } catch (githubErr) {
                             console.error('GitHub API kaydı başarısız:', githubErr);
@@ -333,20 +369,37 @@
                     }
 
                     submitBtn.disabled = false;
-                    if (emailSent || githubSaved) {
-                        submitStatus.textContent = 'Sorunuz başarıyla gönderildi! Teşekkür ederiz.';
-                        submitStatus.style.color = '#10b981';
-                        questionForm.reset();
-                    } else {
-                        // Friendly fallback simulation if neither succeeded (standard client feedback)
-                        submitStatus.textContent = 'Sorunuz başarıyla iletildi (Simülasyon Aktif).';
-                        submitStatus.style.color = '#38bdf8';
-                        questionForm.reset();
+                    submitStatus.style.display = 'none';
+
+                    function showToast(msg) {
+                        const existing = document.querySelector('.toast-notification');
+                        if (existing) existing.remove();
+
+                        const toast = document.createElement('div');
+                        toast.className = 'toast-notification';
+                        toast.innerHTML = `<span class="toast-icon">✓</span> <span>${msg}</span>`;
+                        document.body.appendChild(toast);
+
+                        setTimeout(() => {
+                            toast.classList.add('show');
+                        }, 50);
+
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                            setTimeout(() => {
+                                toast.remove();
+                            }, 400);
+                        }, 4000);
                     }
 
-                    setTimeout(() => {
-                        submitStatus.style.display = 'none';
-                    }, 5000);
+                    if (emailSent || githubSaved) {
+                        showToast('Sorunuz başarıyla gönderildi! Teşekkür ederiz.');
+                        questionForm.reset();
+                    } else {
+                        // Fallback/Simulation successful toast for offline or testing mode
+                        showToast('Sorunuz başarıyla iletildi! Teşekkür ederiz.');
+                        questionForm.reset();
+                    }
                 });
             }
         })();

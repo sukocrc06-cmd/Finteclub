@@ -1605,20 +1605,58 @@
             loadSiteDataFile();
         }
 
+        let inboxMessages = [];
+
         async function loadSiteDataFile() {
             if (isFetching) return;
             isFetching = true;
             try {
-                const res = await fetch(DATA_PATH + '?t=' + Date.now());
-                siteData = await res.json();
+                const token = localStorage.getItem(TOKEN_KEY);
+                
+                // 1. Fetch site-data.json
+                if (token) {
+                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?t=` + Date.now(), {
+                        headers: { 'Authorization': `token ${token}` }
+                    });
+                    if (res.ok) {
+                        const fileData = await res.json();
+                        const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
+                        siteData = JSON.parse(currentContent);
+                    } else {
+                        const resLocal = await fetch(DATA_PATH + '?t=' + Date.now());
+                        siteData = await resLocal.json();
+                    }
+                } else {
+                    const resLocal = await fetch(DATA_PATH + '?t=' + Date.now());
+                    siteData = await resLocal.json();
+                }
+
+                // 2. Fetch messages.json
+                if (token) {
+                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/messages.json?t=` + Date.now(), {
+                        headers: { 'Authorization': `token ${token}` }
+                    });
+                    if (res.ok) {
+                        const fileData = await res.json();
+                        const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
+                        inboxMessages = JSON.parse(currentContent);
+                    } else {
+                        const resLocal = await fetch('messages.json?t=' + Date.now());
+                        inboxMessages = await resLocal.json();
+                    }
+                } else {
+                    const resLocal = await fetch('messages.json?t=' + Date.now());
+                    inboxMessages = await resLocal.json();
+                }
             } catch (e) {
-                siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+                if (!siteData) siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+                if (!inboxMessages) inboxMessages = [];
             }
             
             if (!siteData.events) siteData.events = [];
             if (!siteData.documents) siteData.documents = [];
-            if (!siteData.messages) {
-                siteData.messages = [
+            if (!inboxMessages || inboxMessages.length === 0) {
+                inboxMessages = [
                     {
                         id: 'm1',
                         name: 'Ahmet Yılmaz',
@@ -1998,9 +2036,16 @@
             }
         }
 
+        async function commitMessagesData(commitMsg) {
+            const token = getGitHubToken();
+            const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(inboxMessages, null, 2))));
+            const sha = await getFileSha('messages.json', token);
+            await putFile('messages.json', contentB64, commitMsg, token, sha);
+        }
+
         function renderMessages() {
             messagesList.querySelectorAll('.item-row, .message-card').forEach(el => el.remove());
-            const items = siteData.messages || [];
+            const items = inboxMessages || [];
 
             if (items.length === 0) {
                 messagesEmpty.style.display = 'block';
@@ -2048,12 +2093,12 @@
         }
 
         async function toggleMessageReadStatus(id) {
-            const item = siteData.messages.find(m => m.id === id);
+            const item = inboxMessages.find(m => m.id === id);
             if (!item) return;
 
             try {
                 item.unread = !item.unread;
-                await commitSiteData('Mesaj durum güncellemesi: ' + item.name);
+                await commitMessagesData('Mesaj durum güncellemesi: ' + item.name);
                 renderMessages();
             } catch (e) {
                 alert('Hata: ' + e.message);
@@ -2061,13 +2106,13 @@
         }
 
         async function deleteMessage(id) {
-            const item = siteData.messages.find(m => m.id === id);
+            const item = inboxMessages.find(m => m.id === id);
             if (!item) return;
             if (!confirm(`${item.name} tarafından gönderilen mesajı silmek istediğinize emin misiniz?`)) return;
 
             try {
-                siteData.messages = siteData.messages.filter(m => m.id !== id);
-                await commitSiteData('Mesaj silindi: ' + item.name);
+                inboxMessages = inboxMessages.filter(m => m.id !== id);
+                await commitMessagesData('Mesaj silindi: ' + item.name);
                 renderMessages();
             } catch (e) {
                 alert('Hata: ' + e.message);
@@ -2097,9 +2142,9 @@
             };
 
             try {
-                if (!siteData.messages) siteData.messages = [];
-                siteData.messages.unshift(newMsg);
-                await commitSiteData('Yeni örnek mesaj üretildi');
+                if (!inboxMessages) inboxMessages = [];
+                inboxMessages.unshift(newMsg);
+                await commitMessagesData('Yeni örnek mesaj üretildi');
                 renderMessages();
             } catch (e) {
                 alert('Hata: ' + e.message);
