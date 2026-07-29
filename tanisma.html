@@ -4,32 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Tanışma Etkinliği">
-    <title>Tanışma Etkinliği - FinTeClub</title>
+    <title data-i18n>Tanışma Etkinliği - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <script src="maintenance-check.js"></script>
     <nav class="navbar">
+        <div class="lang-switch" id="lang-switch">
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
         <ul class="nav-links">
-            <li><a href="index.html">Anasayfa</a></li>
-            <li><a href="duyurular.html">Duyurular</a></li>
-            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="index.html" data-i18n>Anasayfa</a></li>
+            <li><a href="duyurular.html" data-i18n>Duyurular</a></li>
+            <li><a href="hakkimizda.html" data-i18n>Hakkımızda</a></li>
             <li class="dropdown">
-                <a href="ekip.html" class="dropdown-toggle">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <a href="ekip.html" class="dropdown-toggle"><span data-i18n>Yönetim ve Ekip</span> <span class="arrow">&#9662;</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
-                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
-                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
-                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
-                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
-                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                    <li><a href="ekip.html#yonetim-kurulu" data-i18n>Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu" data-i18n>Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya" data-i18n>Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim" data-i18n>Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu" data-i18n>Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje" data-i18n>Yazılım ve Proje Kurulu</a></li>
                 </ul>
             </li>
-            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
-            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
-            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
+            <li><a href="amac-ve-faaliyetler.html" data-i18n>Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html" data-i18n>Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" data-i18n>İletişim</a></li>
         </ul>
     </nav>
 
@@ -37,9 +41,9 @@
     <section class="event-detail" style="padding-top: 140px;" id="tanisma-etkinligi">
         <div class="event-container">
             <div class="event-info">
-                <h2>Tanışma Etkinliği</h2>
-                <p>Kulübümüzün yeni üyeleri ile tanışmak için bir tanışma toplantısı düzenliyoruz! Etkinlikte kulübümüzün tanıtımı, amacı, çalışma alanları, etkinlikleri ve dönem içerisinde planlanan faaliyetler hakkında bilgilendirme yapılacaktır.</p>
-                <span class="event-date">Tarih: 10 Nisan Cuma</span>
+                <h2 data-i18n>Tanışma Etkinliği</h2>
+                <p data-i18n>Kulübümüzün yeni üyeleri ile tanışmak için bir tanışma toplantısı düzenliyoruz! Etkinlikte kulübümüzün tanıtımı, amacı, çalışma alanları, etkinlikleri ve dönem içerisinde planlanan faaliyetler hakkında bilgilendirme yapılacaktır.</p>
+                <span class="event-date" data-i18n>Tarih: 10 Nisan Cuma</span>
             </div>
             <div class="event-poster">
                 <img src="tanisma.png" alt="Tanışma Etkinliği Afişi" style="width: 100%; max-width: 500px; height: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; margin: 0 auto;">
@@ -57,5 +61,6 @@
             });
         }
     </script>
+    <script src="i18n.js"></script>
 </body>
 </html>

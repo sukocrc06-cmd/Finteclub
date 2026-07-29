@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FinTeClub Duyurular">
-    <title>Duyurular - FinTeClub</title>
+    <title data-i18n>Duyurular - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -92,37 +92,41 @@
 <body>
     <script src="maintenance-check.js"></script>
     <nav class="navbar">
+        <div class="lang-switch" id="lang-switch">
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
         <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Anasayfa</a></li>
-            <li><a href="duyurular.html" class="active">Duyurular</a></li>
-            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="index.html" data-i18n>Anasayfa</a></li>
+            <li><a href="duyurular.html" class="active" data-i18n>Duyurular</a></li>
+            <li><a href="hakkimizda.html" data-i18n>Hakkımızda</a></li>
             <li class="dropdown">
-                <a href="ekip.html" class="dropdown-toggle">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <a href="ekip.html" class="dropdown-toggle"><span data-i18n>Yönetim ve Ekip</span> <span class="arrow">&#9662;</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
-                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
-                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
-                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
-                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
-                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                    <li><a href="ekip.html#yonetim-kurulu" data-i18n>Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu" data-i18n>Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya" data-i18n>Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim" data-i18n>Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu" data-i18n>Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje" data-i18n>Yazılım ve Proje Kurulu</a></li>
                 </ul>
             </li>
-            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
-            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
-            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
+            <li><a href="amac-ve-faaliyetler.html" data-i18n>Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html" data-i18n>Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" data-i18n>İletişim</a></li>
         </ul>
     </nav>
 
     <!-- Announcements Section -->
     <section class="announcements" style="padding-top: 140px;" id="duyurular">
         <div class="container">
-            <h2 class="section-title">Duyurular</h2>
+            <h2 class="section-title" data-i18n>Duyurular</h2>
             <div class="cards-grid">
                 <div id="dynamic-announcements"></div>
 
@@ -133,13 +137,13 @@
                     </div>
                     <div class="announcement-content-col">
                         <div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 2/2</h3>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Finans eğitimi yalnızca teorik bilgiyle sınırlı kalmamalı; öğrenciyi gerçek piyasa koşullarına ve değişen mesleki gerekliliklere hazırlamalıdır.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">BISTLAB, uygulamalı dersler, güncel finans alanları ve sektör deneyimiyle öğrencilerimizin öğrendiklerini pratiğe dönüştürebilecekleri bir eğitim ortamı sunuyoruz.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Finansı yalnızca öğrenmeyin; analiz edin, uygulayın ve geleceğe taşıyın.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 2/2</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Finans eğitimi yalnızca teorik bilgiyle sınırlı kalmamalı; öğrenciyi gerçek piyasa koşullarına ve değişen mesleki gerekliliklere hazırlamalıdır.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>BISTLAB, uygulamalı dersler, güncel finans alanları ve sektör deneyimiyle öğrencilerimizin öğrendiklerini pratiğe dönüştürebilecekleri bir eğitim ortamı sunuyoruz.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Finansı yalnızca öğrenmeyin; analiz edin, uygulayın ve geleceğe taşıyın.</p>
                             <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">🔗 <a href="https://aybu.edu.tr/fb" target="_blank" style="color: #93c5fd; text-decoration: none;">aybu.edu.tr/fb</a></p>
                         </div>
-                        <a href="insta-duyuru-2.html" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="insta-duyuru-2.html" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
 
@@ -150,13 +154,13 @@
                     </div>
                     <div class="announcement-content-col">
                         <div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 1/2</h3>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Doğru bölüm tercihi, mezuniyet sonrasında yalnızca bir diploma değil, farklı kariyer yollarına açılan güçlü bir başlangıç sunmalıdır.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Bankacılık, sermaye piyasaları, fintech, denetim ve danışmanlıktan kamu kurumlarına kadar uzanan kariyer seçenekleri; analitik düşünme, İngilizce iletişim ve teknoloji yetkinlikleriyle daha güçlü hâle geliyor.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Finans dünyasındaki kariyerinizi bugünden şekillendirin.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>AYBÜ Finans ve Bankacılık Bölümünü Tanıyın 1/2</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Doğru bölüm tercihi, mezuniyet sonrasında yalnızca bir diploma değil, farklı kariyer yollarına açılan güçlü bir başlangıç sunmalıdır.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Bankacılık, sermaye piyasaları, fintech, denetim ve danışmanlıktan kamu kurumlarına kadar uzanan kariyer seçenekleri; analitik düşünme, İngilizce iletişim ve teknoloji yetkinlikleriyle daha güçlü hâle geliyor.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Finans dünyasındaki kariyerinizi bugünden şekillendirin.</p>
                             <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">🔗 <a href="https://aybu.edu.tr/fb" target="_blank" style="color: #93c5fd; text-decoration: none;">aybu.edu.tr/fb</a></p>
                         </div>
-                        <a href="insta-duyuru-1.html" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="insta-duyuru-1.html" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
 
@@ -168,24 +172,24 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">İş Birliği Programı</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>İş Birliği Programı</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">🚀 BTK Akademi İş Birliğiyle Yeni Bir Öğrenme Yolculuğu Başlıyor!</h3>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Savunma sanayiine farklı açılardan bakmaya hazır mısınız?</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>🚀 BTK Akademi İş Birliğiyle Yeni Bir Öğrenme Yolculuğu Başlıyor!</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Savunma sanayiine farklı açılardan bakmaya hazır mısınız?</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n-html>
                                 <strong>📚 19 başlıktan oluşan bu özel programda;</strong><br>
                                 🔹 Savunma Sanayiine Teknik Bakış<br>
                                 🔹 Savunma Sanayiine Sosyal Bakış<br>
                                 olmak üzere iki farklı perspektif, tek bir amaçta buluşuyor.
                             </p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Teknolojiyi, insanı, stratejiyi ve geleceği birlikte ele alan bu eğitim serisiyle savunma sanayiini daha yakından tanıyacak, geleceğin yetkinliklerine bir adım daha yaklaşacaksınız.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;"><strong>🎯 Geleceğin savunma sanayiini birlikte inşa etmeye hazır mısınız?</strong></p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">✨ Serüven şimdi başlıyor!</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Teknolojiyi, insanı, stratejiyi ve geleceği birlikte ele alan bu eğitim serisiyle savunma sanayiini daha yakından tanıyacak, geleceğin yetkinliklerine bir adım daha yaklaşacaksınız.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n-html><strong>🎯 Geleceğin savunma sanayiini birlikte inşa etmeye hazır mısınız?</strong></p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>✨ Serüven şimdi başlıyor!</p>
                         </div>
                         <div class="announcement-buttons-container">
-                            <a href="https://www.instagram.com/reel/DZ7Qn1GAE4X/?igsh=MW81YnlsOHQ0YXQ5aQ==" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 160px; text-align: center; box-sizing: border-box;">Instagram Gönderisi</a>
-                            <a href="https://btkakademi.gov.tr" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 160px; text-align: center; box-sizing: border-box;">BTK Akademi</a>
-                            <a href="https://savunmakariyer.com" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 160px; text-align: center; box-sizing: border-box;">Savunma Kariyer</a>
+                            <a href="https://www.instagram.com/reel/DZ7Qn1GAE4X/?igsh=MW81YnlsOHQ0YXQ5aQ==" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 160px; text-align: center; box-sizing: border-box;" data-i18n>Instagram Gönderisi</a>
+                            <a href="https://btkakademi.gov.tr" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 160px; text-align: center; box-sizing: border-box;" data-i18n>BTK Akademi</a>
+                            <a href="https://savunmakariyer.com" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 160px; text-align: center; box-sizing: border-box;" data-i18n>Savunma Kariyer</a>
                         </div>
                     </div>
                 </div>
@@ -198,13 +202,13 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Son Başvuru: 13 Temmuz 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Son Başvuru: 13 Temmuz 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">🌍 İklim değişikliğine çözüm üretecek fikir senin olabilir! 🇪🇺</h3>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Avrupa Birliği tarafından finanse edilen EU Climate Ideathon 2026 için başvurular başladı!</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Türkiye’deki üniversitelerde öğrenim gören 29 yaş altı öğrenciler, ister bireysel ister takım halinde başvurarak iklim krizine yönelik yenilikçi çözümler geliştirme fırsatı yakalayabilir.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Program boyunca fikirlerini uzman mentorlarla geliştirebilir, eğitim and mentorluk desteği alabilir, başarılı olman halinde ise çözümünü Antalya’da gerçekleştirilecek COP31 Finali’nde sunma şansı elde edebilirsin. 🌱</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>🌍 İklim değişikliğine çözüm üretecek fikir senin olabilir! 🇪🇺</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Avrupa Birliği tarafından finanse edilen EU Climate Ideathon 2026 için başvurular başladı!</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Türkiye’deki üniversitelerde öğrenim gören 29 yaş altı öğrenciler, ister bireysel ister takım halinde başvurarak iklim krizine yönelik yenilikçi çözümler geliştirme fırsatı yakalayabilir.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Program boyunca fikirlerini uzman mentorlarla geliştirebilir, eğitim and mentorluk desteği alabilir, başarılı olman halinde ise çözümünü Antalya’da gerçekleştirilecek COP31 Finali’nde sunma şansı elde edebilirsin. 🌱</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n-html>
                                 <strong>💡 Program boyunca katılımcıları;</strong><br>
                                 ✅ Eğitim ve mentorluk desteği<br>
                                 ✅ Takım çalışması ve fikir geliştirme süreci<br>
@@ -212,13 +216,13 @@
                                 ✅ Katılım belgesi<br>
                                 ✅ Başarılı ekipler için COP31 kapsamında düzenlenecek ulusal finalde sunum yapma fırsatı
                             </p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n-html>
                                 <strong>📌 Kimler Başvurabilir?</strong><br>
                                 🎓 Türkiye’deki üniversitelerde öğrenim gören 29 yaş altı öğrenciler<br>
                                 👤 Bireysel veya 👥 takım halinde başvuru yapılabilir.
                             </p>
                         </div>
-                        <a href="https://www.instagram.com/p/DaK07ZNM85h/?igsh=NG9wOWl2MTB2a3dv" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Başvuru ve Detaylar &rarr;</a>
+                        <a href="https://www.instagram.com/p/DaK07ZNM85h/?igsh=NG9wOWl2MTB2a3dv" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;" data-i18n>Başvuru ve Detaylar &rarr;</a>
                     </div>
                 </div>
 
@@ -230,23 +234,23 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Son Başvuru: 20 Temmuz 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Son Başvuru: 20 Temmuz 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">👨‍🔬 TÜBİTAK Geleceğin Araştırmacılarını Arıyor! 🚀</h3>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">170 Aday Araştırmacımızdan biri olarak kariyerine TÜBİTAK’ta adım atabilir, geleceğin bilim dünyasında yerini alabilirsin. 👩🏻‍🔬👨‍🔬</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>👨‍🔬 TÜBİTAK Geleceğin Araştırmacılarını Arıyor! 🚀</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>170 Aday Araştırmacımızdan biri olarak kariyerine TÜBİTAK’ta adım atabilir, geleceğin bilim dünyasında yerini alabilirsin. 👩🏻‍🔬👨‍🔬</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n-html>
                                 <strong>Programda Seni Neler Bekliyor?</strong><br>
                                 🔎 Türkiye’nin bilimsel ve teknolojik gelişiminde aktif rol alma olanağı,<br>
                                 🤝 Alanında uzman araştırmacılarla birebir çalışma imkanı,<br>
                                 🎓 Mezuniyet sonrası tam zamanlı Araştırmacı olma fırsatı.
                             </p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n-html>
                                 <strong>Son başvuru tarihi:</strong><br>
                                 🗓️ 20 Temmuz 2026<br>
                                 ⏰ 17.00
                             </p>
                         </div>
-                        <a href="https://kariyer.tubitak.gov.tr" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Başvuru ve Detaylar &rarr;</a>
+                        <a href="https://kariyer.tubitak.gov.tr" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;" data-i18n>Başvuru ve Detaylar &rarr;</a>
                     </div>
                 </div>
 
@@ -258,20 +262,20 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">18 Haziran 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>18 Haziran 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">UTEP Ankara Ziyaretimiz: Gençlerimizin Geleceğine Birlikte Yön Veriyoruz!</h3>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Ankara Yıldırım Beyazıt Üniversitesi’nin değerli akademisyenleri ve öğrencileri, UTEP Ankara Şubemizde Başkanımız Metin Pile’yi ziyaret etti.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">FinTeclub kulübü olarak gerçekleşen verimli görüşmede; öğrencilerimizin kişisel, akademik ve kariyer gelişimlerine nasıl daha fazla katkı sağlayabileceğimiz üzerine fikir alışverişinde bulunuldu.</p>
-                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;">Gençlerimizin yanında olmaya, bilgi ve tecrübelerimizi paylaşarak onların geleceğine değer katmaya devam edeceğiz.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>UTEP Ankara Ziyaretimiz: Gençlerimizin Geleceğine Birlikte Yön Veriyoruz!</h3>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Ankara Yıldırım Beyazıt Üniversitesi’nin değerli akademisyenleri ve öğrencileri, UTEP Ankara Şubemizde Başkanımız Metin Pile’yi ziyaret etti.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>FinTeclub kulübü olarak gerçekleşen verimli görüşmede; öğrencilerimizin kişisel, akademik ve kariyer gelişimlerine nasıl daha fazla katkı sağlayabileceğimiz üzerine fikir alışverişinde bulunuldu.</p>
+                            <p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom: 10px;" data-i18n>Gençlerimizin yanında olmaya, bilgi ve tecrübelerimizi paylaşarak onların geleceğine değer katmaya devam edeceğiz.</p>
                             <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 6px; font-size: 0.95rem; color: #cbd5e1;">
-                                <div>📌 <strong>Detaylar:</strong> <a href="https://www.instagram.com/utepankara/" target="_blank" style="color: #93c5fd; text-decoration: none;">instagram.com/utepankara</a></div>
-                                <div>🤝 <strong>Ev Sahibi:</strong> UTEP Ankara Şube Başkanı Metin Pile</div>
-                                <div>🏫 <strong>Katılımcılar:</strong> AYBÜ Akademisyenleri ve FinTeclub Öğrencileri</div>
+                                <div data-i18n-html>📌 <strong>Detaylar:</strong> <a href="https://www.instagram.com/utepankara/" target="_blank" style="color: #93c5fd; text-decoration: none;">instagram.com/utepankara</a></div>
+                                <div data-i18n-html>🤝 <strong>Ev Sahibi:</strong> UTEP Ankara Şube Başkanı Metin Pile</div>
+                                <div data-i18n-html>🏫 <strong>Katılımcılar:</strong> AYBÜ Akademisyenleri ve FinTeclub Öğrencileri</div>
                                 <div style="color: #93c5fd; font-weight: 600; margin-top: 6px;">#UTEPAnkara #AnkaraYıldırımBeyazıtÜniversitesi #Mentörlük #AkranDanışmanlığı #Gençlik #Eğitim #Kariyer #Ankara</div>
                             </div>
                         </div>
-                        <a href="https://www.instagram.com/p/DZr7M_hjKNJ/?igsh=OGdyMzczYnY5Y2Ns" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Detayları İncele &rarr;</a>
+                        <a href="https://www.instagram.com/p/DZr7M_hjKNJ/?igsh=OGdyMzczYnY5Y2Ns" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;" data-i18n>Detayları İncele &rarr;</a>
                     </div>
                 </div>
 
@@ -283,18 +287,18 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Temmuz–Ağustos 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Temmuz–Ağustos 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler!</h3>
-                            <p class="announcement-description">Temmuz–Ağustos 2026 döneminde farklı şehirlerde yapay zekâ, büyük dil modelleri, Microsoft 365 Copilot, Figma, IoT ve İHA alanlarında yüz yüze eğitimler düzenleniyor. Başvuru tarihleri şehir ve eğitime göre değişiyor. Detayları Kariyer Pusulan’daki program sayfasından inceleyip BTK Akademi üzerinden başvurunu tamamlayabilirsin.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler!</h3>
+                            <p class="announcement-description" data-i18n>Temmuz–Ağustos 2026 döneminde farklı şehirlerde yapay zekâ, büyük dil modelleri, Microsoft 365 Copilot, Figma, IoT ve İHA alanlarında yüz yüze eğitimler düzenleniyor. Başvuru tarihleri şehir ve eğitime göre değişiyor. Detayları Kariyer Pusulan’daki program sayfasından inceleyip BTK Akademi üzerinden başvurunu tamamlayabilirsin.</p>
                             <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px; font-size: 0.95rem; color: #cbd5e1;">
-                                <div>📌 <strong>Detaylar:</strong> <a href="https://kariyerpusulan.com" target="_blank" style="color: #93c5fd; text-decoration: none;">kariyerpusulan.com</a></div>
-                                <div>🔎 <strong>Program adı:</strong> BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler</div>
-                                <div>👤 <strong>Kanal:</strong> @btkakademi</div>
+                                <div data-i18n-html>📌 <strong>Detaylar:</strong> <a href="https://kariyerpusulan.com" target="_blank" style="color: #93c5fd; text-decoration: none;">kariyerpusulan.com</a></div>
+                                <div data-i18n-html>🔎 <strong>Program adı:</strong> BTK Akademi Şehrinize Geliyor: Yüz Yüze Eğitimler</div>
+                                <div data-i18n-html>👤 <strong>Kanal:</strong> @btkakademi</div>
                                 <div style="color: #93c5fd; font-weight: 600; margin-top: 4px;">#KariyerPusulan #BTKAkademi #YapayZeka #ÜcretsizEğitim</div>
                             </div>
                         </div>
-                        <a href="https://kariyerpusulan.com" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Detayları İncele &rarr;</a>
+                        <a href="https://kariyerpusulan.com" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;" data-i18n>Detayları İncele &rarr;</a>
                     </div>
                 </div>
 
@@ -306,17 +310,17 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">24 Haziran 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>24 Haziran 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Dijital Avrupa Programı Ortak Bulma Etkinliği</h3>
-                            <p class="announcement-description">📢 DEP4ALL tarafından Dijital Avrupa Programı 10. Çağrı dönemi kapsamında proje hazırlayan kuruluşlara yönelik çevrim içi ortak bulma etkinliği düzenleniyor! Etkinlik kapsamında katılımcılar; potansiyel konsorsiyum ortaklarıyla tanışabilecek, uzmanlık alanlarını ve proje fikirlerini paylaşabilecek, Avrupa çapındaki iş birliği ağlarını genişletebilecek ve farklı ülkelerden paydaşlarla doğrudan bağlantı kurabileceklerdir.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>Dijital Avrupa Programı Ortak Bulma Etkinliği</h3>
+                            <p class="announcement-description" data-i18n>📢 DEP4ALL tarafından Dijital Avrupa Programı 10. Çağrı dönemi kapsamında proje hazırlayan kuruluşlara yönelik çevrim içi ortak bulma etkinliği düzenleniyor! Etkinlik kapsamında katılımcılar; potansiyel konsorsiyum ortaklarıyla tanışabilecek, uzmanlık alanlarını ve proje fikirlerini paylaşabilecek, Avrupa çapındaki iş birliği ağlarını genişletebilecek ve farklı ülkelerden paydaşlarla doğrudan bağlantı kurabileceklerdir.</p>
                             <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px; font-size: 0.95rem; color: #cbd5e1;">
-                                <div>📅 <strong>Tarih:</strong> 24 Haziran 2026</div>
-                                <div>🕑 <strong>Saat:</strong> 14.00 – 16.00 (TSİ)</div>
-                                <div>💻 <strong>Platform:</strong> Çevrim içi</div>
+                                <div data-i18n-html>📅 <strong>Tarih:</strong> 24 Haziran 2026</div>
+                                <div data-i18n-html>🕑 <strong>Saat:</strong> 14.00 – 16.00 (TSİ)</div>
+                                <div data-i18n-html>💻 <strong>Platform:</strong> Çevrim içi</div>
                             </div>
                         </div>
-                        <a href="https://tinyurl.com/3u8wuxrz" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;">Etkinliğe Kayıt Ol &rarr;</a>
+                        <a href="https://tinyurl.com/3u8wuxrz" target="_blank" class="uyelik-butonu" style="width: fit-content; min-width: 200px; text-align: center; box-sizing: border-box; margin-top: 15px;" data-i18n>Etkinliğe Kayıt Ol &rarr;</a>
                     </div>
                 </div>
 
@@ -328,12 +332,12 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Mayıs 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Mayıs 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Çubuk Karagöl Pikniği</h3>
-                            <p class="announcement-description">Kulübümüz üyeleri ve hocalarımızın katılımıyla doğayla iç içe, keyifli anlar paylaştığımız geleneksel Karagöl pikniği etkinliğimiz.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>Çubuk Karagöl Pikniği</h3>
+                            <p class="announcement-description" data-i18n>Kulübümüz üyeleri ve hocalarımızın katılımıyla doğayla iç içe, keyifli anlar paylaştığımız geleneksel Karagöl pikniği etkinliğimiz.</p>
                         </div>
-                        <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="#" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
 
@@ -345,12 +349,12 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Kasım 2025</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Kasım 2025</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Uluslararası Öğrenci Günü</h3>
-                            <p class="announcement-description">Farklı kültürlerden gelen uluslararası öğrencilerimizle bir araya gelerek kültürel etkileşimi ve dostluğu pekiştirdiğimiz özel gün kutlaması.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>Uluslararası Öğrenci Günü</h3>
+                            <p class="announcement-description" data-i18n>Farklı kültürlerden gelen uluslararası öğrencilerimizle bir araya gelerek kültürel etkileşimi ve dostluğu pekiştirdiğimiz özel gün kutlaması.</p>
                         </div>
-                        <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="#" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
 
@@ -362,12 +366,12 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Mayıs 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Mayıs 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Dostluk Maçları</h3>
-                            <p class="announcement-description">Öğrencilerimiz ve akademisyenlerimiz arasında sporun birleştirici gücüyle düzenlenen, tatlı rekabetin ve dostluğun kazandığı spor karşılaşmaları.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>Dostluk Maçları</h3>
+                            <p class="announcement-description" data-i18n>Öğrencilerimiz ve akademisyenlerimiz arasında sporun birleştirici gücüyle düzenlenen, tatlı rekabetin ve dostluğun kazandığı spor karşılaşmaları.</p>
                         </div>
-                        <a href="#" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="#" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
 
@@ -379,12 +383,12 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Nisan 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Nisan 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Tanışma Etkinliği</h3>
-                            <p class="announcement-description">Yeni katılan üyelerimizle tanışarak kulübümüzü okula tanıttığımız ve gelecek projelerimizi paylaştığımız samimi sezon başlangıcı buluşması.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>Tanışma Etkinliği</h3>
+                            <p class="announcement-description" data-i18n>Yeni katılan üyelerimizle tanışarak kulübümüzü okula tanıttığımız ve gelecek projelerimizi paylaştığımız samimi sezon başlangıcı buluşması.</p>
                         </div>
-                        <a href="tanisma.html" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="tanisma.html" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
 
@@ -396,12 +400,12 @@
                     <div class="announcement-content-col">
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Nisan 2026</span>
+                                <span style="background-color: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" data-i18n>Nisan 2026</span>
                             </div>
-                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;">Teknopark Ankara Teknik Gezisi</h3>
-                            <p class="announcement-description">Teknoloji ve inovasyon merkezlerini yakından incelemek, profesyonel iş ortamlarını yerinde deneyimlemek amacıyla gerçekleştirdiğimiz teknik gezi.</p>
+                            <h3 class="card-title" style="text-align: left; margin-top: 0; margin-bottom: 10px;" data-i18n>Teknopark Ankara Teknik Gezisi</h3>
+                            <p class="announcement-description" data-i18n>Teknoloji ve inovasyon merkezlerini yakından incelemek, profesyonel iş ortamlarını yerinde deneyimlemek amacıyla gerçekleştirdiğimiz teknik gezi.</p>
                         </div>
-                        <a href="teknopark.html" class="card-link">Daha fazlası &rarr;</a>
+                        <a href="teknopark.html" class="card-link" data-i18n>Daha fazlası &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -437,6 +441,33 @@
             return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
+        const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
+
+        function renderDynamicAnnouncements(items, container) {
+            container.innerHTML = '';
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const imageHtml = item.image
+                    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" class="img-fluid rounded">`
+                    : '';
+                const ctaText = t(item.cta || 'Daha fazlası');
+                const linkHtml = item.link
+                    ? `<a href="${escapeHtml(item.link)}" target="_blank" class="card-link">${escapeHtml(ctaText)} &rarr;</a>`
+                    : '';
+                card.innerHTML =
+                    `<div class="announcement-image-col">${imageHtml}</div>` +
+                    `<div class="announcement-content-col">` +
+                        `<div>` +
+                            `<h3 class="card-title" style="text-align:left; margin-top:0; margin-bottom:10px;">${escapeHtml(t(item.title || ''))}</h3>` +
+                            `<p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom:10px;">${escapeHtml(t(item.description || ''))}</p>` +
+                        `</div>` +
+                        linkHtml +
+                    `</div>`;
+                container.appendChild(card);
+            });
+        }
+
         fetch('site-data.json?t=' + Date.now())
             .then(res => res.json())
             .then(data => {
@@ -445,30 +476,12 @@
                 const container = document.getElementById('dynamic-announcements');
                 if (!container) return;
 
-                items.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    const imageHtml = item.image
-                        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || '')}" class="img-fluid rounded">`
-                        : '';
-                    const ctaText = item.cta || 'Daha fazlası';
-                    const linkHtml = item.link
-                        ? `<a href="${escapeHtml(item.link)}" target="_blank" class="card-link">${escapeHtml(ctaText)} &rarr;</a>`
-                        : '';
-                    card.innerHTML =
-                        `<div class="announcement-image-col">${imageHtml}</div>` +
-                        `<div class="announcement-content-col">` +
-                            `<div>` +
-                                `<h3 class="card-title" style="text-align:left; margin-top:0; margin-bottom:10px;">${escapeHtml(item.title || '')}</h3>` +
-                                `<p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom:10px;">${escapeHtml(item.description || '')}</p>` +
-                            `</div>` +
-                            linkHtml +
-                        `</div>`;
-                    container.appendChild(card);
-                });
+                renderDynamicAnnouncements(items, container);
+                document.addEventListener('ftc:langchange', () => renderDynamicAnnouncements(items, container));
             })
             .catch(() => {});
     })();
     </script>
+    <script src="i18n.js"></script>
 </body>
 </html>

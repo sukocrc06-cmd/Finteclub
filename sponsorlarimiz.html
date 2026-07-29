@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FinTeClub Sponsorlarımız">
-    <title>Sponsorlarımız - FinTeClub</title>
+    <title data-i18n>Sponsorlarımız - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -12,36 +12,40 @@
 <body>
     <script src="maintenance-check.js"></script>
     <nav class="navbar">
+        <div class="lang-switch" id="lang-switch">
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
         <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Anasayfa</a></li>
-            <li><a href="duyurular.html">Duyurular</a></li>
-            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="index.html" data-i18n>Anasayfa</a></li>
+            <li><a href="duyurular.html" data-i18n>Duyurular</a></li>
+            <li><a href="hakkimizda.html" data-i18n>Hakkımızda</a></li>
             <li class="dropdown">
-                <a href="ekip.html" class="dropdown-toggle">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <a href="ekip.html" class="dropdown-toggle"><span data-i18n>Yönetim ve Ekip</span> <span class="arrow">&#9662;</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
-                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
-                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
-                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
-                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
-                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                    <li><a href="ekip.html#yonetim-kurulu" data-i18n>Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu" data-i18n>Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya" data-i18n>Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim" data-i18n>Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu" data-i18n>Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje" data-i18n>Yazılım ve Proje Kurulu</a></li>
                 </ul>
             </li>
-            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
-            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
-            <li><a href="sponsorlarimiz.html" class="active">Sponsorlarımız</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
+            <li><a href="amac-ve-faaliyetler.html" data-i18n>Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html" class="active" data-i18n>Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" data-i18n>İletişim</a></li>
         </ul>
     </nav>
 
     <!-- Page Header Section -->
     <section class="sponsors-header" style="padding-top: 140px; text-align: center;">
-        <h1 style="font-size: 3rem; margin-top: 40px; font-weight: 700; color: #ffffff;">Sponsorlarımız</h1>
+        <h1 style="font-size: 3rem; margin-top: 40px; font-weight: 700; color: #ffffff;" data-i18n>Sponsorlarımız</h1>
         <hr style="width: 60%; border: none; border-top: 2px solid rgba(255,255,255,0.1); margin: 20px auto 30px auto;">
     </section>
 
@@ -104,9 +108,9 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">Anadolu Döner & Cafe Çubuk</h2>
-                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>Sponsorumuz</p>
                     <div class="sponsor-address-block">
-                        <strong>Adres</strong>
+                        <strong data-i18n>Adres</strong>
                         Cumhuriyet Mah. Kıbrıs Cad. No:8
                     </div>
                     <div class="sponsor-btn-container">
@@ -133,9 +137,9 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">Kahveci Hacıbaba</h2>
-                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>Sponsorumuz</p>
                     <div class="sponsor-address-block">
-                        <strong>Adres</strong>
+                        <strong data-i18n>Adres</strong>
                         Kızılay, Selanik Cd No:39,06400
                     </div>
                 </div>
@@ -154,7 +158,7 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">AvukatApp</h2>
-                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>Sponsorumuz</p>
                     <div class="sponsor-btn-container">
                         <a href="https://instagram.com/avukatapptr" target="_blank" class="sponsor-action-btn instagram">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -168,7 +172,7 @@
                                 <line x1="2" y1="12" x2="22" y2="12"/>
                                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                             </svg>
-                            Web Sitesi
+                            <span data-i18n>Web Sitesi</span>
                         </a>
                     </div>
                 </div>
@@ -187,10 +191,10 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">Muhammet Kasap</h2>
-                    <p class="sponsor-modal-subtitle">Destekçimiz</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>Destekçimiz</p>
                     <div class="sponsor-address-block">
-                        <strong>Hakkında</strong>
-                        FinTeClub etkinliklerine lezzet katan değerli sponsorluk desteği ve katkılarıyla yanımızda.
+                        <strong data-i18n>Hakkında</strong>
+                        <span data-i18n>FinTeClub etkinliklerine lezzet katan değerli sponsorluk desteği ve katkılarıyla yanımızda.</span>
                     </div>
                 </div>
             </div>
@@ -208,9 +212,9 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">Çubuk Belediyesi</h2>
-                    <p class="sponsor-modal-subtitle">Sponsorumuz / Destekçimiz</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>Sponsorumuz / Destekçimiz</p>
                     <div class="sponsor-address-block">
-                        <strong>Adres</strong>
+                        <strong data-i18n>Adres</strong>
                         Atatürk Mahallesi Alparslan Türkeş Caddesi No:1 Çubuk/ANKARA/TÜRKİYE
                     </div>
                     <div class="sponsor-btn-container">
@@ -237,9 +241,9 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">Begüm'ün Mutfağı</h2>
-                    <p class="sponsor-modal-subtitle">Sponsorumuz</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>Sponsorumuz</p>
                     <div class="sponsor-address-block">
-                        <strong>Adres</strong>
+                        <strong data-i18n>Adres</strong>
                         Dumlupınar, Binali Yıldırım Bulvarı 85/A, 06760 Çubuk/Ankara
                     </div>
                     <div class="sponsor-btn-container">
@@ -266,9 +270,9 @@
                 </div>
                 <div class="sponsor-modal-right">
                     <h2 class="sponsor-modal-title">Hammurabi</h2>
-                    <p class="sponsor-modal-subtitle">SPONSORUMUZ</p>
+                    <p class="sponsor-modal-subtitle" data-i18n>SPONSORUMUZ</p>
                     <div class="sponsor-address-block">
-                        <strong>Web Sitesi</strong>
+                        <strong data-i18n>Web Sitesi</strong>
                         hammurabi.tr
                         <br><br>
                         <strong>Instagram</strong>
@@ -287,7 +291,7 @@
                                 <line x1="2" y1="12" x2="22" y2="12"/>
                                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                             </svg>
-                            Web Sitesi
+                            <span data-i18n>Web Sitesi</span>
                         </a>
                     </div>
                 </div>
@@ -353,5 +357,6 @@
             }
         });
     </script>
+    <script src="i18n.js"></script>
 </body>
 </html>

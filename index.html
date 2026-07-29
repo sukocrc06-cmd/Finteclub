@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Next-Generation Data Connectivity platform providing interconnected digital solutions.">
-    <title>Anasayfa - FinTeClub</title>
+    <title data-i18n>Anasayfa - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <style>
     @keyframes homepageLogoSpin3D {
@@ -67,34 +67,38 @@
     <!-- Splash Screen Intro -->
     <div id="intro-splash">
         <video id="intro-video" src="intro.mp4" autoplay muted playsinline></video>
-        <button id="skip-intro">Geç</button>
+        <button id="skip-intro" data-i18n>Geç</button>
     </div>
 
     <nav class="navbar">
+        <div class="lang-switch" id="lang-switch">
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
         <ul class="nav-links" id="nav-links">
-            <li><a href="index.html" class="active">Anasayfa</a></li>
-            <li><a href="duyurular.html">Duyurular</a></li>
-            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="index.html" class="active" data-i18n>Anasayfa</a></li>
+            <li><a href="duyurular.html" data-i18n>Duyurular</a></li>
+            <li><a href="hakkimizda.html" data-i18n>Hakkımızda</a></li>
             <li class="dropdown">
-                <a href="ekip.html" class="dropdown-toggle">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <a href="ekip.html" class="dropdown-toggle"><span data-i18n>Yönetim ve Ekip</span> <span class="arrow">&#9662;</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
-                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
-                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
-                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
-                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
-                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                    <li><a href="ekip.html#yonetim-kurulu" data-i18n>Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu" data-i18n>Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya" data-i18n>Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim" data-i18n>Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu" data-i18n>Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje" data-i18n>Yazılım ve Proje Kurulu</a></li>
                 </ul>
             </li>
-            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
-            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
-            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
+            <li><a href="amac-ve-faaliyetler.html" data-i18n>Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html" data-i18n>Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" data-i18n>İletişim</a></li>
         </ul>
     </nav>
     <section class="hero" id="hero">
@@ -103,9 +107,9 @@
                 <img id="homepage-logo" src="Yeni-beyaz-font-Logo.png" alt="FinTeClub Logo" class="homepage-logo-spin-final" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
             </div>
             <div class="hero-content">
-                <h3>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
+                <h3 data-i18n>ANKARA YILDIRIM BEYAZIT ÜNİVERSİTESİ</h3>
                 <h1>FinTeClub</h1>
-                <h2>FİNANS VE TEKNOLOJİ KULÜBÜ</h2>
+                <h2 data-i18n>FİNANS VE TEKNOLOJİ KULÜBÜ</h2>
             </div>
         </div>
     </section>
@@ -114,25 +118,25 @@
     <section class="question-section">
         <div class="question-card">
             <div class="question-header">
-                <h2>Bize Soru Sor</h2>
-                <p>Finans ve teknoloji dünyası, etkinliklerimiz veya kulübümüz hakkında merak ettiğiniz her şeyi sorabilirsiniz.</p>
+                <h2 data-i18n>Bize Soru Sor</h2>
+                <p data-i18n>Finans ve teknoloji dünyası, etkinliklerimiz veya kulübümüz hakkında merak ettiğiniz her şeyi sorabilirsiniz.</p>
             </div>
-            
+
             <form id="ask-question-form" class="question-form">
                 <div class="question-field">
-                    <label for="q-name">Ad Soyad</label>
-                    <input type="text" id="q-name" class="question-input" required placeholder="Adınız ve Soyadınız">
+                    <label for="q-name" data-i18n>Ad Soyad</label>
+                    <input type="text" id="q-name" class="question-input" required placeholder="Adınız ve Soyadınız" data-i18n-placeholder>
                 </div>
                 <div class="question-field">
-                    <label for="q-email">E-posta Adresi</label>
-                    <input type="email" id="q-email" class="question-input" required placeholder="ornek@email.com">
+                    <label for="q-email" data-i18n>E-posta Adresi</label>
+                    <input type="email" id="q-email" class="question-input" required placeholder="ornek@email.com" data-i18n-placeholder>
                 </div>
                 <div class="question-field">
-                    <label for="q-message">Mesajınız</label>
-                    <textarea id="q-message" class="question-input" required rows="5" placeholder="Sorunuzu buraya yazın..."></textarea>
+                    <label for="q-message" data-i18n>Mesajınız</label>
+                    <textarea id="q-message" class="question-input" required rows="5" placeholder="Sorunuzu buraya yazın..." data-i18n-placeholder></textarea>
                 </div>
-                
-                <button type="submit" id="submit-question-btn" class="uyelik-butonu" style="display: block; width: 100%; margin: 10px 0; text-align: center; border-radius: 40px; font-size: 1.1rem; padding: 16px 40px;">Gönder</button>
+
+                <button type="submit" id="submit-question-btn" class="uyelik-butonu" style="display: block; width: 100%; margin: 10px 0; text-align: center; border-radius: 40px; font-size: 1.1rem; padding: 16px 40px;" data-i18n>Gönder</button>
                 <div id="submit-status" style="font-size: 0.95rem; font-weight: 600; text-align: center; margin-top: 10px; display: none;"></div>
             </form>
         </div>
@@ -277,7 +281,7 @@
                     e.preventDefault();
                     submitStatus.style.display = 'block';
                     submitStatus.style.color = '#cbd5e1';
-                    submitStatus.textContent = 'Gönderiliyor...';
+                    submitStatus.textContent = window.FTC_i18n ? window.FTC_i18n.t('Gönderiliyor...') : 'Gönderiliyor...';
                     submitBtn.disabled = true;
 
                     const name = document.getElementById('q-name').value.trim();
@@ -392,17 +396,19 @@
                         }, 4000);
                     }
 
+                    const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
                     if (emailSent || githubSaved) {
-                        showToast('Sorunuz başarıyla gönderildi! Teşekkür ederiz.');
+                        showToast(t('Sorunuz başarıyla gönderildi! Teşekkür ederiz.'));
                         questionForm.reset();
                     } else {
                         // Fallback/Simulation successful toast for offline or testing mode
-                        showToast('Sorunuz başarıyla iletildi! Teşekkür ederiz.');
+                        showToast(t('Sorunuz başarıyla iletildi! Teşekkür ederiz.'));
                         questionForm.reset();
                     }
                 });
             }
         })();
     </script>
+    <script src="i18n.js"></script>
 </body>
 </html>

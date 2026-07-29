@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FinTeClub İletişim">
-    <title>İletişim - FinTeClub</title>
+    <title data-i18n>İletişim - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -37,30 +37,34 @@
 <body>
     <script src="maintenance-check.js"></script>
     <nav class="navbar">
+        <div class="lang-switch" id="lang-switch">
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
         <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Anasayfa</a></li>
-            <li><a href="duyurular.html">Duyurular</a></li>
-            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="index.html" data-i18n>Anasayfa</a></li>
+            <li><a href="duyurular.html" data-i18n>Duyurular</a></li>
+            <li><a href="hakkimizda.html" data-i18n>Hakkımızda</a></li>
             <li class="dropdown">
-                <a href="ekip.html" class="dropdown-toggle">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <a href="ekip.html" class="dropdown-toggle"><span data-i18n>Yönetim ve Ekip</span> <span class="arrow">&#9662;</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
-                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
-                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
-                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
-                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
-                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                    <li><a href="ekip.html#yonetim-kurulu" data-i18n>Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu" data-i18n>Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya" data-i18n>Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim" data-i18n>Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu" data-i18n>Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje" data-i18n>Yazılım ve Proje Kurulu</a></li>
                 </ul>
             </li>
-            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
-            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
-            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
-            <li><a href="iletisim.html" class="active">İletişim</a></li>
+            <li><a href="amac-ve-faaliyetler.html" data-i18n>Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html" data-i18n>Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" class="active" data-i18n>İletişim</a></li>
         </ul>
     </nav>
 
@@ -99,17 +103,17 @@
 
         <!-- Right Column - Form & Links -->
         <div class="contact-right" style="width: 55%; display: flex; flex-direction: column; text-align: center; gap: 20px; padding-left: 20px;">
-            <h1 style="font-size: 3.5rem; font-weight: 700; margin: 0; color: #ffffff;">İletişim</h1>
-            <p style="font-size: 1.2rem; line-height: 1.5; color: #e2e8f0; margin: 0;">Hemen üye olmak için üye formunu bağlantıya tıklayarak veya QR kodu kullanarak doldurabilirsiniz.</p>
-            <a href="https://docs.google.com/forms/d/1OGbMZlQHUZJbjsiPK99hosLc1oauXrQS72xBrzFiins/viewform?edit_requested=true" target="_blank" class="uyelik-butonu">Üyelik Formunu Doldur</a>
-            <p style="font-size: 1.2rem; margin-top: 15px; color: #e2e8f0;">Tüm soru, görüş ve önerileriniz için ekibimizle iletişime geçebilirsiniz.</p>
+            <h1 style="font-size: 3.5rem; font-weight: 700; margin: 0; color: #ffffff;" data-i18n>İletişim</h1>
+            <p style="font-size: 1.2rem; line-height: 1.5; color: #e2e8f0; margin: 0;" data-i18n>Hemen üye olmak için üye formunu bağlantıya tıklayarak veya QR kodu kullanarak doldurabilirsiniz.</p>
+            <a href="https://docs.google.com/forms/d/1OGbMZlQHUZJbjsiPK99hosLc1oauXrQS72xBrzFiins/viewform?edit_requested=true" target="_blank" class="uyelik-butonu" data-i18n>Üyelik Formunu Doldur</a>
+            <p style="font-size: 1.2rem; margin-top: 15px; color: #e2e8f0;" data-i18n>Tüm soru, görüş ve önerileriniz için ekibimizle iletişime geçebilirsiniz.</p>
             
             <!-- Bottom Contact & QR Grid -->
             <div class="qr-social-container" style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 20px; text-align: left; flex-wrap: wrap;">
                 
                 <!-- Functional QR -->
                 <div style="text-align: center; flex-shrink: 0;">
-                    <h3 style="color: #ffffff; font-size: 1.2rem; margin-bottom: 10px; font-weight: 600;">Üye Kayıt Formu</h3>
+                    <h3 style="color: #ffffff; font-size: 1.2rem; margin-bottom: 10px; font-weight: 600;" data-i18n>Üye Kayıt Formu</h3>
                     <img src="qr code.png" alt="Üye Kayıt Formu QR Kodu" style="max-width: 200px; width: 100%; height: auto; display: block; margin: 10px auto; border-radius: 12px; border: 4px solid white; pointer-events: none;">
                 </div>
 
@@ -152,5 +156,6 @@
             });
         }
     </script>
+    <script src="i18n.js"></script>
 </body>
 </html>

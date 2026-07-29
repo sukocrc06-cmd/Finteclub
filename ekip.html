@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FinTeClub Yönetim ve Ekip">
-    <title>Yönetim ve Ekip - FinTeClub</title>
+    <title data-i18n>Yönetim ve Ekip - FinTeClub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -62,37 +62,41 @@
 <body>
     <script src="maintenance-check.js"></script>
     <nav class="navbar">
+        <div class="lang-switch" id="lang-switch">
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
         <button class="hamburger" aria-label="Toggle navigation" id="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
         <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Anasayfa</a></li>
-            <li><a href="duyurular.html">Duyurular</a></li>
-            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="index.html" data-i18n>Anasayfa</a></li>
+            <li><a href="duyurular.html" data-i18n>Duyurular</a></li>
+            <li><a href="hakkimizda.html" data-i18n>Hakkımızda</a></li>
             <li class="dropdown">
-                <a href="ekip.html" class="dropdown-toggle active">Yönetim ve Ekip <span class="arrow">&#9662;</span></a>
+                <a href="ekip.html" class="dropdown-toggle active"><span data-i18n>Yönetim ve Ekip</span> <span class="arrow">&#9662;</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="ekip.html#yonetim-kurulu">Yönetim Kurulu</a></li>
-                    <li><a href="ekip.html#denetleme-kurulu">Denetleme Kurulu</a></li>
-                    <li><a href="ekip.html#sosyal-medya">Sosyal Medya Kurulu</a></li>
-                    <li><a href="ekip.html#kurumsal-iletisim">Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
-                    <li><a href="ekip.html#etkinlik-kurulu">Etkinlik Kurulu</a></li>
-                    <li><a href="ekip.html#yazilim-proje">Yazılım ve Proje Kurulu</a></li>
+                    <li><a href="ekip.html#yonetim-kurulu" data-i18n>Yönetim Kurulu</a></li>
+                    <li><a href="ekip.html#denetleme-kurulu" data-i18n>Denetleme Kurulu</a></li>
+                    <li><a href="ekip.html#sosyal-medya" data-i18n>Sosyal Medya Kurulu</a></li>
+                    <li><a href="ekip.html#kurumsal-iletisim" data-i18n>Kurumsal İletişim ve Sponsorluk Kurulu</a></li>
+                    <li><a href="ekip.html#etkinlik-kurulu" data-i18n>Etkinlik Kurulu</a></li>
+                    <li><a href="ekip.html#yazilim-proje" data-i18n>Yazılım ve Proje Kurulu</a></li>
                 </ul>
             </li>
-            <li><a href="amac-ve-faaliyetler.html">Amaç ve Faaliyetler</a></li>
-            <li><a href="etkinliklerimiz.html">Etkinliklerimiz</a></li>
-            <li><a href="sponsorlarimiz.html">Sponsorlarımız</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
+            <li><a href="amac-ve-faaliyetler.html" data-i18n>Amaç ve Faaliyetler</a></li>
+            <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
+            <li><a href="sponsorlarimiz.html" data-i18n>Sponsorlarımız</a></li>
+            <li><a href="iletisim.html" data-i18n>İletişim</a></li>
         </ul>
     </nav>
 
     <!-- Page Header Section -->
     <section class="about-section" style="padding-top: 140px; text-align: center;">
         <div class="container" style="max-width: 1000px;">
-            <h1 style="font-size: 3.5rem; font-weight: 700; color: #ffffff; margin-bottom: 20px;">Yönetim ve Ekip</h1>
+            <h1 style="font-size: 3.5rem; font-weight: 700; color: #ffffff; margin-bottom: 20px;" data-i18n>Yönetim ve Ekip</h1>
             <hr style="width: 80%; border: none; border-top: 2px solid rgba(255,255,255,0.2); margin: 0 auto 50px auto;">
         </div>
     <!-- 1. YÖNETİM KURULU SECTION -->
@@ -181,13 +185,16 @@
             });
         }
 
+        // Translation helper for dynamically rendered (JSON-driven) content
+        const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
+
         // Card rendering helpers
         function createMemberCard(member, board, index) {
             const hasContact = member.email || member.linkedin;
-            const contactBtn = hasContact 
-                ? `<button class="member-contact-btn" data-board="${board}" data-index="${index}">İletişim</button>`
+            const contactBtn = hasContact
+                ? `<button class="member-contact-btn" data-board="${board}" data-index="${index}">${t('İletişim')}</button>`
                 : '';
-                
+
             const imgHtml = (member.image && member.image !== 'avatar-placeholder')
                 ? `<img src="${member.image}" alt="${member.name}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; display: block; border: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);">`
                 : `<div class="member-avatar">
@@ -201,7 +208,7 @@
                 <div class="member-card">
                     ${imgHtml}
                     <h4 class="member-name">${member.name}</h4>
-                    <p class="member-role" style="${member.role === 'Kulüp Danışmanı' ? 'margin-bottom: 5px;' : ''}">${member.role}</p>
+                    <p class="member-role" style="${member.role === 'Kulüp Danışmanı' ? 'margin-bottom: 5px;' : ''}">${t(member.role)}</p>
                     ${contactBtn}
                 </div>
             `;
@@ -224,7 +231,7 @@
                 const globalIndex = members.indexOf(advisor);
                 html += `
                     <div class="team-group" style="margin-bottom: 60px; text-align: center;">
-                        <h2 class="team-group-title">Kulüp Danışmanı</h2>
+                        <h2 class="team-group-title">${t('Kulüp Danışmanı')}</h2>
                         <div style="display: flex; justify-content: center; width: 100%;">
                             <div style="max-width: 280px; width: 100%;">
                                 ${createMemberCard(advisor, 'yonetim-kurulu', globalIndex)}
@@ -235,7 +242,7 @@
             }
 
             html += `
-                <h2 class="team-group-title">Yönetim Kurulu (Asil)</h2>
+                <h2 class="team-group-title">${t('Yönetim Kurulu (Asil)')}</h2>
                 <div class="members-grid">
                     ${asilList.map(member => {
                         const globalIndex = members.indexOf(member);
@@ -246,7 +253,7 @@
 
             if (yedekList.length > 0) {
                 html += `
-                    <h2 class="team-group-title" style="margin-top: 60px;">Yönetim Kurulu (Yedek Üyeler)</h2>
+                    <h2 class="team-group-title" style="margin-top: 60px;">${t('Yönetim Kurulu (Yedek Üyeler)')}</h2>
                     <div class="members-grid">
                         ${yedekList.map(member => {
                             const globalIndex = members.indexOf(member);
@@ -267,7 +274,7 @@
             const yedekList = members.filter(m => m.role === 'Yedek Üye');
 
             let html = `
-                <h2 class="team-group-title">Denetleme Kurulu (Asil)</h2>
+                <h2 class="team-group-title">${t('Denetleme Kurulu (Asil)')}</h2>
                 <div class="members-grid">
                     ${asilList.map(member => {
                         const globalIndex = members.indexOf(member);
@@ -278,7 +285,7 @@
 
             if (yedekList.length > 0) {
                 html += `
-                    <h2 class="team-group-title" style="margin-top: 60px;">Denetleme Kurulu (Yedek Üyeler)</h2>
+                    <h2 class="team-group-title" style="margin-top: 60px;">${t('Denetleme Kurulu (Yedek Üyeler)')}</h2>
                     <div class="members-grid">
                         ${yedekList.map(member => {
                             const globalIndex = members.indexOf(member);
@@ -297,10 +304,10 @@
 
             // Extract display title
             let displayTitle = '';
-            if (boardName === 'sosyal-medya') displayTitle = 'Sosyal Medya Kurulu';
-            else if (boardName === 'kurumsal-iletisim') displayTitle = 'Kurumsal İletişim ve Sponsorluk Kurulu';
-            else if (boardName === 'etkinlik-kurulu') displayTitle = 'Etkinlik Kurulu';
-            else if (boardName === 'yazilim-proje') displayTitle = 'Yazılım ve Proje Kurulu';
+            if (boardName === 'sosyal-medya') displayTitle = t('Sosyal Medya Kurulu');
+            else if (boardName === 'kurumsal-iletisim') displayTitle = t('Kurumsal İletişim ve Sponsorluk Kurulu');
+            else if (boardName === 'etkinlik-kurulu') displayTitle = t('Etkinlik Kurulu');
+            else if (boardName === 'yazilim-proje') displayTitle = t('Yazılım ve Proje Kurulu');
 
             let html = `
                 <h2 class="team-group-title">${displayTitle}</h2>
@@ -334,7 +341,7 @@
                 
                 // If the dynamic button has a data-title attribute, use that custom role (e.g. Kurul Temsilcisi overrides YK Temsilcisi in sub-boards)
                 const customTitle = btn.getAttribute('data-title');
-                modalRole.textContent = customTitle || member.role;
+                modalRole.textContent = t(customTitle || member.role);
 
                 if (member.image && member.image !== 'avatar-placeholder') {
                     modalImgContainer.innerHTML = `<img src="${member.image}" alt="${member.name}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(59, 130, 246, 0.5); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); display: block;">`;
@@ -389,6 +396,17 @@
         }
 
         // Fetch and Render logic
+        let teamData = null;
+
+        function renderTeamPage(data) {
+            renderYonetimKurulu(data['yonetim-kurulu'], 'yonetim-kurulu-container');
+            renderDenetlemeKurulu(data['denetleme-kurulu'], 'denetleme-kurulu-container');
+            renderStandardBoard(data['sosyal-medya'], 'sosyal-medya', 'sosyal-medya-container');
+            renderStandardBoard(data['kurumsal-iletisim'], 'kurumsal-iletisim', 'kurumsal-iletisim-container');
+            renderStandardBoard(data['etkinlik-kurulu'], 'etkinlik-kurulu', 'etkinlik-kurulu-container');
+            renderStandardBoard(data['yazilim-proje'], 'yazilim-proje', 'yazilim-proje-container');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             fetch('ekip.json')
                 .then(res => {
@@ -396,22 +414,23 @@
                     return res.json();
                 })
                 .then(data => {
-                    renderYonetimKurulu(data['yonetim-kurulu'], 'yonetim-kurulu-container');
-                    renderDenetlemeKurulu(data['denetleme-kurulu'], 'denetleme-kurulu-container');
-                    renderStandardBoard(data['sosyal-medya'], 'sosyal-medya', 'sosyal-medya-container');
-                    renderStandardBoard(data['kurumsal-iletisim'], 'kurumsal-iletisim', 'kurumsal-iletisim-container');
-                    renderStandardBoard(data['etkinlik-kurulu'], 'etkinlik-kurulu', 'etkinlik-kurulu-container');
-                    renderStandardBoard(data['yazilim-proje'], 'yazilim-proje', 'yazilim-proje-container');
-
+                    teamData = data;
+                    renderTeamPage(data);
                     setupModalSystem(data);
                 })
                 .catch(err => {
                     console.error('Error rendering team page:', err);
                     document.querySelectorAll('.team-container').forEach(c => {
-                        c.innerHTML = `<p style="color: #ef4444; font-size: 1.1rem; text-align: center; margin: 40px 0;">Ekip bilgileri yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.</p>`;
+                        c.innerHTML = `<p style="color: #ef4444; font-size: 1.1rem; text-align: center; margin: 40px 0;">${t('Ekip bilgileri yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.')}</p>`;
                     });
                 });
         });
+
+        // Re-render dynamic member cards/titles when the language toggles
+        document.addEventListener('ftc:langchange', () => {
+            if (teamData) renderTeamPage(teamData);
+        });
     </script>
+    <script src="i18n.js"></script>
 </body>
 </html>
