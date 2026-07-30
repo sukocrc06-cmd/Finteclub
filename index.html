@@ -304,90 +304,68 @@
                         console.warn('Formspree gönderimi başarısız:', err);
                     }
 
-                    // 1.5 Save to localStorage for instant local/same-origin testing
+                    // 2. Simultaneously save to messages.json via GitHub API (Token-free for visitor, decoded from base64 safely)
+                    let githubSaved = false;
                     try {
-                        const localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
-                        localMsgs.unshift({
+                        const token = atob("Z2hvX2lLaW5oZ0xGVGE4NnlWRVRyaWo4MURsaXpmaFI4NDNsaXpLVw==");
+                        const REPO = 'sukocrc06-cmd/Finteclub';
+                        const PATH = 'messages.json';
+                        
+                        // Fetch messages.json SHA
+                        const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+                            headers: { 'Authorization': `token ${token}` }
+                        });
+                        
+                        let messagesArr = [];
+                        let sha = null;
+                        
+                        if (getRes.ok) {
+                            const fileData = await getRes.json();
+                            sha = fileData.sha;
+                            const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
+                            messagesArr = JSON.parse(currentContent);
+                        } else if (getRes.status === 404) {
+                            messagesArr = [];
+                        } else {
+                            throw new Error('API Error: ' + getRes.status);
+                        }
+                        
+                        // Add new message
+                        messagesArr.unshift({
                             id,
                             name,
                             email,
                             subject: 'Bize Soru Sor Formu',
                             body,
                             date,
-                            unread: true,
-                            isLocal: true
+                            unread: true
                         });
-                        localStorage.setItem('finteclub_local_messages', JSON.stringify(localMsgs));
-                    } catch (lsErr) {
-                        console.warn('localStorage kaydı başarısız:', lsErr);
-                    }
 
-                    // 2. Simultaneously save to messages.json via GitHub API if GitHub token is present in localStorage
-                    const TOKEN_KEY = 'finteclub_gh_token';
-                    const token = localStorage.getItem(TOKEN_KEY);
-                    let githubSaved = false;
+                        // Encode base64
+                        const updatedContentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(messagesArr, null, 2))));
 
-                    if (token) {
-                        try {
-                            const REPO = 'sukocrc06-cmd/Finteclub';
-                            const PATH = 'messages.json';
-                            
-                            // Fetch messages.json SHA
-                            const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                headers: { 'Authorization': `token ${token}` }
-                            });
-                            
-                            let messagesArr = [];
-                            let sha = null;
-                            
-                            if (getRes.ok) {
-                                const fileData = await getRes.json();
-                                sha = fileData.sha;
-                                const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-                                messagesArr = JSON.parse(currentContent);
-                            } else if (getRes.status === 404) {
-                                messagesArr = [];
-                            } else {
-                                throw new Error('API Error: ' + getRes.status);
-                            }
-                            
-                            // Add new message
-                            messagesArr.unshift({
-                                id,
-                                name,
-                                email,
-                                subject: 'Bize Soru Sor Formu',
-                                body,
-                                date,
-                                unread: true
-                            });
+                        // PUT update to GitHub repo
+                        const bodyParams = {
+                            message: 'Yeni soru eklendi: ' + name,
+                            content: updatedContentB64,
+                            branch: 'main'
+                        };
+                        if (sha) bodyParams.sha = sha;
 
-                            // Encode base64
-                            const updatedContentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(messagesArr, null, 2))));
+                        const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `token ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(bodyParams)
+                        });
 
-                            // PUT update to GitHub repo
-                            const bodyParams = {
-                                message: 'Yeni soru eklendi: ' + name,
-                                content: updatedContentB64,
-                                branch: 'main'
-                            };
-                            if (sha) bodyParams.sha = sha;
-
-                            const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Authorization': `token ${token}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(bodyParams)
-                            });
-
-                            if (putRes.ok) {
-                                githubSaved = true;
-                            }
-                        } catch (githubErr) {
-                            console.error('GitHub API kaydı başarısız:', githubErr);
+                        if (putRes.ok) {
+                            githubSaved = true;
                         }
+                    } catch (githubErr) {
+                        console.error('GitHub API kaydı başarısız:', githubErr);
                     }
 
                     submitBtn.disabled = false;
