@@ -1662,7 +1662,20 @@
             
             if (!siteData.events) siteData.events = [];
             if (!siteData.documents) siteData.documents = [];
-            if (!inboxMessages || inboxMessages.length === 0) {
+            if (!inboxMessages) inboxMessages = [];
+
+            // Merge local storage messages for dual-channel display
+            let localMsgs = [];
+            try {
+                localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
+            } catch (err) {
+                console.warn('localStorage messages could not be parsed:', err);
+            }
+            const existingIds = new Set(inboxMessages.map(m => m.id));
+            const filteredLocal = localMsgs.filter(m => !existingIds.has(m.id));
+            inboxMessages = [...filteredLocal, ...inboxMessages];
+
+            if (inboxMessages.length === 0) {
                 inboxMessages = [
                     {
                         id: 'm1',
@@ -1684,17 +1697,6 @@
                     }
                 ];
             }
-
-            // Merge local storage messages for dual-channel display
-            let localMsgs = [];
-            try {
-                localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
-            } catch (err) {
-                console.warn('localStorage messages could not be parsed:', err);
-            }
-            const existingIds = new Set(inboxMessages.map(m => m.id));
-            const filteredLocal = localMsgs.filter(m => !existingIds.has(m.id));
-            inboxMessages = [...filteredLocal, ...inboxMessages];
 
             renderAllModules();
             isFetching = false;
