@@ -304,6 +304,24 @@
                         console.warn('Formspree gönderimi başarısız:', err);
                     }
 
+                    // 1.5 Save to localStorage for instant local/same-origin testing
+                    try {
+                        const localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
+                        localMsgs.unshift({
+                            id,
+                            name,
+                            email,
+                            subject: 'Bize Soru Sor Formu',
+                            body,
+                            date,
+                            unread: true,
+                            isLocal: true
+                        });
+                        localStorage.setItem('finteclub_local_messages', JSON.stringify(localMsgs));
+                    } catch (lsErr) {
+                        console.warn('localStorage kaydı başarısız:', lsErr);
+                    }
+
                     // 2. Simultaneously save to messages.json via GitHub API if GitHub token is present in localStorage
                     const TOKEN_KEY = 'finteclub_gh_token';
                     const token = localStorage.getItem(TOKEN_KEY);

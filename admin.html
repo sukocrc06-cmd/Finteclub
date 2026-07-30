@@ -1685,6 +1685,17 @@
                 ];
             }
 
+            // Merge local storage messages for dual-channel display
+            let localMsgs = [];
+            try {
+                localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
+            } catch (err) {
+                console.warn('localStorage messages could not be parsed:', err);
+            }
+            const existingIds = new Set(inboxMessages.map(m => m.id));
+            const filteredLocal = localMsgs.filter(m => !existingIds.has(m.id));
+            inboxMessages = [...filteredLocal, ...inboxMessages];
+
             renderAllModules();
             isFetching = false;
         }
@@ -2100,15 +2111,34 @@
         }
 
         async function toggleMessageReadStatus(id) {
+            let localUpdated = false;
+            try {
+                let localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
+                const localItem = localMsgs.find(m => m.id === id);
+                if (localItem) {
+                    localItem.unread = !localItem.unread;
+                    localStorage.setItem('finteclub_local_messages', JSON.stringify(localMsgs));
+                    localUpdated = true;
+                }
+            } catch (err) {
+                console.warn('localStorage toggle fail:', err);
+            }
+
             const item = inboxMessages.find(m => m.id === id);
             if (!item) return;
+            item.unread = !item.unread;
 
             try {
-                item.unread = !item.unread;
-                await commitMessagesData('Mesaj durum güncellemesi: ' + item.name);
+                if (!item.isLocal) {
+                    await commitMessagesData('Mesaj durum güncellemesi: ' + item.name);
+                }
                 renderMessages();
             } catch (e) {
-                alert('Hata: ' + e.message);
+                if (localUpdated) {
+                    renderMessages();
+                } else {
+                    alert('Hata: ' + e.message);
+                }
             }
         }
 
@@ -2117,12 +2147,32 @@
             if (!item) return;
             if (!confirm(`${item.name} tarafından gönderilen mesajı silmek istediğinize emin misiniz?`)) return;
 
+            let localDeleted = false;
             try {
-                inboxMessages = inboxMessages.filter(m => m.id !== id);
-                await commitMessagesData('Mesaj silindi: ' + item.name);
+                let localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
+                const hasLocal = localMsgs.some(m => m.id === id);
+                if (hasLocal) {
+                    localMsgs = localMsgs.filter(m => m.id !== id);
+                    localStorage.setItem('finteclub_local_messages', JSON.stringify(localMsgs));
+                    localDeleted = true;
+                }
+            } catch (err) {
+                console.warn('localStorage delete fail:', err);
+            }
+
+            inboxMessages = inboxMessages.filter(m => m.id !== id);
+
+            try {
+                if (!item.isLocal) {
+                    await commitMessagesData('Mesaj silindi: ' + item.name);
+                }
                 renderMessages();
             } catch (e) {
-                alert('Hata: ' + e.message);
+                if (localDeleted) {
+                    renderMessages();
+                } else {
+                    alert('Hata: ' + e.message);
+                }
             }
         }
 
