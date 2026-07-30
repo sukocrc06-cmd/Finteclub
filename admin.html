@@ -774,7 +774,6 @@
             <div class="panel">
                 <div class="panel-header">
                     <h2>Gelen Kutusu / İletişim Mesajları</h2>
-                    <button class="btn btn-primary" id="msg-seed-btn">Örnek Mesaj Üret</button>
                 </div>
 
                 <div id="messages-list" style="margin-top: 20px;">
@@ -1578,7 +1577,6 @@
 
         const messagesList = document.getElementById('messages-list');
         const messagesEmpty = document.getElementById('messages-empty');
-        const msgSeedBtn = document.getElementById('msg-seed-btn');
 
         let siteData = null;
         let isFetching = false;
@@ -2128,37 +2126,7 @@
             }
         }
 
-        msgSeedBtn.addEventListener('click', async () => {
-            const names = ['Kaan Çelik', 'Selin Öztürk', 'Mert Aksoy', 'Zeynep Yılmaz'];
-            const emails = ['kaan.celik@gmail.com', 'selinozturk@outlook.com', 'mert12@hotmail.com', 'zeynepy@aybu.edu.tr'];
-            const subjects = ['Üyelik Başvurusu', 'Web Siteniz Hakkında', 'İş Birliği Teklifi', 'Etkinlik Kayıt Sorunu'];
-            const bodies = [
-                'Merhaba, sitenizdeki üyelik formunu doldurdum ancak onay maili gelmedi. Yardımcı olur musunuz?',
-                'Web sitenizin tasarımı ve responsive yapısı çok güzel görünüyor. Emeği geçen arkadaşları tebrik ederim.',
-                'Şirketimiz bünyesindeki finans teknolojileri departmanı ile ortak bir eğitim/seminer planlayabiliriz. Detaylar için iletişime geçebilirsiniz.',
-                'Yarın düzenlenecek olan zirveye kayıt yaptırmak istedim fakat kontenjan dolmuş. Ek bir kontenjan açılacak mı?'
-            ];
 
-            const idx = Math.floor(Math.random() * names.length);
-            const newMsg = {
-                id: 'm' + Date.now(),
-                name: names[idx],
-                email: emails[idx],
-                subject: subjects[idx],
-                body: bodies[idx],
-                date: new Date().toISOString().slice(0, 10),
-                unread: true
-            };
-
-            try {
-                if (!inboxMessages) inboxMessages = [];
-                inboxMessages.unshift(newMsg);
-                await commitMessagesData('Yeni örnek mesaj üretildi');
-                renderMessages();
-            } catch (e) {
-                alert('Hata: ' + e.message);
-            }
-        });
     })();
     </script>
 </body>
