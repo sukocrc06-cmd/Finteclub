@@ -28,7 +28,7 @@
         user-select: none;
         -webkit-user-drag: none;
     }
-    
+
     /* Modern Toast Notification */
     .toast-notification {
         position: fixed;
@@ -54,10 +54,16 @@
         transform: translateY(0);
         opacity: 1;
     }
+    .toast-notification.error {
+        border-color: rgba(239, 68, 68, 0.5);
+    }
     .toast-icon {
         color: #10b981;
         font-size: 1.3rem;
         font-weight: bold;
+    }
+    .toast-notification.error .toast-icon {
+        color: #ef4444;
     }
     </style>
 </head>
@@ -276,152 +282,66 @@
             const submitStatus = document.getElementById('submit-status');
             const submitBtn = document.getElementById('submit-question-btn');
 
+            function showToast(msg, isError) {
+                const existing = document.querySelector('.toast-notification');
+                if (existing) existing.remove();
+
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification' + (isError ? ' error' : '');
+                toast.innerHTML = `<span class="toast-icon">${isError ? '!' : '✓'}</span> <span>${msg}</span>`;
+                document.body.appendChild(toast);
+
+                setTimeout(() => { toast.classList.add('show'); }, 50);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => { toast.remove(); }, 400);
+                }, 4000);
+            }
+
             if (questionForm) {
                 questionForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
+                    const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
+
                     submitStatus.style.display = 'block';
                     submitStatus.style.color = '#cbd5e1';
-                    submitStatus.textContent = window.FTC_i18n ? window.FTC_i18n.t('Gönderiliyor...') : 'Gönderiliyor...';
+                    submitStatus.textContent = t('Gönderiliyor...');
                     submitBtn.disabled = true;
 
                     const name = document.getElementById('q-name').value.trim();
                     const email = document.getElementById('q-email').value.trim();
                     const body = document.getElementById('q-message').value.trim();
-                    const date = new Date().toISOString().slice(0, 10);
-                    const id = 'm' + Date.now();
 
-                    // 1. Send Email Notification via Formspree
-                    const formspreeUrl = 'https://formspree.io/f/mkodelor'; 
-                    let emailSent = false;
+                    // Mesajı güvenli sunucu tarafı API'ye gönder (ziyaretçinin tarayıcısında
+                    // hiçbir GitHub token'ı gerekmez, herkes için çalışır) VE aynı anda
+                    // Formspree'ye göndererek kulüp mailine anlık bildirim gitmesini sağla
+                    let saved = false;
                     try {
-                        const emailRes = await fetch(formspreeUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                            body: JSON.stringify({ name, email, message: body, _subject: 'FinTeClub Yeni İletişim Mesajı' })
-                        });
-                        if (emailRes.ok) emailSent = true;
+                        const [apiRes] = await Promise.all([
+                            fetch('/api/submit-question', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ name, email, message: body })
+                            }),
+                            fetch('https://formspree.io/f/xgogbewa', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                body: JSON.stringify({ name, email, message: body, _subject: 'FinTeClub - Yeni Soru' })
+                            }).catch((err) => { console.warn('Formspree gönderimi başarısız:', err); })
+                        ]);
+                        saved = apiRes.ok;
                     } catch (err) {
-                        console.warn('Formspree gönderimi başarısız:', err);
-                    }
-
-                    // 1.5 Save to localStorage for instant local/same-origin testing
-                    try {
-                        const localMsgs = JSON.parse(localStorage.getItem('finteclub_local_messages') || '[]');
-                        localMsgs.unshift({
-                            id,
-                            name,
-                            email,
-                            subject: 'Bize Soru Sor Formu',
-                            body,
-                            date,
-                            unread: true,
-                            isLocal: true
-                        });
-                        localStorage.setItem('finteclub_local_messages', JSON.stringify(localMsgs));
-                    } catch (lsErr) {
-                        console.warn('localStorage kaydı başarısız:', lsErr);
-                    }
-
-                    // 2. Simultaneously save to messages.json via GitHub API if GitHub token is present in localStorage
-                    const TOKEN_KEY = 'finteclub_gh_token';
-                    const token = localStorage.getItem(TOKEN_KEY);
-                    let githubSaved = false;
-
-                    if (token) {
-                        try {
-                            const REPO = 'sukocrc06-cmd/Finteclub';
-                            const PATH = 'messages.json';
-                            
-                            // Fetch messages.json SHA
-                            const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                headers: { 'Authorization': `token ${token}` }
-                            });
-                            
-                            let messagesArr = [];
-                            let sha = null;
-                            
-                            if (getRes.ok) {
-                                const fileData = await getRes.json();
-                                sha = fileData.sha;
-                                const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-                                messagesArr = JSON.parse(currentContent);
-                            } else if (getRes.status === 404) {
-                                messagesArr = [];
-                            } else {
-                                throw new Error('API Error: ' + getRes.status);
-                            }
-                            
-                            // Add new message
-                            messagesArr.unshift({
-                                id,
-                                name,
-                                email,
-                                subject: 'Bize Soru Sor Formu',
-                                body,
-                                date,
-                                unread: true
-                            });
-
-                            // Encode base64
-                            const updatedContentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(messagesArr, null, 2))));
-
-                            // PUT update to GitHub repo
-                            const bodyParams = {
-                                message: 'Yeni soru eklendi: ' + name,
-                                content: updatedContentB64,
-                                branch: 'main'
-                            };
-                            if (sha) bodyParams.sha = sha;
-
-                            const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Authorization': `token ${token}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(bodyParams)
-                            });
-
-                            if (putRes.ok) {
-                                githubSaved = true;
-                            }
-                        } catch (githubErr) {
-                            console.error('GitHub API kaydı başarısız:', githubErr);
-                        }
+                        console.error('Gönderim başarısız:', err);
                     }
 
                     submitBtn.disabled = false;
                     submitStatus.style.display = 'none';
 
-                    function showToast(msg) {
-                        const existing = document.querySelector('.toast-notification');
-                        if (existing) existing.remove();
-
-                        const toast = document.createElement('div');
-                        toast.className = 'toast-notification';
-                        toast.innerHTML = `<span class="toast-icon">✓</span> <span>${msg}</span>`;
-                        document.body.appendChild(toast);
-
-                        setTimeout(() => {
-                            toast.classList.add('show');
-                        }, 50);
-
-                        setTimeout(() => {
-                            toast.classList.remove('show');
-                            setTimeout(() => {
-                                toast.remove();
-                            }, 400);
-                        }, 4000);
-                    }
-
-                    const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
-                    if (emailSent || githubSaved) {
-                        showToast(t('Sorunuz başarıyla gönderildi! Teşekkür ederiz.'));
+                    if (saved) {
+                        showToast(t('Sorunuz başarıyla gönderildi! Teşekkür ederiz.'), false);
                         questionForm.reset();
                     } else {
-                        // Fallback/Simulation successful toast for offline or testing mode
-                        showToast(t('Sorunuz başarıyla iletildi! Teşekkür ederiz.'));
-                        questionForm.reset();
+                        showToast(t('Bir sorun oluştu, lütfen daha sonra tekrar deneyin.'), true);
                     }
                 });
             }
