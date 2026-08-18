@@ -442,10 +442,13 @@
         }
 
         function linkify(escapedText) {
-            const urlPattern = /\b((?:https?:\/\/)?(?:www\.)?[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}(?:\/[^\s<]*)?)\b/gi;
-            return escapedText.replace(urlPattern, (match) => {
-                const href = /^https?:\/\//i.test(match) ? match : `https://${match}`;
-                return `<a href="${href}" target="_blank" rel="noopener" style="color:#93c5fd; text-decoration:none;">${match}</a>`;
+            const pattern = /(\b(?:https?:\/\/)?(?:www\.)?[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}(?:\/[^\s<]*)?\b)|(#[a-z0-9_çğıöşüÇĞİÖŞÜ]+)/gi;
+            return escapedText.replace(pattern, (match, url, hashtag) => {
+                if (hashtag) {
+                    return `<span style="color:#93c5fd; font-weight:600;">${hashtag}</span>`;
+                }
+                const href = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+                return `<a href="${href}" target="_blank" rel="noopener" style="color:#93c5fd; text-decoration:none;">${url}</a>`;
             });
         }
 
