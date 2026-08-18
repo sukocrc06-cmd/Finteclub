@@ -441,6 +441,14 @@
             return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
+        function linkify(escapedText) {
+            const urlPattern = /\b((?:https?:\/\/)?(?:www\.)?[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}(?:\/[^\s<]*)?)\b/gi;
+            return escapedText.replace(urlPattern, (match) => {
+                const href = /^https?:\/\//i.test(match) ? match : `https://${match}`;
+                return `<a href="${href}" target="_blank" rel="noopener" style="color:#93c5fd; text-decoration:none;">${match}</a>`;
+            });
+        }
+
         const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
 
         function renderDynamicAnnouncements(items, container) {
@@ -460,7 +468,7 @@
                     `<div class="announcement-content-col">` +
                         `<div>` +
                             `<h3 class="card-title" style="text-align:left; margin-top:0; margin-bottom:10px;">${escapeHtml(t(item.title || ''))}</h3>` +
-                            `<p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom:10px;">${escapeHtml(t(item.description || ''))}</p>` +
+                            `<p class="announcement-description" style="-webkit-line-clamp: unset; margin-bottom:10px;">${linkify(escapeHtml(t(item.description || '')))}</p>` +
                         `</div>` +
                         linkHtml +
                     `</div>`;
