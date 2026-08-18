@@ -29,7 +29,7 @@
       "email": "mehmetsarac667@gmail.com"
     },
     {
-      "name": "Müberra Mülayımoğlu",
+      "name": "Müberra Mülayimoğlu",
       "role": "Genel Sekreter",
       "image": "muberra-mulayimoglu.jpg",
       "linkedin": "https://www.linkedin.com/in/m%C3%BCberra-m-1b9135354?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
@@ -43,25 +43,25 @@
       "email": "sudetaspinar23@gmail.com"
     },
     {
-      "name": "Edanur Soyuğur",
+      "name": "Zerda Aydın",
       "role": "YK Üyesi ve SM Kurulu Temsilcisi",
-      "image": "edanur-soyugur.jpg",
-      "linkedin": "https://www.linkedin.com/in/edanur-soyuğur-2957093a6?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "edanursoy38@gmail.com"
+      "image": "zerda-aydin.jpg",
+      "linkedin": "https://www.linkedin.com/in/zerda-aydin-302b62302?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "email": "zerdaaydin702@gmail.com"
     },
     {
-      "name": "Berna Dost",
+      "name": "Sadakat Sudenaz Bayrak",
       "role": "YK Üyesi ve Etkinlik Kurulu Temsilcisi",
-      "image": "berna-dost.jpg",
-      "linkedin": "https://www.linkedin.com/in/berna-d-5591bb224?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "bbernadost@gmail.com"
+      "image": "img/ekip/sadakat-sudenaz-bayrak.jpg",
+      "linkedin": "https://www.linkedin.com/in/sadakatsudenazbayrak",
+      "email": ""
     },
     {
-      "name": "Duygu Baylam",
+      "name": "Sevcan Altun",
       "role": "YK Üyesi ve KİS Kurulu Temsilcisi",
-      "image": "duygu-baylam.jpg",
-      "linkedin": "https://www.linkedin.com/in/duygu-baylam-822347224?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
-      "email": "baylamduygu1518@gmail.com"
+      "image": "img/ekip/sevcan-altun.jpg",
+      "linkedin": "https://www.linkedin.com/in/sevcan-altun-580605343?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
+      "email": "sevcannaltunn@gmail.com"
     },
     {
       "name": "Şükrü Çerçi",
@@ -82,13 +82,6 @@
       "role": "Yedek Üye",
       "image": "img/ekip/irem-denizhan.jpg",
       "linkedin": "",
-      "email": ""
-    },
-    {
-      "name": "Sadakat Sudenaz Bayrak",
-      "role": "Yedek Üye",
-      "image": "img/ekip/sadakat-sudenaz-bayrak.jpg",
-      "linkedin": "https://www.linkedin.com/in/sadakatsudenazbayrak",
       "email": ""
     }
   ],
@@ -138,15 +131,8 @@
   ],
   "sosyal-medya": [
     {
-      "name": "Edanur Soyuğur",
-      "role": "Kurul Temsilcisi",
-      "image": "edanur-soyugur.jpg",
-      "linkedin": "https://www.linkedin.com/in/edanur-soyuğur-2957093a6?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "edanursoy38@gmail.com"
-    },
-    {
       "name": "Zerda Aydın",
-      "role": "Kurul Üyesi",
+      "role": "Kurul Temsilcisi",
       "image": "zerda-aydin.jpg",
       "linkedin": "https://www.linkedin.com/in/zerda-aydin-302b62302?utm_source=share_via&utm_content=profile&utm_medium=member_android",
       "email": "zerdaaydin702@gmail.com"
@@ -179,19 +165,19 @@
       "image": "images/aslı-sarı.jpg",
       "linkedin": "https://www.linkedin.com/in/aslıhan-sarı-571431294",
       "email": "aslihan.sari04@gmail.com"
+    },
+    {
+      "name": "Saim Varol",
+      "role": "Kurul Üyesi",
+      "image": "avatar-placeholder",
+      "linkedin": "",
+      "email": ""
     }
   ],
   "kurumsal-iletisim": [
     {
-      "name": "Duygu Baylam",
-      "role": "Kurul Temsilcisi",
-      "image": "duygu-baylam.jpg",
-      "linkedin": "https://www.linkedin.com/in/duygu-baylam-822347224?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
-      "email": "baylamduygu1518@gmail.com"
-    },
-    {
       "name": "Sevcan Altun",
-      "role": "Kurul Üyesi",
+      "role": "Kurul Temsilcisi",
       "image": "img/ekip/sevcan-altun.jpg",
       "linkedin": "https://www.linkedin.com/in/sevcan-altun-580605343?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
       "email": "sevcannaltunn@gmail.com"
@@ -218,13 +204,6 @@
       "email": ""
     },
     {
-      "name": "Büşranur Oral",
-      "role": "Kurul Üyesi",
-      "image": "avatar-placeholder",
-      "linkedin": "https://www.linkedin.com/in/b%C3%BC%C5%9Franur-oral-011b52402?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "boral7987@gmail.com"
-    },
-    {
       "name": "Yağmur Yücel",
       "role": "Kurul Üyesi",
       "image": "img/ekip/yagmur-yucel.jpg",
@@ -234,11 +213,11 @@
   ],
   "etkinlik-kurulu": [
     {
-      "name": "Berna Dost",
+      "name": "Sadakat Sudenaz Bayrak",
       "role": "Kurul Temsilcisi",
-      "image": "berna-dost.jpg",
-      "linkedin": "https://www.linkedin.com/in/berna-d-5591bb224?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "bbernadost@gmail.com"
+      "image": "img/ekip/sadakat-sudenaz-bayrak.jpg",
+      "linkedin": "https://www.linkedin.com/in/sadakatsudenazbayrak",
+      "email": ""
     },
     {
       "name": "Mustafa Berdan Sönmez",
@@ -252,13 +231,6 @@
       "name": "Buse Ak",
       "role": "Kurul Üyesi",
       "image": "img/ekip/buse-ak.jpg",
-      "linkedin": "",
-      "email": ""
-    },
-    {
-      "name": "Dilara Karakoç",
-      "role": "Kurul Üyesi",
-      "image": "avatar-placeholder",
       "linkedin": "",
       "email": ""
     },
