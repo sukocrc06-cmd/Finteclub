@@ -2327,6 +2327,12 @@ iframe[src*="antigravity"],
     max-height: 115px;
 }
 
+.platin-card-img-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .platin-item {
     display: flex;
     flex-direction: column;
