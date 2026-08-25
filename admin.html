@@ -140,11 +140,44 @@
     #gh-token-row input { width: 100%; margin-top: 6px; }
 
     #save-status { font-size: 0.85rem; color: #6b7280; margin-top: 10px; min-height: 1.2em; text-align: right; }
-    
+
     /* Tabs styling */
     .tab-btn.active {
         color: #0f766e !important;
         border-bottom-color: #0f766e !important;
+    }
+
+    /* ---- Sponsorluk Ayrıcalıkları ---- */
+    #sponsorluk-dashboard .perk-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid #eef0f4;
+    }
+    #sponsorluk-dashboard .perk-row img {
+        width: 52px;
+        height: 52px;
+        object-fit: contain;
+        border-radius: 8px;
+        flex-shrink: 0;
+        background: #f8fafc;
+        border: 1px solid #eef0f4;
+        padding: 4px;
+    }
+    #sponsorluk-dashboard .perk-row .p-info {
+        flex: 1;
+        min-width: 0;
+    }
+    #sponsorluk-dashboard .perk-row .p-info span {
+        font-size: 0.9rem;
+        color: #334155;
+        line-height: 1.4;
+    }
+    #sponsorluk-dashboard .perk-row button.btn-delete {
+        background: #fee2e2; color: #dc2626; border: none; border-radius: 6px;
+        padding: 6px 10px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
+        font-weight: 600;
     }
 </style>
 </head>
@@ -221,11 +254,12 @@
         </div>
 
         <!-- Tab Navigation Bar -->
-        <div class="admin-tabs" style="display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">
+        <div class="admin-tabs" style="display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; flex-wrap: wrap;">
             <button class="tab-btn active" data-tab="ekip" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Ekip Yönetimi</button>
             <button class="tab-btn" data-tab="duyurular" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Duyurular / Sosyal Medya</button>
             <button class="tab-btn" data-tab="etkinlikler" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Etkinlikler</button>
             <button class="tab-btn" data-tab="dokumanlar" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Dokümanlar &amp; Raporlar</button>
+            <button class="tab-btn" data-tab="sponsorluk" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Sponsorluk Ayrıcalıkları</button>
             <button class="tab-btn" data-tab="inbox" style="background: none; border: none; padding: 10px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.2s;">Gelen Kutusu</button>
         </div>
 
@@ -575,8 +609,10 @@
                     }
                     #comprehensive-dashboard .sender-info {
                         display: flex;
-                        flex-direction: column;
-                        gap: 2px;
+                        flex-direction: row;
+                        align-items: baseline;
+                        gap: 8px;
+                        flex-wrap: wrap;
                     }
                     #comprehensive-dashboard .sender-name {
                         font-size: 1.05rem;
@@ -769,11 +805,51 @@
             </div>
         </div>
 
-        <!-- Tab Content 5: Gelen Kutusu -->
+        <!-- Tab Content 5: Sponsorluk Ayrıcalıkları -->
+        <div id="tab-content-sponsorluk" class="tab-content" style="display: none;">
+            <div id="sponsorluk-dashboard">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>Sponsorluk Ayrıcalıkları</h2>
+                        <button class="btn btn-primary" id="perk-toggle-form-btn">+ Yeni Ayrıcalık</button>
+                    </div>
+                    <p style="color: #6b7280; font-size: 0.88rem; margin: -10px 0 20px 0;">
+                        Burada eklenen ayrıcalıklar, sponsorlar sayfasındaki "FinTeClub'lı Olmanın Avantajlarını Keşfet" ekranında üyelere gösterilen kartlarda otomatik olarak görünür.
+                    </p>
+
+                    <div id="perk-form" style="display: none; margin-top: 10px; padding-top: 20px; border-top: 1px solid #eef0f4;">
+                        <h3 id="perk-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Ayrıcalık Ekle</h3>
+                        <input type="hidden" id="perk-edit-id">
+
+                        <div class="field">
+                            <label>Sponsor Logosu (Görsel Yükle)</label>
+                            <input type="file" id="perk-logo-file" accept="image/*">
+                        </div>
+                        <div class="field">
+                            <label>Açıklama</label>
+                            <textarea id="perk-description" rows="3" placeholder="Örn: Anadolu Döner Çubuk şubesinde kişi başı %10 indirim, her ay şu kadar kullanılabilir falan"></textarea>
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                            <button class="btn" id="perk-cancel-btn" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                            <button class="btn btn-primary" id="perk-submit-btn">Ayrıcalığı Kaydet</button>
+                        </div>
+                        <div id="perk-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
+                    </div>
+
+                    <div id="perks-list" style="margin-top: 20px;">
+                        <div class="empty-state" id="perks-empty">Ayrıcalıklar yükleniyor...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content 6: Gelen Kutusu -->
         <div id="tab-content-inbox" class="tab-content" style="display: none;">
             <div class="panel">
                 <div class="panel-header">
                     <h2>Gelen Kutusu / İletişim Mesajları</h2>
+                    <button class="btn btn-primary" id="msg-seed-btn">Örnek Mesaj Üret</button>
                 </div>
 
                 <div id="messages-list" style="margin-top: 20px;">
@@ -1537,6 +1613,204 @@
     })();
     </script>
 
+    <!-- ============ THIRD SCRIPT: SPONSORLUK AYRICALIKLARI ============ -->
+    <script>
+    (function () {
+        const DATA_PATH = 'site-data.json';
+        const REPO = 'sukocrc06-cmd/Finteclub';
+        const BRANCH = 'main';
+        const TOKEN_KEY = 'finteclub_gh_token';
+
+        const toggleFormBtn = document.getElementById('perk-toggle-form-btn');
+        const perkForm = document.getElementById('perk-form');
+        const formTitle = document.getElementById('perk-form-title');
+        const editIdInput = document.getElementById('perk-edit-id');
+        const logoFileInput = document.getElementById('perk-logo-file');
+        const descriptionInput = document.getElementById('perk-description');
+        const cancelBtn = document.getElementById('perk-cancel-btn');
+        const submitBtn = document.getElementById('perk-submit-btn');
+        const saveStatus = document.getElementById('perk-save-status');
+        const listContainer = document.getElementById('perks-list');
+        const listEmpty = document.getElementById('perks-empty');
+
+        let perksData = null;
+
+        const observer = new MutationObserver(() => {
+            const dashboard = document.getElementById('dashboard');
+            const tab = document.getElementById('tab-content-sponsorluk');
+            if (dashboard && dashboard.style.display === 'block' && tab && tab.style.display === 'block') {
+                if (!perksData) loadPerks();
+            }
+        });
+        const dashboardEl = document.getElementById('dashboard');
+        const tabEl = document.getElementById('tab-content-sponsorluk');
+        if (dashboardEl) observer.observe(dashboardEl, { attributes: true, attributeFilter: ['style'] });
+        if (tabEl) observer.observe(tabEl, { attributes: true, attributeFilter: ['style'] });
+        if (dashboardEl && dashboardEl.style.display === 'block' && tabEl && tabEl.style.display === 'block') {
+            loadPerks();
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function getGitHubToken() {
+            const tokenInput = document.getElementById('github-token');
+            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
+            if (!token) throw new Error('GitHub token gerekli.');
+            return token;
+        }
+
+        async function getFileSha(path, token) {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                headers: { Authorization: `token ${token}` }
+            });
+            if (res.status === 404) return null;
+            if (!res.ok) throw new Error('Dosya sha bilgisi alınamadı (' + path + ', HTTP ' + res.status + ')');
+            const data = await res.json();
+            return data.sha;
+        }
+
+        async function putFile(path, base64Content, message, token, sha) {
+            const body = { message, content: base64Content, branch: BRANCH };
+            if (sha) body.sha = sha;
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+                method: 'PUT',
+                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || ('HTTP ' + res.status));
+            }
+        }
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function loadPerks() {
+            try {
+                const res = await fetch(DATA_PATH + '?t=' + Date.now());
+                perksData = await res.json();
+            } catch (e) {
+                perksData = {};
+            }
+            if (!perksData.sponsorPerks) perksData.sponsorPerks = [];
+            renderPerks();
+        }
+
+        function renderPerks() {
+            listContainer.querySelectorAll('.perk-row').forEach(el => el.remove());
+            const items = perksData.sponsorPerks || [];
+            if (items.length === 0) {
+                listEmpty.style.display = 'block';
+                return;
+            }
+            listEmpty.style.display = 'none';
+            items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'perk-row';
+                const imgHtml = item.logo
+                    ? `<img src="${escapeHtml(item.logo)}" alt="">`
+                    : `<div style="width:52px;height:52px;border-radius:8px;background:#eef0f4;flex-shrink:0;"></div>`;
+                row.innerHTML =
+                    imgHtml +
+                    `<div class="p-info"><span>${escapeHtml(item.description || '')}</span></div>` +
+                    `<button class="btn-delete" id="perk-del-${item.id}">Sil</button>`;
+                row.querySelector(`#perk-del-${item.id}`).addEventListener('click', () => deletePerk(item.id));
+                listContainer.appendChild(row);
+            });
+        }
+
+        toggleFormBtn.addEventListener('click', () => {
+            if (perkForm.style.display === 'block') {
+                resetForm();
+            } else {
+                resetForm();
+                perkForm.style.display = 'block';
+                formTitle.textContent = 'Yeni Ayrıcalık Ekle';
+            }
+        });
+
+        cancelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetForm();
+        });
+
+        function resetForm() {
+            editIdInput.value = '';
+            logoFileInput.value = '';
+            descriptionInput.value = '';
+            perkForm.style.display = 'none';
+            saveStatus.textContent = '';
+        }
+
+        submitBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            saveStatus.textContent = '';
+
+            const description = descriptionInput.value.trim();
+            const file = logoFileInput.files[0];
+
+            if (!description) { saveStatus.textContent = 'Açıklama gerekli.'; return; }
+
+            try {
+                const token = getGitHubToken();
+                saveStatus.textContent = 'Kaydediliyor...';
+
+                let logoPath = '';
+                if (file) {
+                    const base64 = await readFileAsBase64(file);
+                    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+                    logoPath = 'images/' + Date.now() + '-' + safeName;
+                    await putFile(logoPath, base64, 'Sponsorluk ayrıcalığı logosu eklendi: ' + safeName, token, null);
+                }
+
+                const newItem = {
+                    id: 'p' + Date.now(),
+                    logo: logoPath,
+                    description
+                };
+
+                if (!perksData.sponsorPerks) perksData.sponsorPerks = [];
+                perksData.sponsorPerks.push(newItem);
+
+                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(perksData, null, 2))));
+                const sha = await getFileSha(DATA_PATH, token);
+                await putFile(DATA_PATH, contentB64, 'Sponsorluk ayrıcalığı eklendi', token, sha);
+
+                renderPerks();
+                resetForm();
+                saveStatus.textContent = 'Ayrıcalık başarıyla kaydedildi!';
+            } catch (e) {
+                saveStatus.textContent = 'Hata: ' + e.message;
+            }
+        });
+
+        async function deletePerk(id) {
+            if (!confirm('Bu ayrıcalığı silmek istediğinize emin misiniz?')) return;
+            try {
+                const token = getGitHubToken();
+                perksData.sponsorPerks = (perksData.sponsorPerks || []).filter(p => p.id !== id);
+
+                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(perksData, null, 2))));
+                const sha = await getFileSha(DATA_PATH, token);
+                await putFile(DATA_PATH, contentB64, 'Sponsorluk ayrıcalığı silindi', token, sha);
+
+                renderPerks();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        }
+    })();
+    </script>
+
     <!-- ============ FOURTH SCRIPT: EVENTS, DOCUMENTS & MESSAGES ============ -->
     <script>
     (function () {
@@ -1577,6 +1851,7 @@
 
         const messagesList = document.getElementById('messages-list');
         const messagesEmpty = document.getElementById('messages-empty');
+        const msgSeedBtn = document.getElementById('msg-seed-btn');
 
         let siteData = null;
         let isFetching = false;
@@ -1618,7 +1893,7 @@
             if (isFetching) return;
             isFetching = true;
             try {
-                const token = localStorage.getItem(TOKEN_KEY) || atob("Z2hvX2lLaW5oZ0xGVGE4NnlWRVRyaWo4MURsaXpmaFI4NDNsaXpLVw==");
+                const token = localStorage.getItem(TOKEN_KEY);
                 
                 // 1. Fetch site-data.json
                 if (token) {
@@ -1662,9 +1937,7 @@
             
             if (!siteData.events) siteData.events = [];
             if (!siteData.documents) siteData.documents = [];
-            if (!inboxMessages) inboxMessages = [];
-
-            if (inboxMessages.length === 0) {
+            if (!inboxMessages || inboxMessages.length === 0) {
                 inboxMessages = [
                     {
                         id: 'm1',
@@ -1703,7 +1976,7 @@
 
         function getGitHubToken() {
             const tokenInput = document.getElementById('github-token');
-            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY) || atob("Z2hvX2lLaW5oZ0xGVGE4NnlWRVRyaWo4MURsaXpmaFI4NDNsaXpLVw==");
+            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
             if (!token) throw new Error('GitHub token gerekli.');
             return token;
         }
@@ -2128,7 +2401,37 @@
             }
         }
 
+        msgSeedBtn.addEventListener('click', async () => {
+            const names = ['Kaan Çelik', 'Selin Öztürk', 'Mert Aksoy', 'Zeynep Yılmaz'];
+            const emails = ['kaan.celik@gmail.com', 'selinozturk@outlook.com', 'mert12@hotmail.com', 'zeynepy@aybu.edu.tr'];
+            const subjects = ['Üyelik Başvurusu', 'Web Siteniz Hakkında', 'İş Birliği Teklifi', 'Etkinlik Kayıt Sorunu'];
+            const bodies = [
+                'Merhaba, sitenizdeki üyelik formunu doldurdum ancak onay maili gelmedi. Yardımcı olur musunuz?',
+                'Web sitenizin tasarımı ve responsive yapısı çok güzel görünüyor. Emeği geçen arkadaşları tebrik ederim.',
+                'Şirketimiz bünyesindeki finans teknolojileri departmanı ile ortak bir eğitim/seminer planlayabiliriz. Detaylar için iletişime geçebilirsiniz.',
+                'Yarın düzenlenecek olan zirveye kayıt yaptırmak istedim fakat kontenjan dolmuş. Ek bir kontenjan açılacak mı?'
+            ];
 
+            const idx = Math.floor(Math.random() * names.length);
+            const newMsg = {
+                id: 'm' + Date.now(),
+                name: names[idx],
+                email: emails[idx],
+                subject: subjects[idx],
+                body: bodies[idx],
+                date: new Date().toISOString().slice(0, 10),
+                unread: true
+            };
+
+            try {
+                if (!inboxMessages) inboxMessages = [];
+                inboxMessages.unshift(newMsg);
+                await commitMessagesData('Yeni örnek mesaj üretildi');
+                renderMessages();
+            } catch (e) {
+                alert('Hata: ' + e.message);
+            }
+        });
     })();
     </script>
 </body>
