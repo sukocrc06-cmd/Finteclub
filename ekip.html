@@ -199,6 +199,17 @@
             });
         }
 
+        // Alt basliga tiklaninca mobil menuyu kapat ki sayfa kaydiktan sonra gorunsun
+        document.querySelectorAll('.dropdown-menu a').forEach((link) => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    navLinks.classList.remove('open');
+                    hamburger.classList.remove('active');
+                    document.querySelector('.dropdown').classList.remove('open');
+                }
+            });
+        });
+
         // Translation helper for dynamically rendered (JSON-driven) content
         const t = (s) => (window.FTC_i18n ? window.FTC_i18n.t(s) : s);
 
