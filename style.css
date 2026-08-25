@@ -2245,3 +2245,226 @@ iframe[src*="antigravity"],
     visibility: hidden !important;
     pointer-events: none !important;
 }
+
+/* ============================================
+   YENİ SPONSOR SAYFASI STİLLERİ (Platin / Altın / Marquee)
+   ============================================ */
+
+.sponsors-tier-section {
+    padding: 40px 0 20px;
+}
+
+.tier-title {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+.platin-title {
+    color: #e2e8f0;
+    text-shadow: 0 0 20px rgba(226, 232, 240, 0.25);
+}
+
+.altin-title {
+    color: #fbbf24;
+    text-shadow: 0 0 18px rgba(251, 191, 36, 0.3);
+}
+
+/* Platin Grid - büyük kartlar */
+.platin-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.platin-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.platin-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: rgba(226, 232, 240, 0.45);
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), 0 0 25px rgba(226, 232, 240, 0.15);
+}
+
+.platin-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Altın Grid */
+.altin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    justify-content: center;
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+}
+
+.altin-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 140px;
+    background: rgba(5, 13, 29, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 18px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.altin-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(251, 191, 36, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 18px rgba(251, 191, 36, 0.12);
+}
+
+.altin-card img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.altin-card img.round-logo {
+    border-radius: 50%;
+}
+
+/* ========== KAYAN MARQUEE ========== */
+.sponsor-marquee-section {
+    padding: 30px 0 90px;
+    overflow: hidden;
+}
+
+.marquee-hint {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.sponsor-marquee {
+    height: 480px;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+
+.sponsor-track {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    align-items: center;
+    animation: scroll-up 28s linear infinite; /* orta-hızlı */
+    will-change: transform;
+}
+
+/* Hover'da DA DURMASIN (sürekli aksın) */
+.sponsor-track:hover {
+    animation-play-state: running;
+}
+
+.marquee-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 130px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    padding: 18px;
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+}
+
+.marquee-item:hover {
+    transform: scale(1.07);
+    border-color: rgba(59, 130, 246, 0.45);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+}
+
+.marquee-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.marquee-item img.round-logo {
+    border-radius: 50%;
+}
+
+@keyframes scroll-up {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .platin-grid {
+        gap: 24px;
+    }
+    .platin-card {
+        width: 220px;
+        height: 150px;
+    }
+    .altin-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 16px;
+    }
+    .altin-card {
+        height: 120px;
+    }
+    .sponsor-marquee {
+        height: 420px;
+    }
+    .marquee-item {
+        width: 200px;
+        height: 110px;
+    }
+    .tier-title {
+        font-size: 1.35rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .platin-card {
+        width: 180px;
+        height: 130px;
+    }
+    .marquee-item {
+        width: 170px;
+        height: 100px;
+    }
+}
