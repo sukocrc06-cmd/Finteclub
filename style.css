@@ -2316,6 +2316,48 @@ iframe[src*="antigravity"],
     object-fit: contain;
 }
 
+.platin-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.sponsor-wordmark {
+    font-family: "Space Grotesk", "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.4px;
+    color: #d1477a;
+}
+
+.sponsor-socials {
+    display: flex;
+    gap: 10px;
+}
+
+.sponsor-social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+.sponsor-social-btn:hover {
+    transform: scale(1.15) translateY(-3px);
+    background: rgba(59, 130, 246, 0.3);
+    color: #ffffff;
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
 /* Altın Grid */
 .altin-grid {
     display: grid;
@@ -2383,19 +2425,20 @@ iframe[src*="antigravity"],
 }
 
 .sponsor-marquee {
-    height: 480px;
+    width: 100%;
     overflow: hidden;
     position: relative;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
 }
 
 .sponsor-track {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    width: max-content;
     gap: 26px;
     align-items: center;
-    animation: scroll-up 28s linear infinite; /* orta-hızlı */
+    animation: scroll-left 28s linear infinite; /* orta-hızlı */
     will-change: transform;
 }
 
@@ -2435,12 +2478,12 @@ iframe[src*="antigravity"],
     border-radius: 50%;
 }
 
-@keyframes scroll-up {
+@keyframes scroll-left {
     0% {
-        transform: translateY(0);
+        transform: translateX(0);
     }
     100% {
-        transform: translateY(-50%);
+        transform: translateX(-50%);
     }
 }
 
@@ -2459,9 +2502,6 @@ iframe[src*="antigravity"],
     }
     .altin-card {
         height: 120px;
-    }
-    .sponsor-marquee {
-        height: 420px;
     }
     .marquee-item {
         width: 200px;
