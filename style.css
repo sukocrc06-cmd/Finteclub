@@ -2318,12 +2318,12 @@ iframe[src*="antigravity"],
 
 .platin-card-labeled {
     flex-direction: column;
-    gap: 6px;
-    padding: 14px 24px;
+    gap: 2px;
+    padding: 10px 24px;
 }
 
 .platin-card-labeled img {
-    max-height: 118px;
+    max-height: 132px;
 }
 
 .platin-item {
