@@ -57,5 +57,13 @@
       "date": "2026-07-25",
       "unread": false
     }
+  ],
+  "sponsorPerks": [
+    {
+      "id": "p1787683818968",
+      "name": "AvukatApp",
+      "logo": "images/avukatapp.png",
+      "description": "Deneme %10"
+    }
   ]
 }
