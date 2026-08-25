@@ -16,7 +16,7 @@
     #sp-overlay.open { display: flex; }
     .sp-card {
         position: relative;
-        width: 100%; max-width: 420px;
+        width: 100%; max-width: 440px;
         border-radius: 28px;
         padding: 36px 28px;
         box-sizing: border-box;
@@ -83,11 +83,14 @@
         background: #fff; color: #111; border-radius: 16px;
         padding: 16px; margin-bottom: 14px; text-align: center;
     }
+    .sp-perk-card strong {
+        display: block; font-size: 1rem; color: #0f172a; margin-bottom: 4px;
+    }
     .sp-perk-card img {
-        max-width: 100%; max-height: 70px; object-fit: contain; margin-bottom: 10px;
+        max-width: 100%; max-height: 60px; object-fit: contain; margin-bottom: 10px;
     }
     .sp-perk-card p {
-        font-size: 0.85rem; line-height: 1.4; margin: 0; color: #222;
+        font-size: 0.85rem; line-height: 1.4; margin: 0; color: #334155;
     }
     .sp-empty-perks { color: #cbd5e1; font-size: 0.9rem; padding: 20px 0; }
     `;
@@ -196,7 +199,6 @@
             submitBtn.disabled = false;
             submitBtn.textContent = 'Gönder';
 
-            // Sponsorluk ayrıcalıklarını oku ve kart ekranını göster
             memberNameEl.textContent = 'Üye Adı: ' + firstName + ' ' + lastName;
             perksListEl.innerHTML = '<div class="sp-empty-perks">Yükleniyor...</div>';
 
@@ -210,7 +212,8 @@
                 } else {
                     perksListEl.innerHTML = perks.map(function (p) {
                         var imgHtml = p.logo ? '<img src="' + escapeHtml(p.logo) + '" alt="">' : '';
-                        return '<div class="sp-perk-card">' + imgHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
+                        var titleHtml = p.name ? '<strong>' + escapeHtml(p.name) + '</strong>' : '';
+                        return '<div class="sp-perk-card">' + imgHtml + titleHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
                     }).join('');
                 }
             } catch (e) {
