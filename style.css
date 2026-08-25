@@ -2379,9 +2379,9 @@ iframe[src*="antigravity"],
 /* Altın Grid */
 .altin-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     justify-content: center;
-    gap: 24px;
+    gap: 40px;
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px 40px;
@@ -2392,11 +2392,12 @@ iframe[src*="antigravity"],
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 140px;
+    max-width: 280px;
+    height: 180px;
     background: rgba(5, 13, 29, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    padding: 18px;
+    padding: 24px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
@@ -2409,8 +2410,8 @@ iframe[src*="antigravity"],
 }
 
 .altin-card img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
 }
 
@@ -2424,7 +2425,7 @@ iframe[src*="antigravity"],
 }
 
 .altin-grid-single .altin-card {
-    width: 220px;
+    width: 280px;
 }
 
 /* ========== KAYAN MARQUEE ========== */
@@ -2515,11 +2516,15 @@ iframe[src*="antigravity"],
         height: 150px;
     }
     .altin-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 24px;
     }
     .altin-card {
-        height: 120px;
+        max-width: 220px;
+        height: 150px;
+    }
+    .altin-grid-single .altin-card {
+        width: 220px;
     }
     .marquee-item {
         width: 200px;
@@ -2534,6 +2539,16 @@ iframe[src*="antigravity"],
     .platin-card {
         width: 180px;
         height: 130px;
+    }
+    .altin-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    .altin-card {
+        max-width: 180px;
+        height: 130px;
+    }
+    .altin-grid-single .altin-card {
+        width: 180px;
     }
     .marquee-item {
         width: 170px;
