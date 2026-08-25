@@ -2273,6 +2273,11 @@ iframe[src*="antigravity"],
     text-shadow: 0 0 18px rgba(251, 191, 36, 0.3);
 }
 
+.urun-title {
+    color: #93c5fd;
+    text-shadow: 0 0 18px rgba(147, 197, 253, 0.3);
+}
+
 /* Platin Grid - büyük kartlar */
 .platin-grid {
     display: flex;
@@ -2351,6 +2356,15 @@ iframe[src*="antigravity"],
 
 .altin-card img.round-logo {
     border-radius: 50%;
+}
+
+.altin-grid-single {
+    grid-template-columns: none;
+    justify-items: center;
+}
+
+.altin-grid-single .altin-card {
+    width: 220px;
 }
 
 /* ========== KAYAN MARQUEE ========== */
