@@ -2526,6 +2526,10 @@ iframe[src*="antigravity"],
     .altin-grid-single .altin-card {
         width: 220px;
     }
+    .urun-etkinlik-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
     .marquee-item {
         width: 200px;
         height: 110px;
@@ -2533,9 +2537,23 @@ iframe[src*="antigravity"],
     .tier-title {
         font-size: 1.35rem;
     }
+    .platin-card-labeled {
+        padding: 10px 12px 8px;
+    }
+    .platin-card-labeled img {
+        max-height: 95px;
+    }
+    .sponsor-wordmark {
+        font-size: 1.1rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .platin-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+    }
     .platin-card {
         width: 180px;
         height: 130px;
@@ -2549,6 +2567,19 @@ iframe[src*="antigravity"],
     }
     .altin-grid-single .altin-card {
         width: 180px;
+    }
+    .urun-etkinlik-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .platin-card-labeled {
+        padding: 8px 10px 6px;
+    }
+    .platin-card-labeled img {
+        max-height: 78px;
+    }
+    .sponsor-wordmark {
+        font-size: 1rem;
     }
     .marquee-item {
         width: 170px;
