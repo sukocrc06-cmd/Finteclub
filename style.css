@@ -2316,6 +2316,15 @@ iframe[src*="antigravity"],
     object-fit: contain;
 }
 
+.platin-card-labeled {
+    flex-direction: column;
+    gap: 10px;
+}
+
+.platin-card-labeled img {
+    max-height: 60%;
+}
+
 .platin-item {
     display: flex;
     flex-direction: column;
@@ -2325,9 +2334,10 @@ iframe[src*="antigravity"],
 
 .sponsor-wordmark {
     font-family: "Space Grotesk", "Inter", sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 600;
     letter-spacing: -0.4px;
+    text-decoration: none;
     color: #d1477a;
 }
 
