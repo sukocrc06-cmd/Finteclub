@@ -287,8 +287,8 @@
 
                     var file = new File([blob], 'finteclub-uyelik-karti.png', { type: 'image/png' });
 
-                    // 1. Öncelik: Web Share API (iOS ve Android'de native "Fotoğraflara Kaydet" panelini açar)
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    // 1. Öncelik (sadece mobilde): Web Share API (iOS/Android'de native "Kaydet" panelini açar)
+                    if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
                             await navigator.share({ files: [file], title: 'FinTeClub Üyelik Kartı' });
                             if (newTab) newTab.close();
