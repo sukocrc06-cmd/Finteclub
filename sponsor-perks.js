@@ -93,28 +93,22 @@
     }
     .sp-empty-perks { color: #cbd5e1; font-size: 0.9rem; padding: 20px 0; }
 
-    #sp-mobile-fab { display: none; }
+    /* Navbar'daki "FinTeClub'lı Ol" butonu: kart paletiyle uyumlu, sade */
+    #sponsor-perks-open-btn {
+        background: linear-gradient(160deg, #0a1030 0%, #1c2a6e 100%) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        box-shadow: none !important;
+    }
     @media (max-width: 992px) {
-        #sponsor-perks-open-btn { display: none !important; }
-        #sp-mobile-fab {
-            display: flex;
-            align-items: center;
+        #sponsor-perks-open-btn {
+            display: none;
+            width: 100%;
             justify-content: center;
-            position: fixed;
-            bottom: 14px;
-            right: 14px;
-            z-index: 999997;
-            padding: 10px 16px;
-            border-radius: 999px;
-            background: #0a0e1a;
-            color: #3b82f6;
-            border: 2px solid #3b82f6;
-            font-weight: 700;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            cursor: pointer;
-            box-shadow: 0 0 16px rgba(59,130,246,0.7), inset 0 0 8px rgba(59,130,246,0.3);
-            font-family: Inter, Arial, sans-serif;
+            margin-top: 8px;
+        }
+        #nav-links.open #sponsor-perks-open-btn {
+            display: flex !important;
         }
     }
     `;
@@ -123,7 +117,6 @@
     document.head.appendChild(styleTag);
 
     var overlayHtml = `
-    <button id="sp-mobile-fab" type="button" class="sponsor-perks-open-btn">FinTeClub'lı Ol</button>
     <div id="sp-overlay">
         <div class="sp-card" id="sp-card">
             <button class="sp-close" id="sp-close-btn">&times;</button>
@@ -267,16 +260,59 @@
             }
             downloadBtn.disabled = true;
             downloadBtn.textContent = 'Hazırlanıyor...';
+
+            var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            // Pop-up engellenmemesi için (Web Share desteklenmezse kullanılacak yedek) sekmeyi hemen açıyoruz
+            var newTab = isMobile ? window.open('', '_blank') : null;
+
             window.html2canvas(target, { backgroundColor: null, scale: 2 }).then(function (canvas) {
-                var link = document.createElement('a');
-                link.download = 'finteclub-uyelik-karti.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                downloadBtn.disabled = false;
-                downloadBtn.textContent = 'Kartı İndir';
+                canvas.toBlob(async function (blob) {
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = 'Kartı İndir';
+
+                    if (!blob) {
+                        if (newTab) newTab.close();
+                        alert('Görsel oluşturulamadı, tekrar dener misin?');
+                        return;
+                    }
+
+                    var file = new File([blob], 'finteclub-uyelik-karti.png', { type: 'image/png' });
+
+                    // 1. Öncelik: Web Share API (iOS ve Android'de native "Fotoğraflara Kaydet" panelini açar)
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        if (newTab) newTab.close();
+                        try {
+                            await navigator.share({ files: [file], title: 'FinTeClub Üyelik Kartı' });
+                            return;
+                        } catch (shareErr) {
+                            // kullanıcı paylaşım ekranını iptal etmiş olabilir, sorun değil
+                            return;
+                        }
+                    }
+
+                    var dataUrl = URL.createObjectURL(blob);
+
+                    // 2. Yedek: mobilde yeni sekmede aç, uzun basıp kaydetmesini iste
+                    if (isMobile && newTab) {
+                        newTab.document.write(
+                            '<html><head><title>FinTeClub Üyelik Kartı</title></head>' +
+                            '<body style="margin:0;background:#0a0e1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:Arial,sans-serif;">' +
+                            '<img src="' + dataUrl + '" style="max-width:92%;height:auto;border-radius:16px;margin-top:20px;">' +
+                            '<p style="color:#cbd5e1;text-align:center;padding:16px 24px;font-size:0.95rem;">Görseli kaydetmek için resme basılı tutup "Resmi Kaydet" / "Görseli İndir" seçeneğini kullan.</p>' +
+                            '</body></html>'
+                        );
+                    } else {
+                        // 3. Masaüstü: normal indirme
+                        var link = document.createElement('a');
+                        link.download = 'finteclub-uyelik-karti.png';
+                        link.href = dataUrl;
+                        link.click();
+                    }
+                }, 'image/png');
             }).catch(function () {
                 downloadBtn.disabled = false;
                 downloadBtn.textContent = 'Kartı İndir';
+                if (newTab) newTab.close();
                 alert('Görsel oluşturulamadı, tekrar dener misin?');
             });
         });
