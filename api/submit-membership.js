@@ -6,8 +6,8 @@ export default async function handler(req, res) {
 
     const { firstName, lastName, studentNumber, email, phone, university, faculty, department, grade } = req.body || {};
 
-    if (!firstName || !lastName || !/^\d{11}$/.test(String(studentNumber || ''))) {
-        res.status(400).json({ error: 'İsim, soyisim ve geçerli (11 haneli) bir öğrenci numarası gerekli.' });
+    if (!firstName || !lastName || !/^2\d{10}$/.test(String(studentNumber || ''))) {
+        res.status(400).json({ error: 'İsim, soyisim ve 2 ile başlayan geçerli (11 haneli) bir öğrenci numarası gerekli.' });
         return;
     }
 
