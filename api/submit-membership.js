@@ -4,7 +4,7 @@ export default async function handler(req, res) {
         return;
     }
 
-    const { firstName, lastName, studentNumber, department, source } = req.body || {};
+    const { firstName, lastName, email, phone, university, faculty, department, grade } = req.body || {};
 
     if (!firstName || !lastName) {
         res.status(400).json({ error: 'İsim ve soyisim gerekli.' });
@@ -39,14 +39,17 @@ export default async function handler(req, res) {
         }
 
         const bodyText =
-            'Öğrenci Numarası: ' + String(studentNumber || '-').slice(0, 100) + '\n' +
+            'E-posta: ' + String(email || '-').slice(0, 200) + '\n' +
+            'Telefon: ' + String(phone || '-').slice(0, 50) + '\n' +
+            'Üniversite: ' + String(university || '-').slice(0, 200) + '\n' +
+            'Fakülte: ' + String(faculty || '-').slice(0, 200) + '\n' +
             'Bölüm: ' + String(department || '-').slice(0, 200) + '\n' +
-            'Kulübü Nereden Duydu: ' + String(source || '-').slice(0, 300);
+            'Sınıf: ' + String(grade || '-').slice(0, 50);
 
         const newMsg = {
             id: 'm' + Date.now(),
             name: (String(firstName).slice(0, 100) + ' ' + String(lastName).slice(0, 100)).trim(),
-            email: '',
+            email: String(email || '').slice(0, 200),
             subject: 'Üyelik Ayrıcalığı Başvurusu',
             body: bodyText,
             date: new Date().toISOString().slice(0, 10),
