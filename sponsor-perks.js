@@ -92,12 +92,38 @@
         font-size: 0.85rem; line-height: 1.4; margin: 0; color: #222;
     }
     .sp-empty-perks { color: #cbd5e1; font-size: 0.9rem; padding: 20px 0; }
+
+    #sp-mobile-fab { display: none; }
+    @media (max-width: 992px) {
+        #sponsor-perks-open-btn { display: none !important; }
+        #sp-mobile-fab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            bottom: 14px;
+            right: 14px;
+            z-index: 999997;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: #0a0e1a;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+            font-weight: 700;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: 0 0 16px rgba(59,130,246,0.7), inset 0 0 8px rgba(59,130,246,0.3);
+            font-family: Inter, Arial, sans-serif;
+        }
+    }
     `;
     var styleTag = document.createElement('style');
     styleTag.textContent = css;
     document.head.appendChild(styleTag);
 
     var overlayHtml = `
+    <button id="sp-mobile-fab" type="button" class="sponsor-perks-open-btn">FinTeClub'lı Ol</button>
     <div id="sp-overlay">
         <div class="sp-card" id="sp-card">
             <button class="sp-close" id="sp-close-btn">&times;</button>
