@@ -129,6 +129,7 @@
                     <div class="sp-field"><label>İsim</label><input type="text" id="sp-first-name"></div>
                     <div class="sp-field"><label>Soyisim</label><input type="text" id="sp-last-name"></div>
                 </div>
+                <div class="sp-field"><label>Öğrenci Numarası</label><input type="text" id="sp-student-number" inputmode="numeric" maxlength="11" placeholder="11 haneli öğrenci numaranız"></div>
                 <div class="sp-field"><label>E-posta</label><input type="email" id="sp-email"></div>
                 <div class="sp-field"><label>Telefon Numarası</label><input type="tel" id="sp-phone"></div>
                 <div class="sp-field-row">
@@ -139,7 +140,7 @@
                 <div class="sp-field"><label>Sınıf</label><input type="text" id="sp-grade"></div>
 
                 <button class="sp-btn" id="sp-submit-btn">Gönder</button>
-                <div class="sp-error" id="sp-error">Lütfen isim ve soyisim alanlarını doldurun.</div>
+                <div class="sp-error" id="sp-error">Lütfen isim, soyisim alanlarını ve 11 haneli öğrenci numaranızı doğru doldurun.</div>
             </div>
 
             <div id="sp-screen-card" style="display:none;">
@@ -190,6 +191,11 @@
             if (e.target === overlay) closeModal();
         });
 
+        var studentNumberInput = document.getElementById('sp-student-number');
+        studentNumberInput.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 11);
+        });
+
         function escapeHtml(str) {
             return String(str).replace(/[&<>"']/g, function (c) {
                 return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -199,6 +205,7 @@
         submitBtn.addEventListener('click', async function () {
             var firstName = document.getElementById('sp-first-name').value.trim();
             var lastName = document.getElementById('sp-last-name').value.trim();
+            var studentNumber = document.getElementById('sp-student-number').value.trim();
             var email = document.getElementById('sp-email').value.trim();
             var phone = document.getElementById('sp-phone').value.trim();
             var university = document.getElementById('sp-university').value.trim();
@@ -206,7 +213,9 @@
             var department = document.getElementById('sp-department').value.trim();
             var grade = document.getElementById('sp-grade').value.trim();
 
-            if (!firstName || !lastName) {
+            var studentNumberValid = /^\d{11}$/.test(studentNumber);
+
+            if (!firstName || !lastName || !studentNumberValid) {
                 errorEl.style.display = 'block';
                 return;
             }
@@ -218,7 +227,7 @@
                 await fetch('/api/submit-membership', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ firstName, lastName, email, phone, university, faculty, department, grade })
+                    body: JSON.stringify({ firstName, lastName, studentNumber, email, phone, university, faculty, department, grade })
                 });
             } catch (e) {
                 console.error('Üyelik başvurusu gönderilemedi:', e);
