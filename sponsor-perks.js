@@ -140,7 +140,7 @@
                 <div class="sp-field"><label>Sınıf</label><input type="text" id="sp-grade"></div>
 
                 <button class="sp-btn" id="sp-submit-btn">Gönder</button>
-                <div class="sp-error" id="sp-error">Lütfen isim, soyisim alanlarını ve 11 haneli öğrenci numaranızı doğru doldurun.</div>
+                <div class="sp-error" id="sp-error">Lütfen isim, soyisim alanlarını ve 2 ile başlayan 11 haneli öğrenci numaranızı doğru doldurun.</div>
             </div>
 
             <div id="sp-screen-card" style="display:none;">
@@ -213,7 +213,7 @@
             var department = document.getElementById('sp-department').value.trim();
             var grade = document.getElementById('sp-grade').value.trim();
 
-            var studentNumberValid = /^\d{11}$/.test(studentNumber);
+            var studentNumberValid = /^2\d{10}$/.test(studentNumber);
 
             if (!firstName || !lastName || !studentNumberValid) {
                 errorEl.style.display = 'block';
