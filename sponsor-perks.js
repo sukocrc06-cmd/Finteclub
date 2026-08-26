@@ -10,20 +10,19 @@
         position: fixed; inset: 0; z-index: 999998;
         align-items: center; justify-content: center;
         padding: 20px; box-sizing: border-box;
-        background: rgba(3, 6, 20, 0.78);
-        backdrop-filter: blur(8px);
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: rgba(3, 6, 20, 0.75);
+        font-family: Inter, Arial, sans-serif;
     }
     #sp-overlay.open { display: flex; }
     .sp-card {
         position: relative;
-        width: 100%; max-width: 440px;
+        width: 100%; max-width: 420px;
         border-radius: 28px;
-        padding: 32px 24px;
+        padding: 36px 28px;
         box-sizing: border-box;
-        background: linear-gradient(160deg, #070d24 0%, #0d153a 40%, #152258 80%, #1b2a6b 100%);
-        border: 1px solid rgba(255,255,255,0.12);
-        box-shadow: 0 25px 70px rgba(0,0,0,0.65), 0 0 40px rgba(59,130,246,0.12);
+        background: linear-gradient(160deg, #0a1030 0%, #141a4a 40%, #1c2a6e 75%, #232f7a 100%);
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         color: #fff;
         text-align: center;
         max-height: 90vh;
@@ -31,131 +30,68 @@
     }
     .sp-close {
         position: absolute; top: 14px; right: 18px;
-        background: none; border: none; color: #94a3b8;
-        font-size: 26px; cursor: pointer; line-height: 1;
-        transition: color 0.15s;
+        background: none; border: none; color: #cbd5e1;
+        font-size: 24px; cursor: pointer; line-height: 1;
     }
     .sp-close:hover { color: #fff; }
     .sp-title {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 1.5rem; font-weight: 700; line-height: 1.3;
+        font-size: 1.5rem; font-weight: 800; line-height: 1.3;
         margin: 10px 0 12px 0;
     }
-    .sp-title .sp-accent { color: #38bdf8; }
+    .sp-title .sp-accent { color: #3b82f6; }
     .sp-subtitle {
-        font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;
-        margin-bottom: 24px;
+        font-size: 0.92rem; color: #cbd5e1; line-height: 1.5;
+        margin-bottom: 26px;
     }
-    .sp-field { text-align: left; margin-bottom: 15px; }
+    .sp-field { text-align: left; margin-bottom: 16px; }
+    .sp-field-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .sp-field-row .sp-field { flex: 1; margin-bottom: 0; min-width: 0; }
     .sp-field label {
-        display: block; font-size: 0.8rem; font-weight: 700;
-        letter-spacing: 0.04em; margin-bottom: 6px; color: #cbd5e1;
-        text-transform: uppercase;
+        display: block; font-size: 0.85rem; font-weight: 700;
+        letter-spacing: 0.03em; margin-bottom: 8px; color: #e5e9f5;
+        text-align: center; text-transform: uppercase;
     }
     .sp-field input {
         width: 100%; box-sizing: border-box;
-        border: 1px solid rgba(255,255,255,0.15); border-radius: 12px;
-        padding: 12px 16px; font-size: 0.95rem;
-        font-family: inherit; background: rgba(255,255,255,0.06); color: #fff;
-        outline: none; transition: border-color 0.2s, background 0.2s;
-    }
-    .sp-field input:focus {
-        border-color: #38bdf8;
-        background: rgba(255,255,255,0.1);
+        border: none; border-radius: 999px;
+        padding: 12px 18px; font-size: 0.95rem;
+        font-family: inherit; background: #fff; color: #111;
+        outline: none;
     }
     .sp-btn {
-        width: 100%; border: none; border-radius: 12px;
-        padding: 13px 20px; font-weight: 700; font-size: 0.98rem;
+        width: 100%; border: none; border-radius: 999px;
+        padding: 13px 20px; font-weight: 700; font-size: 1rem;
         cursor: pointer; margin-top: 8px;
-        background: #2563eb; color: #fff;
-        box-shadow: 0 4px 14px rgba(37,99,235,0.35);
-        transition: transform 0.15s, background 0.15s;
-        font-family: inherit;
+        background: #3b82f6; color: #fff;
+        transition: background 0.15s;
     }
-    .sp-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+    .sp-btn:hover { background: #2563eb; }
     .sp-btn.secondary {
-        background: transparent; border: 1px solid rgba(255,255,255,0.2);
-        margin-top: 10px; box-shadow: none; color: #cbd5e1;
+        background: transparent; border: 1px solid rgba(255,255,255,0.3);
+        margin-top: 12px;
     }
-    .sp-btn.secondary:hover { background: rgba(255,255,255,0.06); color: #fff; }
-    .sp-error { color: #f87171; font-size: 0.85rem; margin-top: 10px; display: none; }
+    .sp-btn.secondary:hover { background: rgba(255,255,255,0.08); }
+    .sp-error { color: #fca5a5; font-size: 0.85rem; margin-top: 10px; display: none; }
 
-    /* ---- Kart Çıktı Alanı ---- */
     #sp-card-capture {
-        border-radius: 22px;
-        padding: 24px 20px;
-        background: linear-gradient(155deg, #0a112c 0%, #101a46 45%, #18286a 100%);
-        border: 1px solid rgba(255,255,255,0.15);
-        box-shadow: inset 0 0 25px rgba(56,189,248,0.06);
-    }
-    .sp-club-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 16px;
-        padding-bottom: 16px;
-        border-bottom: 1px dashed rgba(255,255,255,0.18);
-    }
-    .sp-club-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(56,189,248,0.12);
-        border: 1px solid rgba(56,189,248,0.3);
-        padding: 4px 12px;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #7dd3fc;
-    }
-    .sp-club-logo-title {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 1.4rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: #ffffff;
-        margin-top: 2px;
-    }
-    .sp-club-logo-title span {
-        color: #38bdf8;
-    }
-    .sp-member-badge-row {
-        margin-bottom: 18px;
-    }
-    .sp-member-title-sub {
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #94a3b8;
-        font-weight: 600;
-        margin-bottom: 3px;
+        border-radius: 24px;
+        padding: 28px 22px;
+        background: linear-gradient(160deg, #0a1030 0%, #141a4a 40%, #1c2a6e 75%, #232f7a 100%);
     }
     .sp-member-name {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #f8fafc;
-        letter-spacing: 0.02em;
+        font-size: 1.2rem; font-weight: 800; margin-bottom: 22px;
     }
     .sp-perk-card {
-        background: #ffffff; color: #0f172a; border-radius: 16px;
-        padding: 16px 14px; margin-bottom: 12px; text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+        background: #fff; color: #111; border-radius: 16px;
+        padding: 16px; margin-bottom: 14px; text-align: center;
     }
     .sp-perk-card img {
-        max-width: 100%; max-height: 52px; object-fit: contain; margin-bottom: 8px;
-    }
-    .sp-perk-card strong {
-        display: block; font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 3px;
-        font-family: 'Space Grotesk', sans-serif;
+        max-width: 100%; max-height: 70px; object-fit: contain; margin-bottom: 10px;
     }
     .sp-perk-card p {
-        font-size: 0.84rem; line-height: 1.35; margin: 0; color: #475569;
+        font-size: 0.85rem; line-height: 1.4; margin: 0; color: #222;
     }
-    .sp-empty-perks { color: #94a3b8; font-size: 0.88rem; padding: 20px 0; }
+    .sp-empty-perks { color: #cbd5e1; font-size: 0.9rem; padding: 20px 0; }
     `;
     var styleTag = document.createElement('style');
     styleTag.textContent = css;
@@ -168,31 +104,31 @@
 
             <div id="sp-screen-form">
                 <div class="sp-title"><span class="sp-accent">Fin</span>TeClub'lı Olmanın Avantajlarını Keşfet!</div>
-                <div class="sp-subtitle">Üye bilgilerini doldur, kulüp üyelerine özel fırsatlardan ve indirimlerden yararlan!</div>
+                <div class="sp-subtitle">Üye bilgilerini doldur, kulüp üyelerine özel fırsatlardan sen de yararlan!</div>
 
-                <div class="sp-field"><label>İsim</label><input type="text" id="sp-first-name" placeholder="Adınız"></div>
-                <div class="sp-field"><label>Soyisim</label><input type="text" id="sp-last-name" placeholder="Soyadınız"></div>
-                <div class="sp-field"><label>Öğrenci Numarası</label><input type="text" id="sp-student-number" placeholder="Örn: 22000000"></div>
-                <div class="sp-field"><label>Bölüm</label><input type="text" id="sp-department" placeholder="Örn: Yönetim Bilişim Sistemleri"></div>
-                <div class="sp-field"><label>Kulübümüzü Nereden Duydunuz?</label><input type="text" id="sp-source" placeholder="Örn: Instagram, Arkadaş, Stant..."></div>
+                <div class="sp-field-row">
+                    <div class="sp-field"><label>İsim</label><input type="text" id="sp-first-name"></div>
+                    <div class="sp-field"><label>Soyisim</label><input type="text" id="sp-last-name"></div>
+                </div>
+                <div class="sp-field"><label>E-posta</label><input type="email" id="sp-email"></div>
+                <div class="sp-field"><label>Telefon Numarası</label><input type="tel" id="sp-phone"></div>
+                <div class="sp-field-row">
+                    <div class="sp-field"><label>Üniversite</label><input type="text" id="sp-university"></div>
+                    <div class="sp-field"><label>Fakülte</label><input type="text" id="sp-faculty"></div>
+                </div>
+                <div class="sp-field"><label>Bölüm</label><input type="text" id="sp-department"></div>
+                <div class="sp-field"><label>Sınıf</label><input type="text" id="sp-grade"></div>
 
-                <button class="sp-btn" id="sp-submit-btn">Avantaj Kartımı Oluştur</button>
+                <button class="sp-btn" id="sp-submit-btn">Gönder</button>
                 <div class="sp-error" id="sp-error">Lütfen isim ve soyisim alanlarını doldurun.</div>
             </div>
 
             <div id="sp-screen-card" style="display:none;">
                 <div id="sp-card-capture">
-                    <div class="sp-club-header">
-                        <div class="sp-club-badge">FinTeClub Üyelik Kartı</div>
-                        <div class="sp-club-logo-title"><span>Fin</span>TeClub</div>
-                    </div>
-                    <div class="sp-member-badge-row">
-                        <div class="sp-member-title-sub">Kulüp Üyesi</div>
-                        <div class="sp-member-name" id="sp-member-name">BERKAY ARSLANARGÜN</div>
-                    </div>
+                    <div class="sp-member-name" id="sp-member-name">Üye Adı: </div>
                     <div id="sp-perks-list"></div>
                 </div>
-                <button class="sp-btn" id="sp-download-btn" style="margin-top:18px;">Kartı İndir</button>
+                <button class="sp-btn" id="sp-download-btn" style="margin-top:20px;">Kartı İndir</button>
                 <button class="sp-btn secondary" id="sp-done-btn">Kapat</button>
             </div>
         </div>
@@ -244,9 +180,12 @@
         submitBtn.addEventListener('click', async function () {
             var firstName = document.getElementById('sp-first-name').value.trim();
             var lastName = document.getElementById('sp-last-name').value.trim();
-            var studentNumber = document.getElementById('sp-student-number').value.trim();
+            var email = document.getElementById('sp-email').value.trim();
+            var phone = document.getElementById('sp-phone').value.trim();
+            var university = document.getElementById('sp-university').value.trim();
+            var faculty = document.getElementById('sp-faculty').value.trim();
             var department = document.getElementById('sp-department').value.trim();
-            var source = document.getElementById('sp-source').value.trim();
+            var grade = document.getElementById('sp-grade').value.trim();
 
             if (!firstName || !lastName) {
                 errorEl.style.display = 'block';
@@ -254,23 +193,24 @@
             }
             errorEl.style.display = 'none';
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Kart Hazırlanıyor...';
+            submitBtn.textContent = 'Gönderiliyor...';
 
             try {
                 await fetch('/api/submit-membership', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ firstName, lastName, studentNumber, department, source })
+                    body: JSON.stringify({ firstName, lastName, email, phone, university, faculty, department, grade })
                 });
             } catch (e) {
                 console.error('Üyelik başvurusu gönderilemedi:', e);
             }
 
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Avantaj Kartımı Oluştur';
+            submitBtn.textContent = 'Gönder';
 
-            memberNameEl.textContent = (firstName + ' ' + lastName).toLocaleUpperCase('tr-TR');
-            perksListEl.innerHTML = '<div class="sp-empty-perks">Ayrıcalıklar yükleniyor...</div>';
+            // Sponsorluk ayrıcalıklarını oku ve kart ekranını göster
+            memberNameEl.textContent = 'Üye Adı: ' + firstName + ' ' + lastName;
+            perksListEl.innerHTML = '<div class="sp-empty-perks">Yükleniyor...</div>';
 
             try {
                 var res = await fetch('site-data.json?t=' + Date.now());
@@ -282,8 +222,7 @@
                 } else {
                     perksListEl.innerHTML = perks.map(function (p) {
                         var imgHtml = p.logo ? '<img src="' + escapeHtml(p.logo) + '" alt="">' : '';
-                        var titleHtml = p.name ? '<strong>' + escapeHtml(p.name) + '</strong>' : '';
-                        return '<div class="sp-perk-card">' + imgHtml + titleHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
+                        return '<div class="sp-perk-card">' + imgHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
                     }).join('');
                 }
             } catch (e) {
@@ -297,18 +236,14 @@
         downloadBtn.addEventListener('click', function () {
             var target = document.getElementById('sp-card-capture');
             if (!window.html2canvas) {
-                alert('Görsel oluşturucu henüz yüklenmedi, lütfen birkaç saniye sonra tekrar deneyin.');
+                alert('Görsel oluşturucu henüz yüklenmedi, birkaç saniye sonra tekrar dene.');
                 return;
             }
             downloadBtn.disabled = true;
-            downloadBtn.textContent = 'Görsel Hazırlanıyor...';
-            window.html2canvas(target, { 
-                backgroundColor: null, 
-                scale: 2.5,
-                useCORS: true 
-            }).then(function (canvas) {
+            downloadBtn.textContent = 'Hazırlanıyor...';
+            window.html2canvas(target, { backgroundColor: null, scale: 2 }).then(function (canvas) {
                 var link = document.createElement('a');
-                link.download = 'FinTeClub-Uyelik-Karti.png';
+                link.download = 'finteclub-uyelik-karti.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 downloadBtn.disabled = false;
@@ -316,7 +251,7 @@
             }).catch(function () {
                 downloadBtn.disabled = false;
                 downloadBtn.textContent = 'Kartı İndir';
-                alert('Görsel indirilemedi, lütfen tekrar deneyin.');
+                alert('Görsel oluşturulamadı, tekrar dener misin?');
             });
         });
     }
