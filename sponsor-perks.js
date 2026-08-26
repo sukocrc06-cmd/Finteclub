@@ -122,7 +122,7 @@
             <button class="sp-close" id="sp-close-btn">&times;</button>
 
             <div id="sp-screen-form">
-                <div class="sp-title"><span class="sp-accent">Fin</span>TeClub'lı Olmanın Avantajlarını Keşfet!</div>
+                <div class="sp-title">Fin<span class="sp-accent">Te</span>Club'lı Olmanın Avantajlarını Keşfet!</div>
                 <div class="sp-subtitle">Üye bilgilerini doldur, kulüp üyelerine özel fırsatlardan sen de yararlan!</div>
 
                 <div class="sp-field-row">
@@ -280,13 +280,13 @@
 
                     // 1. Öncelik: Web Share API (iOS ve Android'de native "Fotoğraflara Kaydet" panelini açar)
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        if (newTab) newTab.close();
                         try {
                             await navigator.share({ files: [file], title: 'FinTeClub Üyelik Kartı' });
+                            if (newTab) newTab.close();
                             return;
                         } catch (shareErr) {
-                            // kullanıcı paylaşım ekranını iptal etmiş olabilir, sorun değil
-                            return;
+                            // Paylaşım iptal edildi ya da (iOS'ta sık görülen) kullanıcı etkileşimi
+                            // süresi doldu - aşağıdaki yedek yönteme (zaten açık olan sekme) düş
                         }
                     }
 
