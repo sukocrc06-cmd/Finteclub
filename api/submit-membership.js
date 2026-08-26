@@ -4,10 +4,10 @@ export default async function handler(req, res) {
         return;
     }
 
-    const { firstName, lastName, email, phone, university, faculty, department, grade } = req.body || {};
+    const { firstName, lastName, studentNumber, email, phone, university, faculty, department, grade } = req.body || {};
 
-    if (!firstName || !lastName) {
-        res.status(400).json({ error: 'İsim ve soyisim gerekli.' });
+    if (!firstName || !lastName || !/^\d{11}$/.test(String(studentNumber || ''))) {
+        res.status(400).json({ error: 'İsim, soyisim ve geçerli (11 haneli) bir öğrenci numarası gerekli.' });
         return;
     }
 
@@ -39,6 +39,7 @@ export default async function handler(req, res) {
         }
 
         const bodyText =
+            'Öğrenci Numarası: ' + String(studentNumber).slice(0, 11) + '\n' +
             'E-posta: ' + String(email || '-').slice(0, 200) + '\n' +
             'Telefon: ' + String(phone || '-').slice(0, 50) + '\n' +
             'Üniversite: ' + String(university || '-').slice(0, 200) + '\n' +
