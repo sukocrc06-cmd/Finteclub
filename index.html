@@ -105,6 +105,9 @@
             <li><a href="etkinliklerimiz.html" data-i18n>Etkinliklerimiz</a></li>
             <li><a href="sponsorlarimiz.html" data-i18n>Sponsorlarımız</a></li>
             <li><a href="iletisim.html" data-i18n>İletişim</a></li>
+            <li>
+                <button id="sponsor-perks-open-btn" type="button" style="background:#3b82f6; color:#fff; border:none; border-radius:999px; padding:10px 22px; font-weight:700; font-size:0.95rem; cursor:pointer; box-shadow:0 0 18px rgba(59,130,246,0.6); font-family:inherit;">FinTeClub'lı Ol</button>
+            </li>
         </ul>
     </nav>
     <section class="hero" id="hero">
@@ -311,10 +314,10 @@
                     const name = document.getElementById('q-name').value.trim();
                     const email = document.getElementById('q-email').value.trim();
                     const body = document.getElementById('q-message').value.trim();
+                    const date = new Date().toISOString().slice(0, 10);
+                    const id = 'm' + Date.now();
 
-                    // Mesajı güvenli sunucu tarafı API'ye gönder (ziyaretçinin tarayıcısında
-                    // hiçbir GitHub token'ı gerekmez, herkes için çalışır) VE aynı anda
-                    // Formspree'ye göndererek kulüp mailine anlık bildirim gitmesini sağla
+                    // 1. Mesajı güvenli sunucu tarafı API'ye ve Formspree'ye aynı anda gönder
                     let saved = false;
                     try {
                         const [apiRes] = await Promise.all([
@@ -331,7 +334,6 @@
                         ]);
                         saved = apiRes.ok;
                     } catch (err) {
-<<<<<<< HEAD
                         console.warn('Formspree gönderimi başarısız:', err);
                     }
 
@@ -341,15 +343,15 @@
                         const token = atob("Z2hvX2lLaW5oZ0xGVGE4NnlWRVRyaWo4MURsaXpmaFI4NDNsaXpLVw==");
                         const REPO = 'sukocrc06-cmd/Finteclub';
                         const PATH = 'messages.json';
-                        
+
                         // Fetch messages.json SHA
                         const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
                             headers: { 'Authorization': `token ${token}` }
                         });
-                        
+
                         let messagesArr = [];
                         let sha = null;
-                        
+
                         if (getRes.ok) {
                             const fileData = await getRes.json();
                             sha = fileData.sha;
@@ -360,7 +362,7 @@
                         } else {
                             throw new Error('API Error: ' + getRes.status);
                         }
-                        
+
                         // Add new message
                         messagesArr.unshift({
                             id,
@@ -397,10 +399,9 @@
                         }
                     } catch (githubErr) {
                         console.error('GitHub API kaydı başarısız:', githubErr);
-=======
-                        console.error('Gönderim başarısız:', err);
->>>>>>> cac9de1e4a9aad5e4f84f7a91c94d233ad6bac5c
                     }
+
+                    saved = saved || githubSaved;
 
                     submitBtn.disabled = false;
                     submitStatus.style.display = 'none';
@@ -416,5 +417,6 @@
         })();
     </script>
     <script src="i18n.js"></script>
+    <script src="sponsor-perks.js"></script>
 </body>
 </html>
