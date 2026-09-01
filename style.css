@@ -218,7 +218,7 @@ body {
 }
 
 .nav-links li {
-    flex: 1;
+    flex: 0 0 auto;
     text-align: center;
 }
 
@@ -227,7 +227,22 @@ body {
     color: var(--text-color);
     font-size: 1rem;
     font-weight: 400;
+    white-space: nowrap;
     transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+@media (min-width: 993px) {
+    .dropdown {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
 }
 
 .nav-links a:hover {
