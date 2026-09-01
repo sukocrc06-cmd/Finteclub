@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // Ekip kartlari sonradan (fetch ile) render edildigi icin tarayicinin
+        // sayfa acilirken kendiliginden yaptigi #hash kaydirmasi yaris durumuna
+        // girip yanlis yere gidiyordu. Hash'i URL'den gecici olarak cikarip,
+        // icerik hazir olunca kendimiz kaydiriyoruz (asagida fetch sonrasinda).
+        (function () {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            if (location.hash) {
+                window.__ftcPendingHash = location.hash;
+                history.replaceState(null, '', location.pathname + location.search);
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FinTeClub Yönetim ve Ekip">
@@ -457,6 +472,25 @@
                     teamData = data;
                     renderTeamPage(data);
                     setupModalSystem(data);
+
+                    if (window.__ftcPendingHash) {
+                        const targetSelector = window.__ftcPendingHash;
+                        const scrollToTarget = () => {
+                            const target = document.querySelector(targetSelector);
+                            if (target) {
+                                history.replaceState(null, '', location.pathname + location.search + targetSelector);
+                                target.scrollIntoView({ block: 'start', behavior: 'auto' });
+                            }
+                        };
+                        // Tarayicinin kendi otomatik hash-kaydirma girisimiyle yarisa girmemek
+                        // icin birkac kez (render sonrasi ve kisa gecikmelerle) tekrar kaydiriyoruz,
+                        // boylece en son biz kazaniyoruz.
+                        scrollToTarget();
+                        requestAnimationFrame(() => requestAnimationFrame(scrollToTarget));
+                        setTimeout(scrollToTarget, 150);
+                        setTimeout(scrollToTarget, 500);
+                        window.__ftcPendingHash = null;
+                    }
                 })
                 .catch(err => {
                     console.error('Error rendering team page:', err);
