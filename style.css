@@ -231,7 +231,7 @@ body {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-@media (min-width: 993px) {
+@media (min-width: 1401px) {
     .dropdown {
         display: flex;
         align-items: center;
@@ -298,7 +298,7 @@ body {
 }
 
 /* Mobile Navigation */
-@media (max-width: 992px) {
+@media (max-width: 1400px) {
     .navbar {
         position: fixed;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
@@ -339,6 +339,9 @@ body {
         flex-direction: column;
         background: rgba(5, 13, 29, 0.98);
         width: 100%;
+        max-width: none;
+        margin: 0;
+        padding-right: 0;
         height: 100vh;
         text-align: center;
         transition: 0.4s ease-in-out;
@@ -553,7 +556,7 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 992px) {
+@media (max-width: 1400px) {
     .event-container, .hero-container {
         flex-direction: column;
         text-align: center;
@@ -839,7 +842,7 @@ body {
     text-align: left;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1400px) {
     .about-container {
         flex-direction: column;
         text-align: center;
@@ -1418,7 +1421,7 @@ body {
 }
 
 /* Desktop Hover Interaction */
-@media (min-width: 993px) {
+@media (min-width: 1401px) {
     .dropdown:hover .dropdown-menu {
         opacity: 1;
         visibility: visible;
@@ -1427,7 +1430,7 @@ body {
 }
 
 /* Mobile Dropdown Styling */
-@media (max-width: 992px) {
+@media (max-width: 1400px) {
     .dropdown-menu {
         position: static;
         transform: none !important;
@@ -1485,7 +1488,7 @@ body {
     padding: 40px 0;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1400px) {
     .events-grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1710,7 +1713,7 @@ body.home-page {
     background-attachment: fixed;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1400px) {
     body.home-page {
         /* background-attachment: fixed causes janky/sliding repaint on mobile browsers */
         background-attachment: scroll;

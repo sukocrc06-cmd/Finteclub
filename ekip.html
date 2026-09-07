@@ -207,7 +207,7 @@
         const dropdownToggle = document.querySelector('.dropdown-toggle');
         if (dropdownToggle) {
             dropdownToggle.addEventListener('click', function(e) {
-                if (window.innerWidth <= 992) {
+                if (window.innerWidth <= 1400) {
                     e.preventDefault();
                     this.parentElement.classList.toggle('open');
                 }
@@ -217,7 +217,7 @@
         // Alt basliga tiklaninca mobil menuyu kapat ki sayfa kaydiktan sonra gorunsun
         document.querySelectorAll('.dropdown-menu a').forEach((link) => {
             link.addEventListener('click', () => {
-                if (window.innerWidth <= 992) {
+                if (window.innerWidth <= 1400) {
                     navLinks.classList.remove('open');
                     hamburger.classList.remove('active');
                     document.querySelector('.dropdown').classList.remove('open');
