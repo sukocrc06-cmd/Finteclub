@@ -211,7 +211,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    gap: 12px;
+    max-width: 1600px;
     width: 100%;
     margin: 0 auto;
     padding-right: 110px; /* clear the absolutely-positioned lang-switch button */
