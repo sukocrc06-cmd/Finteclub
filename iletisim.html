@@ -79,10 +79,6 @@
                         0% { transform: rotateY(0deg); }
                         100% { transform: rotateY(360deg); }
                     }
-                    @keyframes contactLogoGlowFinal {
-                        0%, 100% { filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.4)); opacity: 0.85; }
-                        50% { filter: drop-shadow(0 0 22px rgba(0, 123, 255, 0.9)); opacity: 1; }
-                    }
                     .contact-spin-clean-final {
                         mix-blend-mode: screen !important;
                         background: transparent !important;
@@ -90,14 +86,15 @@
                         border: none !important;
                         border-radius: 0 !important;
                         box-shadow: none !important;
-                        max-width: 250px;
+                        max-width: 280px;
                         width: 100%;
                         height: auto;
                         display: block;
-                        animation: contactLogoSpinFinal 10s linear infinite, contactLogoGlowFinal 3s ease-in-out infinite;
+                        margin: 0 auto;
+                        animation: contactLogoSpinFinal 10s linear infinite;
                     }
                 </style>
-                <img src="yeni-logo.png" alt="FinTeClub Animated Logo" class="contact-spin-clean-final" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
+                <img src="Yeni-beyaz-font-Logo.png" alt="FinTeClub Animated Logo" class="contact-spin-clean-final" style="background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
             </div>
         </div>
 
