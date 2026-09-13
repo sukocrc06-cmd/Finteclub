@@ -123,7 +123,7 @@
 
             <div id="sp-screen-form">
                 <div class="sp-title">Fin<span class="sp-accent">Te</span>Club'lı Olmanın Avantajlarını Keşfet!</div>
-                <div class="sp-subtitle">Üye bilgilerini doldur, kulüp üyelerine özel fırsatlardan sen de yararlan!</div>
+                <div class="sp-subtitle">FinTeClub'a üyeysen bilgilerini doldur, üye olmadıysan da üye olduktan sonra doldur, kulüp üyelerine özel fırsatlardan sen de yararlan!</div>
 
                 <div class="sp-field-row">
                     <div class="sp-field"><label>İsim</label><input type="text" id="sp-first-name"></div>
