@@ -68,12 +68,5 @@
       "unread": false
     }
   ],
-  "sponsorPerks": [
-    {
-      "id": "p1787683841972",
-      "name": "Begüm'ün Mutfağı",
-      "logo": "images/begum-mutfagi.png",
-      "description": "Yemeklerde  %10"
-    }
-  ]
+  "sponsorPerks": []
 }
