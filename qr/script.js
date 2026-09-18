@@ -144,7 +144,7 @@ function initQRCode() {
 
     const targetURL = window.location.href.startsWith('http') 
         ? window.location.href 
-        : 'https://finteclub-qr.vercel.app/';
+        : 'https://finteclub.com.tr/qr/';
 
     if (typeof QRious !== 'undefined') {
         new QRious({
@@ -213,7 +213,7 @@ function initShareAndDownload() {
             const shareData = {
                 title: 'FinTeClub AYBÜ',
                 text: 'Ankara Yıldırım Beyazıt Üniversitesi Finans ve Teknoloji Kulübü',
-                url: window.location.href.startsWith('http') ? window.location.href : 'https://finteclub-qr.vercel.app/'
+                url: window.location.href.startsWith('http') ? window.location.href : 'https://finteclub.com.tr/qr/'
             };
 
             if (navigator.share) {

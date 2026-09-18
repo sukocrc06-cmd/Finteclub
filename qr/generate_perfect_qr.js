@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 async function createModernQR(outputPath, isDarkTheme = true) {
-    const url = 'https://finteclub-qr.vercel.app/';
+    const url = 'https://finteclub.com.tr/qr/';
     const canvasSize = 1200;
     const canvas = createCanvas(canvasSize, canvasSize);
     const ctx = canvas.getContext('2d');
@@ -137,6 +137,9 @@ async function run() {
     await createModernQR('./finteclub_qr.png', true);
     await createModernQR('./finteclub_qr_dark.png', true);
     await createModernQR('./finteclub_qr_scannable.png', false);
+    await createModernQR('../finteclub_qr.png', true);
+    await createModernQR('../finteclub_qr_dark.png', true);
+    await createModernQR('../finteclub_qr_scannable.png', false);
 }
 
 run().catch(console.error);

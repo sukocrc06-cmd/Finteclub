@@ -2,7 +2,7 @@ const QRCode = require('qrcode');
 const fs = require('fs');
 
 async function generateScannableQR() {
-    const url = 'https://finteclubqr.vercel.app/';
+    const url = 'https://finteclub.com.tr/qr/';
     const options = {
         errorCorrectionLevel: 'H',
         type: 'image/png',
