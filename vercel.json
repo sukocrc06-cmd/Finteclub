@@ -1,12 +1,52 @@
 {
   "redirects": [
-    { "source": "/demo", "destination": "/demo/", "permanent": false },
-    { "source": "/fintelig", "destination": "/fintelig/", "permanent": false }
+    {
+      "source": "/:seg([dD][eE][mM][oO])",
+      "destination": "/demo/",
+      "permanent": false
+    },
+    {
+      "source": "/:seg((?!demo/)[dD][eE][mM][oO])/",
+      "destination": "/demo/",
+      "permanent": false
+    },
+    {
+      "source": "/:seg((?!demo/)[dD][eE][mM][oO])/:rest*",
+      "destination": "/demo/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/:seg([fF](?:[iI]|İ|ı|%C4%B0|%C4%B1|%c4%b0|%c4%b1)[nN][tT][eE][lL](?:[iI]|İ|ı|%C4%B0|%C4%B1|%c4%b0|%c4%b1)[gG])",
+      "destination": "/fintelig/",
+      "permanent": false
+    },
+    {
+      "source": "/:seg((?!fintelig/)[fF](?:[iI]|İ|ı|%C4%B0|%C4%B1|%c4%b0|%c4%b1)[nN][tT][eE][lL](?:[iI]|İ|ı|%C4%B0|%C4%B1|%c4%b0|%c4%b1)[gG])/",
+      "destination": "/fintelig/",
+      "permanent": false
+    },
+    {
+      "source": "/:seg((?!fintelig/)[fF](?:[iI]|İ|ı|%C4%B0|%C4%B1|%c4%b0|%c4%b1)[nN][tT][eE][lL](?:[iI]|İ|ı|%C4%B0|%C4%B1|%c4%b0|%c4%b1)[gG])/:rest*",
+      "destination": "/fintelig/:rest*",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/demo/", "destination": "https://rekabet-testi.vercel.app/" },
-    { "source": "/demo/:path*", "destination": "https://rekabet-testi.vercel.app/:path*" },
-    { "source": "/fintelig/", "destination": "https://fintelig-finteclub.vercel.app/" },
-    { "source": "/fintelig/:path*", "destination": "https://fintelig-finteclub.vercel.app/:path*" }
+    {
+      "source": "/demo/",
+      "destination": "https://rekabet-testi.vercel.app/"
+    },
+    {
+      "source": "/demo/:path*",
+      "destination": "https://rekabet-testi.vercel.app/:path*"
+    },
+    {
+      "source": "/fintelig/",
+      "destination": "https://fintelig-finteclub.vercel.app/"
+    },
+    {
+      "source": "/fintelig/:path*",
+      "destination": "https://fintelig-finteclub.vercel.app/:path*"
+    }
   ]
 }
