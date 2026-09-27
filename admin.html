@@ -1018,7 +1018,7 @@
         }
 
         async function getFileSha(token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?ref=${BRANCH}`, {
                 headers: { 'Authorization': `token ${token}` }
             });
             if (!res.ok) throw new Error('SHA okunamadı. Token doğru mu?');
@@ -1473,7 +1473,7 @@
         }
 
         async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
                 headers: { Authorization: `token ${token}` }
             });
             if (res.status === 404) return null;
@@ -1699,7 +1699,7 @@
         }
 
         async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
                 headers: { Authorization: `token ${token}` }
             });
             if (res.status === 404) return null;
@@ -1942,7 +1942,7 @@
                 const token = localStorage.getItem(TOKEN_KEY);
                 
                 if (token) {
-                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?t=` + Date.now(), {
+                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?ref=${BRANCH}&t=` + Date.now(), {
                         headers: { 'Authorization': `token ${token}` }
                     });
                     if (res.ok) {
@@ -1959,7 +1959,7 @@
                 }
 
                 if (token) {
-                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/messages.json?t=` + Date.now(), {
+                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/messages.json?ref=${BRANCH}&t=` + Date.now(), {
                         headers: { 'Authorization': `token ${token}` }
                     });
                     if (res.ok) {
@@ -2026,7 +2026,7 @@
         }
 
         async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
                 headers: { Authorization: `token ${token}` }
             });
             if (res.status === 404) return null;
