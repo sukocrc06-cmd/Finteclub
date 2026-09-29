@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+        const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}?ref=${BRANCH}`, {
             headers: { Authorization: `token ${token}` }
         });
 
