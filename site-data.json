@@ -94,6 +94,12 @@
       "name": "Anadolu Döner",
       "logo": "images/anadolu-doner.png",
       "description": "Anadolu Döner Çubuk şubesinde %10 indirim!"
+    },
+    {
+      "id": "p1790681162973",
+      "name": "Porto Siena coffee AYBÜ",
+      "logo": "images/1790681161236-Porto-Siena.jpg",
+      "description": "Tüm menülerde %15 indirim!"
     }
   ]
 }
