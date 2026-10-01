@@ -136,9 +136,6 @@
 
     #new-announcement-form { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4; }
 
-    #gh-token-row { font-size: 0.85rem; color: #6b7280; margin-bottom: 18px; }
-    #gh-token-row input { width: 100%; margin-top: 6px; }
-
     #save-status { font-size: 0.85rem; color: #6b7280; margin-top: 10px; min-height: 1.2em; text-align: right; }
 
     /* Tabs styling */
@@ -211,15 +208,6 @@
     <div id="dashboard">
         <h1>Sistem Ayarları &amp; Duyurular</h1>
         <p class="subtitle">Bakım modu, site geneli banner ve öğrencilere yönelik duyurular.</p>
-
-        <div id="gh-token-row" style="margin-bottom: 20px; background: #f8fafc; padding: 16px; border: 1px solid #e2e8f0; border-radius: 8px;">
-            <label style="font-weight:600; color:#334155; display:block; margin-bottom:6px;">GitHub Token (sadece bu tarayıcıda saklanır)</label>
-            <div style="display: flex; gap: 8px;">
-                <input type="password" id="github-token" placeholder="ghp_..." style="flex: 1; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; outline: none; transition: border 0.15s;" onfocus="this.style.borderColor='#0f766e'" onblur="this.style.borderColor='#cbd5e1'">
-                <button id="save-token-btn" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem; border-radius: 6px;">Token Kaydet</button>
-            </div>
-            <span id="token-status" style="font-size: 0.8rem; display: block; margin-top: 6px; font-weight: 500; color: #0f766e;"></span>
-        </div>
 
         <!-- Sistem Durumu -->
         <div class="panel">
@@ -907,15 +895,50 @@
     })();
     </script>
 
+    <script>
+    const ADMIN_API_KEY = 'ftc-admin-9f3a7k2m8x';
+    window.adminReadFile = async function (path) {
+        const res = await fetch('/api/admin-read?path=' + encodeURIComponent(path), {
+            headers: { 'x-admin-key': ADMIN_API_KEY }
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || ('HTTP ' + res.status));
+        }
+        const data = await res.json();
+        return data.content;
+    };
+    window.adminWriteFile = async function (path, content, message) {
+        const res = await fetch('/api/admin-write', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
+            body: JSON.stringify({ path, content, message })
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || ('HTTP ' + res.status));
+        }
+    };
+    window.adminUploadFile = async function (path, contentBase64, message) {
+        const res = await fetch('/api/admin-upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
+            body: JSON.stringify({ path, contentBase64, message })
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || ('HTTP ' + res.status));
+        }
+        return { path };
+    };
+    </script>
+
     <!-- ============ FIRST SCRIPT: LOGIN & SYSTEM SETTINGS ============ -->
     <script>
     (function () {
         const CRED_HASH = 'a5444748c68bbe12b7f593a7c0859e3e0bf5b7247ce0df5bf97ea1f60e522dc0';
         const DATA_PATH = 'site-data.json';
-        const REPO = 'sukocrc06-cmd/Finteclub';
-        const BRANCH = 'main';
         const SESSION_KEY = 'finteclub_admin_session';
-        const TOKEN_KEY = 'finteclub_gh_token';
 
         const loginGate = document.getElementById('login-gate');
         const dashboard = document.getElementById('dashboard');
@@ -923,15 +946,6 @@
         const passwordInput = document.getElementById('login-password');
         const loginBtn = document.getElementById('login-btn');
         const loginError = document.getElementById('login-error');
-        const tokenInput = document.getElementById('github-token');
-        if (tokenInput) {
-            const savedToken = localStorage.getItem(TOKEN_KEY);
-            if (savedToken) {
-                tokenInput.value = savedToken;
-            } else {
-                tokenInput.value = '';
-            }
-        }
 
         const maintenanceToggle = document.getElementById('maintenance-toggle');
         const maintenanceMessage = document.getElementById('maintenance-message');
@@ -964,8 +978,6 @@
         function showDashboard() {
             loginGate.style.display = 'none';
             dashboard.style.display = 'block';
-            const savedToken = localStorage.getItem(TOKEN_KEY);
-            if (savedToken) tokenInput.value = savedToken;
             loadData();
         }
 
@@ -986,72 +998,11 @@
         });
         passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginBtn.click(); });
 
-        const saveTokenBtn = document.getElementById('save-token-btn');
-        const tokenStatus = document.getElementById('token-status');
-
-        if (saveTokenBtn) {
-            saveTokenBtn.addEventListener('click', () => {
-                const tokenVal = tokenInput.value.trim();
-                if (tokenVal) {
-                    localStorage.setItem(TOKEN_KEY, tokenVal);
-                    if (tokenStatus) {
-                        tokenStatus.textContent = 'Token tarayıcıya başarıyla kaydedildi!';
-                        tokenStatus.style.color = '#0f766e';
-                        setTimeout(() => { tokenStatus.textContent = ''; }, 3000);
-                    }
-                } else {
-                    localStorage.removeItem(TOKEN_KEY);
-                    if (tokenStatus) {
-                        tokenStatus.textContent = 'Token temizlendi.';
-                        tokenStatus.style.color = '#dc2626';
-                        setTimeout(() => { tokenStatus.textContent = ''; }, 3000);
-                    }
-                }
-            });
-        }
-
-        function requireToken() {
-            const token = tokenInput.value.trim();
-            if (!token) throw new Error('GitHub token girmelisiniz.');
-            localStorage.setItem(TOKEN_KEY, token);
-            return token;
-        }
-
-        async function getFileSha(token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?ref=${BRANCH}`, {
-                headers: { 'Authorization': `token ${token}` }
-            });
-            if (!res.ok) throw new Error('SHA okunamadı. Token doğru mu?');
-            const data = await res.json();
-            return data.sha;
-        }
-
-        async function saveSiteData(token, sha) {
-            const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Site data update via panel',
-                    content: content,
-                    sha: sha,
-                    branch: BRANCH
-                })
-            });
-            if (!res.ok) {
-                const errData = await res.json();
-                throw new Error(errData.message || 'API Hatası');
-            }
-        }
-
         async function loadData() {
             try {
-                const res = await fetch(DATA_PATH + '?t=' + Date.now());
-                currentData = await res.json();
-                
+                currentData = await window.adminReadFile(DATA_PATH);
+                if (!currentData) currentData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+
                 maintenanceToggle.checked = !!currentData.maintenanceMode;
                 maintenanceMessage.value = currentData.maintenanceMessage || '';
                 bannerToggle.checked = !!currentData.bannerEnabled;
@@ -1076,7 +1027,7 @@
             previewTitle.textContent = newTitle.value.trim() || 'Duyuru Başlığı';
             previewDescription.textContent = newDescription.value.trim() || 'Duyuru açıklaması veya kısa içerik...';
             previewCategoryBadge.textContent = newCategory.value;
-            
+
             const linkVal = newLink.value.trim();
             if (linkVal) {
                 previewLink.href = linkVal;
@@ -1136,12 +1087,12 @@
             items.forEach(item => {
                 const row = document.createElement('div');
                 row.className = 'announcement-row';
-                
+
                 let linkSnippet = item.link ? ` — <a href="${escapeHtml(item.link)}" target="_blank" style="color: #0f766e; text-decoration: none; font-weight: 600;">Linke Git &rarr;</a>` : ' — Link Yok';
                 let categorySnippet = item.category ? `<span style="background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px;">${escapeHtml(item.category)}</span>` : '';
                 let pinSnippet = item.pinned ? `<span style="background: #fef3c7; color: #d97706; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px;">📌 Sabit</span>` : '';
                 let imgSnippet = item.image ? `<img src="${item.image}" style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px; margin-right: 12px; flex-shrink: 0;" />` : `<div style="width: 48px; height: 48px; background: #f1f5f9; border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">📢</div>`;
-                
+
                 row.innerHTML =
                     imgSnippet +
                     `<div class="a-info" style="flex: 1; min-width: 0;">` +
@@ -1156,7 +1107,7 @@
                         `<button class="btn-edit" id="ann-edit-${item.id}">Düzenle</button>` +
                         `<button class="btn-delete" id="ann-del-${item.id}">Sil</button>` +
                     `</div>`;
-                
+
                 row.querySelector(`#ann-edit-${item.id}`).addEventListener('click', () => startAnnouncementEdit(item.id));
                 row.querySelector(`#ann-del-${item.id}`).addEventListener('click', () => deleteAnnouncement(item.id));
                 announcementsList.appendChild(row);
@@ -1207,15 +1158,12 @@
         saveSettingsBtn.addEventListener('click', async () => {
             saveStatus.textContent = 'Kaydediliyor...';
             try {
-                const token = requireToken();
-                const sha = await getFileSha(token);
-                
                 currentData.maintenanceMode = maintenanceToggle.checked;
                 currentData.maintenanceMessage = maintenanceMessage.value.trim();
                 currentData.bannerEnabled = bannerToggle.checked;
                 currentData.bannerText = bannerText.value.trim();
 
-                await saveSiteData(token, sha);
+                await window.adminWriteFile(DATA_PATH, currentData, 'Site data update via panel');
                 saveStatus.textContent = 'Ayarlar başarıyla kaydedildi.';
             } catch (e) {
                 saveStatus.textContent = 'Hata: ' + e.message;
@@ -1231,42 +1179,29 @@
             });
         }
 
-        async function uploadImage(file, token) {
+        async function uploadImage(file) {
             const ext = file.name.split('.').pop();
             const filename = `images/${Date.now()}.${ext}`;
             const b64 = await fileToBase64(file);
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Upload announcement image',
-                    content: b64,
-                    branch: BRANCH
-                })
-            });
-            if (!res.ok) throw new Error('Görsel yüklenemedi.');
+            await window.adminUploadFile(filename, b64, 'Upload announcement image');
             return filename;
         }
 
         addAnnouncementBtn.addEventListener('click', async () => {
             announcementSaveStatus.textContent = 'Yayınlanıyor...';
             try {
-                const token = requireToken();
                 const title = newTitle.value.trim();
                 const desc = newDescription.value.trim();
                 const category = newCategory.value;
                 const linkVal = newLink.value.trim();
                 const isPinned = newPinned.checked;
-                
+
                 if (!title || !desc) throw new Error('Başlık ve açıklama gereklidir.');
 
                 let imgUrl = newImageUrl.value.trim();
                 if (newImageFile.files.length > 0) {
                     announcementSaveStatus.textContent = 'Görsel yükleniyor...';
-                    imgUrl = await uploadImage(newImageFile.files[0], token);
+                    imgUrl = await uploadImage(newImageFile.files[0]);
                 }
 
                 if (!imgUrl && linkVal && (linkVal.includes('instagram.com') || linkVal.includes('insta'))) {
@@ -1274,8 +1209,7 @@
                 }
 
                 announcementSaveStatus.textContent = 'Yayınlanıyor...';
-                const sha = await getFileSha(token);
-                
+
                 const id = announcementEditId.value || 'a' + Date.now();
                 const newAnn = {
                     id: id,
@@ -1291,7 +1225,7 @@
                 const isEditing = !!announcementEditId.value;
 
                 if (!currentData.announcements) currentData.announcements = [];
-                
+
                 if (isEditing) {
                     const idx = currentData.announcements.findIndex(a => a.id === id);
                     if (idx !== -1) {
@@ -1311,10 +1245,10 @@
                     return b.id.localeCompare(a.id);
                 });
 
-                await saveSiteData(token, sha);
+                await window.adminWriteFile(DATA_PATH, currentData, 'Duyuru güncellendi');
                 renderAnnouncements();
                 resetAnnouncementForm();
-                
+
                 announcementSaveStatus.textContent = isEditing ? 'Duyuru başarıyla güncellendi!' : 'Duyuru başarıyla yayınlandı!';
                 setTimeout(() => { announcementSaveStatus.textContent = ''; }, 3000);
             } catch (e) {
@@ -1327,10 +1261,8 @@
             if (!item) return;
             if (!confirm(`"${item.title}" başlıklı duyuruyu silmek istediğinize emin misiniz?`)) return;
             try {
-                const token = requireToken();
                 currentData.announcements = (currentData.announcements || []).filter(a => a.id !== id);
-                const sha = await getFileSha(token);
-                await saveSiteData(token, sha);
+                await window.adminWriteFile(DATA_PATH, currentData, 'Duyuru silindi: ' + item.title);
                 renderAnnouncements();
             } catch (e) {
                 alert('Hata: ' + e.message);
@@ -1343,9 +1275,6 @@
     <script>
     (function () {
         const EKIP_PATH = 'ekip.json';
-        const REPO = 'sukocrc06-cmd/Finteclub';
-        const BRANCH = 'main';
-        const TOKEN_KEY = 'finteclub_gh_token';
 
         const toggleFormBtn = document.getElementById('ekip-toggle-form-btn');
         const memberForm = document.getElementById('ekip-member-form');
@@ -1398,8 +1327,8 @@
 
         async function loadEkip() {
             try {
-                const res = await fetch(EKIP_PATH + '?t=' + Date.now());
-                currentEkip = await res.json();
+                currentEkip = await window.adminReadFile(EKIP_PATH);
+                if (!currentEkip) throw new Error('empty');
             } catch (e) {
                 currentEkip = {
                     "yonetim-kurulu": [],
@@ -1463,37 +1392,6 @@
 
         function escapeHtml(str) {
             return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        }
-
-        function getGitHubToken() {
-            const tokenInput = document.getElementById('github-token');
-            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli.');
-            return token;
-        }
-
-        async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
-                headers: { Authorization: `token ${token}` }
-            });
-            if (res.status === 404) return null;
-            if (!res.ok) throw new Error('Dosya sha bilgisi alınamadı (' + path + ', HTTP ' + res.status + ')');
-            const data = await res.json();
-            return data.sha;
-        }
-
-        async function putFile(path, base64Content, message, token, sha) {
-            const body = { message, content: base64Content, branch: BRANCH };
-            if (sha) body.sha = sha;
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || ('HTTP ' + res.status));
-            }
         }
 
         function readFileAsBase64(file) {
@@ -1574,7 +1472,6 @@
             if (!role) { saveStatus.textContent = 'Görev/Unvan gerekli.'; return; }
 
             try {
-                const token = getGitHubToken();
                 saveStatus.textContent = 'Kaydediliyor...';
 
                 let imagePath = imagePathInput || 'avatar-placeholder';
@@ -1582,7 +1479,7 @@
                     const base64 = await readFileAsBase64(file);
                     const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
                     imagePath = 'images/' + Date.now() + '-' + safeName;
-                    await putFile(imagePath, base64, 'Ekip üyesi görseli eklendi: ' + safeName, token, null);
+                    await window.adminUploadFile(imagePath, base64, 'Ekip üyesi görseli eklendi: ' + safeName);
                 }
 
                 const newItem = { name, role, image: imagePath, linkedin, email, website };
@@ -1602,9 +1499,7 @@
                     currentEkip[board].push(newItem);
                 }
 
-                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(currentEkip, null, 2))));
-                const sha = await getFileSha(EKIP_PATH, token);
-                await putFile(EKIP_PATH, contentB64, (isEditing ? 'Ekip üyesi güncellendi: ' : 'Ekip üyesi eklendi: ') + name, token, sha);
+                await window.adminWriteFile(EKIP_PATH, currentEkip, (isEditing ? 'Ekip üyesi güncellendi: ' : 'Ekip üyesi eklendi: ') + name);
 
                 renderMembers();
                 resetForm();
@@ -1620,12 +1515,9 @@
             if (!confirm(`${member.name} isimli ekip üyesini silmek istediğinize emin misiniz?`)) return;
 
             try {
-                const token = getGitHubToken();
                 currentEkip[boardKey].splice(index, 1);
 
-                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(currentEkip, null, 2))));
-                const sha = await getFileSha(EKIP_PATH, token);
-                await putFile(EKIP_PATH, contentB64, 'Ekip üyesi silindi: ' + member.name, token, sha);
+                await window.adminWriteFile(EKIP_PATH, currentEkip, 'Ekip üyesi silindi: ' + member.name);
 
                 renderMembers();
                 resetForm();
@@ -1640,9 +1532,6 @@
     <script>
     (function () {
         const DATA_PATH = 'site-data.json';
-        const REPO = 'sukocrc06-cmd/Finteclub';
-        const BRANCH = 'main';
-        const TOKEN_KEY = 'finteclub_gh_token';
 
         const toggleFormBtn = document.getElementById('perk-toggle-form-btn');
         const perkForm = document.getElementById('perk-form');
@@ -1691,37 +1580,6 @@
             return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
-        function getGitHubToken() {
-            const tokenInput = document.getElementById('github-token');
-            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli.');
-            return token;
-        }
-
-        async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
-                headers: { Authorization: `token ${token}` }
-            });
-            if (res.status === 404) return null;
-            if (!res.ok) throw new Error('Dosya sha bilgisi alınamadı (' + path + ', HTTP ' + res.status + ')');
-            const data = await res.json();
-            return data.sha;
-        }
-
-        async function putFile(path, base64Content, message, token, sha) {
-            const body = { message, content: base64Content, branch: BRANCH };
-            if (sha) body.sha = sha;
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || ('HTTP ' + res.status));
-            }
-        }
-
         function readFileAsBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1733,8 +1591,8 @@
 
         async function loadPerks() {
             try {
-                const res = await fetch(DATA_PATH + '?t=' + Date.now());
-                perksData = await res.json();
+                perksData = await window.adminReadFile(DATA_PATH);
+                if (!perksData) perksData = {};
             } catch (e) {
                 perksData = {};
             }
@@ -1804,7 +1662,6 @@
             if (!description) { saveStatus.textContent = 'Açıklama gerekli.'; return; }
 
             try {
-                const token = getGitHubToken();
                 saveStatus.textContent = 'Kaydediliyor...';
 
                 let logoPath = '';
@@ -1814,7 +1671,7 @@
                     const base64 = await readFileAsBase64(file);
                     const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
                     logoPath = 'images/' + Date.now() + '-' + safeName;
-                    await putFile(logoPath, base64, 'Sponsorluk ayrıcalığı logosu eklendi: ' + safeName, token, null);
+                    await window.adminUploadFile(logoPath, base64, 'Sponsorluk ayrıcalığı logosu eklendi: ' + safeName);
                 }
 
                 const newItem = {
@@ -1827,9 +1684,7 @@
                 if (!perksData.sponsorPerks) perksData.sponsorPerks = [];
                 perksData.sponsorPerks.push(newItem);
 
-                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(perksData, null, 2))));
-                const sha = await getFileSha(DATA_PATH, token);
-                await putFile(DATA_PATH, contentB64, 'Sponsorluk ayrıcalığı eklendi', token, sha);
+                await window.adminWriteFile(DATA_PATH, perksData, 'Sponsorluk ayrıcalığı eklendi');
 
                 renderPerks();
                 resetForm();
@@ -1842,12 +1697,9 @@
         async function deletePerk(id) {
             if (!confirm('Bu ayrıcalığı silmek istediğinize emin misiniz?')) return;
             try {
-                const token = getGitHubToken();
                 perksData.sponsorPerks = (perksData.sponsorPerks || []).filter(p => p.id !== id);
 
-                const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(perksData, null, 2))));
-                const sha = await getFileSha(DATA_PATH, token);
-                await putFile(DATA_PATH, contentB64, 'Sponsorluk ayrıcalığı silindi', token, sha);
+                await window.adminWriteFile(DATA_PATH, perksData, 'Sponsorluk ayrıcalığı silindi');
 
                 renderPerks();
             } catch (e) {
@@ -1861,10 +1713,7 @@
     <script>
     (function () {
         const DATA_PATH = 'site-data.json';
-        const REPO = 'sukocrc06-cmd/Finteclub';
-        const BRANCH = 'main';
-        const TOKEN_KEY = 'finteclub_gh_token';
-        
+
         const eventToggleFormBtn = document.getElementById('event-toggle-form-btn');
         const eventForm = document.getElementById('event-form');
         const eventFormTitle = document.getElementById('event-form-title');
@@ -1907,12 +1756,12 @@
             const tabEtkinlik = document.getElementById('tab-content-etkinlikler');
             const tabDokuman = document.getElementById('tab-content-dokumanlar');
             const tabInbox = document.getElementById('tab-content-inbox');
-            
+
             const dashboardVisible = dashboard && dashboard.style.display === 'block';
             const tabVisible = (tabEtkinlik && tabEtkinlik.style.display === 'block') ||
                                (tabDokuman && tabDokuman.style.display === 'block') ||
                                (tabInbox && tabInbox.style.display === 'block');
-                               
+
             if (dashboardVisible && tabVisible) {
                 loadSiteDataFile();
             }
@@ -1926,9 +1775,9 @@
         if (tabEl2) observer.observe(tabEl2, { attributes: true, attributeFilter: ['style'] });
         if (tabEl3) observer.observe(tabEl3, { attributes: true, attributeFilter: ['style'] });
 
-        if (dashboardEl && dashboardEl.style.display === 'block' && 
-            ((tabEl1 && tabEl1.style.display === 'block') || 
-             (tabEl2 && tabEl2.style.display === 'block') || 
+        if (dashboardEl && dashboardEl.style.display === 'block' &&
+            ((tabEl1 && tabEl1.style.display === 'block') ||
+             (tabEl2 && tabEl2.style.display === 'block') ||
              (tabEl3 && tabEl3.style.display === 'block'))) {
             loadSiteDataFile();
         }
@@ -1939,46 +1788,13 @@
             if (isFetching) return;
             isFetching = true;
             try {
-                const token = localStorage.getItem(TOKEN_KEY);
-                
-                if (token) {
-                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?ref=${BRANCH}&t=` + Date.now(), {
-                        headers: { 'Authorization': `token ${token}` }
-                    });
-                    if (res.ok) {
-                        const fileData = await res.json();
-                        const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-                        siteData = JSON.parse(currentContent);
-                    } else {
-                        const resLocal = await fetch(DATA_PATH + '?t=' + Date.now());
-                        siteData = await resLocal.json();
-                    }
-                } else {
-                    const resLocal = await fetch(DATA_PATH + '?t=' + Date.now());
-                    siteData = await resLocal.json();
-                }
-
-                if (token) {
-                    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/messages.json?ref=${BRANCH}&t=` + Date.now(), {
-                        headers: { 'Authorization': `token ${token}` }
-                    });
-                    if (res.ok) {
-                        const fileData = await res.json();
-                        const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-                        inboxMessages = JSON.parse(currentContent);
-                    } else {
-                        const resLocal = await fetch('messages.json?t=' + Date.now());
-                        inboxMessages = await resLocal.json();
-                    }
-                } else {
-                    const resLocal = await fetch('messages.json?t=' + Date.now());
-                    inboxMessages = await resLocal.json();
-                }
+                siteData = await window.adminReadFile(DATA_PATH);
+                inboxMessages = await window.adminReadFile('messages.json');
             } catch (e) {
                 if (!siteData) siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
                 if (!inboxMessages) inboxMessages = [];
             }
-            
+
             if (!siteData.events) siteData.events = [];
             if (!siteData.documents) siteData.documents = [];
             if (!inboxMessages || inboxMessages.length === 0) {
@@ -2018,42 +1834,8 @@
             return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
-        function getGitHubToken() {
-            const tokenInput = document.getElementById('github-token');
-            const token = (tokenInput && tokenInput.value.trim()) || localStorage.getItem(TOKEN_KEY);
-            if (!token) throw new Error('GitHub token gerekli.');
-            return token;
-        }
-
-        async function getFileSha(path, token) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
-                headers: { Authorization: `token ${token}` }
-            });
-            if (res.status === 404) return null;
-            if (!res.ok) throw new Error('Dosya sha bilgisi alınamadı (' + path + ', HTTP ' + res.status + ')');
-            const data = await res.json();
-            return data.sha;
-        }
-
-        async function putFile(path, base64Content, message, token, sha) {
-            const body = { message, content: base64Content, branch: BRANCH };
-            if (sha) body.sha = sha;
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || ('HTTP ' + res.status));
-            }
-        }
-
         async function commitSiteData(commitMsg) {
-            const token = getGitHubToken();
-            const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
-            const sha = await getFileSha(DATA_PATH, token);
-            await putFile(DATA_PATH, contentB64, commitMsg, token, sha);
+            await window.adminWriteFile(DATA_PATH, siteData, commitMsg);
         }
 
         function renderEvents() {
@@ -2070,7 +1852,7 @@
             items.forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'item-row';
-                
+
                 let regLink = item.link ? `<a href="${item.link}" target="_blank">Kayıt Linki</a>` : 'Kayıt Linki Yok';
 
                 row.innerHTML =
@@ -2203,9 +1985,9 @@
             items.forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'item-row';
-                
+
                 let catText = categoryNames[item.category] || item.category;
-                
+
                 let absoluteUrl = item.link || '';
                 if (item.link && !item.link.startsWith('http') && !item.link.startsWith('//')) {
                     absoluteUrl = 'https://raw.githubusercontent.com/sukocrc06-cmd/Finteclub/main/' + item.link;
@@ -2218,7 +2000,7 @@
                     viewLink = 'https://docs.google.com/gview?embedded=true&url=' + encodeURIComponent(absoluteUrl);
                 }
 
-                let downloadBtn = item.link 
+                let downloadBtn = item.link
                     ? `<a href="${viewLink}" target="_blank" style="margin-right: 12px; color: #0f766e; font-weight: 600; text-decoration: none;">Görüntüle</a>` +
                       `<a href="${absoluteUrl}" download style="color: #0369a1; font-weight: 600; text-decoration: none;">İndir</a>`
                     : 'Dosya Yok';
@@ -2288,23 +2070,11 @@
             });
         }
 
-        async function uploadDocument(file, token) {
+        async function uploadDocument(file) {
             const ext = file.name.split('.').pop();
             const filename = `dokumanlar/${Date.now()}.${ext}`;
             const b64 = await fileToBase64(file);
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Upload document: ' + file.name,
-                    content: b64,
-                    branch: BRANCH
-                })
-            });
-            if (!res.ok) throw new Error('Dosya yüklenemedi.');
+            await window.adminUploadFile(filename, b64, 'Upload document: ' + file.name);
             return filename;
         }
 
@@ -2319,11 +2089,9 @@
             if (!title) { docSaveStatus.textContent = 'Doküman Adı gerekli.'; return; }
 
             try {
-                const token = getGitHubToken();
-
                 if (docFileInput.files.length > 0) {
                     docSaveStatus.textContent = 'Dosya yükleniyor...';
-                    link = await uploadDocument(docFileInput.files[0], token);
+                    link = await uploadDocument(docFileInput.files[0]);
                 }
 
                 if (!link) { docSaveStatus.textContent = 'Lütfen bir dosya seçin veya indirme linki girin.'; return; }
@@ -2363,10 +2131,7 @@
         }
 
         async function commitMessagesData(commitMsg) {
-            const token = getGitHubToken();
-            const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(inboxMessages, null, 2))));
-            const sha = await getFileSha('messages.json', token);
-            await putFile('messages.json', contentB64, commitMsg, token, sha);
+            await window.adminWriteFile('messages.json', inboxMessages, commitMsg);
         }
 
         function renderMessages() {
@@ -2383,7 +2148,7 @@
             items.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'message-card' + (item.unread ? ' unread' : '');
-                
+
                 let readBtnText = item.unread ? 'Okundu İşaretle' : 'Okunmadı İşaretle';
                 let unreadBadgeHtml = item.unread ? '<span class="unread-badge" style="margin-right: 8px;">Yeni</span>' : '';
 
