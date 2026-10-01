@@ -33,13 +33,26 @@
         if (cfg.bannerEnabled && cfg.bannerText && sessionStorage.getItem('finteclub_banner_dismissed') !== 'true') {
             var bannerText = cfg.bannerText.replace(/</g, '&lt;');
             document.write(
+                '<style>' +
+                '@keyframes finteclubBannerScroll {' +
+                '0% { transform: translateX(100vw); }' +
+                '100% { transform: translateX(-100%); }' +
+                '}' +
+                '#finteclub-banner-track {' +
+                'display:inline-block;white-space:nowrap;position:absolute;left:0;top:50%;' +
+                'transform:translateY(-50%) translateX(100vw);' +
+                'animation:finteclubBannerScroll 16s linear infinite;' +
+                'will-change:transform;' +
+                '}' +
+                '</style>' +
                 '<div id="finteclub-banner" style="' +
-                'position:relative;width:100%;background:#3b82f6;color:#fff;' +
-                'text-align:center;padding:10px 40px;font-family:Inter,Arial,sans-serif;' +
-                'font-size:0.95rem;box-sizing:border-box;z-index:99998;">' +
-                '<span>' + bannerText + '</span>' +
+                'position:relative;width:100%;background:transparent;color:#fff;' +
+                'overflow:hidden;height:38px;font-family:Inter,Arial,sans-serif;' +
+                'font-size:0.95rem;font-weight:600;box-sizing:border-box;z-index:99998;' +
+                'border-bottom:1px solid rgba(255,255,255,0.12);">' +
+                '<span id="finteclub-banner-track">' + bannerText + '</span>' +
                 '<button onclick="document.getElementById(\'finteclub-banner\').style.display=\'none\';sessionStorage.setItem(\'finteclub_banner_dismissed\',\'true\');" ' +
-                'style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;">&times;</button>' +
+                'style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;z-index:1;">&times;</button>' +
                 '</div>'
             );
         }
