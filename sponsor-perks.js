@@ -92,6 +92,8 @@
         font-size: 0.85rem; line-height: 1.4; margin: 0; color: #222;
     }
     .sp-empty-perks { color: #cbd5e1; font-size: 0.9rem; padding: 20px 0; }
+    .sp-card-logo { margin-top: 22px; display: flex; justify-content: center; }
+    .sp-card-logo img { height: 34px; width: auto; opacity: 0.92; }
 
     /* Navbar'daki "FinTeClub'lı Ol" butonu: kart paletiyle uyumlu, sade */
     #sponsor-perks-open-btn {
@@ -147,6 +149,7 @@
                 <div id="sp-card-capture">
                     <div class="sp-member-name" id="sp-member-name">Üye Adı: </div>
                     <div id="sp-perks-list"></div>
+                    <div class="sp-card-logo"><img src="Yeni-beyaz-font-Logo.png" alt="FinTeClub"></div>
                 </div>
                 <button class="sp-btn" id="sp-download-btn" style="margin-top:20px;">Kartı İndir</button>
                 <button class="sp-btn secondary" id="sp-done-btn">Kapat</button>
