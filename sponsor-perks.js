@@ -95,8 +95,8 @@
         font-size: 0.85rem; line-height: 1.4; margin: 0; color: #222;
     }
     .sp-empty-perks { color: #cbd5e1; font-size: 0.9rem; padding: 20px 0; }
-    .sp-card-logo { margin-top: 22px; display: flex; justify-content: center; }
-    .sp-card-logo img { height: 34px; width: auto; opacity: 0.92; }
+    .sp-card-logo { margin-top: 24px; display: flex; justify-content: center; }
+    .sp-card-logo img { height: 76px; width: auto; opacity: 0.96; }
 
     /* Navbar'daki "FinTeClub'lı Ol" butonu: kart paletiyle uyumlu, sade */
     #sponsor-perks-open-btn {
