@@ -86,7 +86,10 @@
         padding: 16px; margin-bottom: 14px; text-align: center;
     }
     .sp-perk-card img {
-        max-width: 100%; max-height: 70px; object-fit: contain; margin-bottom: 10px;
+        max-width: 100%; max-height: 92px; object-fit: contain; margin-bottom: 8px;
+    }
+    .sp-perk-card .sp-perk-name {
+        font-size: 0.98rem; font-weight: 800; margin: 0 0 4px 0; color: #111;
     }
     .sp-perk-card p {
         font-size: 0.85rem; line-height: 1.4; margin: 0; color: #222;
@@ -253,7 +256,8 @@
                 } else {
                     perksListEl.innerHTML = perks.map(function (p) {
                         var imgHtml = p.logo ? '<img src="' + escapeHtml(p.logo) + '" alt="">' : '';
-                        return '<div class="sp-perk-card">' + imgHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
+                        var nameHtml = p.name ? '<p class="sp-perk-name">' + escapeHtml(p.name) + '</p>' : '';
+                        return '<div class="sp-perk-card">' + imgHtml + nameHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
                     }).join('');
                 }
             } catch (e) {
