@@ -86,7 +86,7 @@
         padding: 16px; margin-bottom: 14px; text-align: center;
     }
     .sp-perk-card img {
-        max-width: 100%; max-height: 92px; object-fit: contain; margin-bottom: 8px;
+        max-width: 85%; max-height: 170px; object-fit: contain; margin-bottom: 8px;
     }
     .sp-perk-card .sp-perk-name {
         font-size: 0.98rem; font-weight: 800; margin: 0 0 4px 0; color: #111;
