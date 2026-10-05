@@ -730,8 +730,10 @@
                             <textarea id="event-description" rows="3" placeholder="Etkinlik detayları" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%; resize: vertical;"></textarea>
                         </div>
                         <div class="field">
-                            <label>Afiş Görseli / Yolu (İsteğe bağlı)</label>
-                            <input type="text" id="event-image" placeholder="Örn: images/etkinlik-afis.jpg veya boş bırakın">
+                            <label>Afiş Görselleri (Birden Fazla Seçilebilir, İsteğe bağlı)</label>
+                            <input type="file" id="event-image-files" accept="image/*" multiple style="border: none; padding: 5px 0;">
+                            <div id="event-image-upload-status" style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;"></div>
+                            <div id="event-image-preview" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;"></div>
                         </div>
                         <div class="field">
                             <label>Kayıt Ol URL'si (İsteğe bağlı)</label>
@@ -1722,8 +1724,11 @@
         const eventDatetime = document.getElementById('event-datetime');
         const eventLocation = document.getElementById('event-location');
         const eventDescription = document.getElementById('event-description');
-        const eventImage = document.getElementById('event-image');
+        const eventImageFiles = document.getElementById('event-image-files');
+        const eventImageUploadStatus = document.getElementById('event-image-upload-status');
+        const eventImagePreview = document.getElementById('event-image-preview');
         const eventLink = document.getElementById('event-link');
+        let eventImages = [];
         const eventCancelBtn = document.getElementById('event-cancel-btn');
         const eventSubmitBtn = document.getElementById('event-submit-btn');
         const eventSaveStatus = document.getElementById('event-save-status');
@@ -1854,8 +1859,16 @@
                 row.className = 'item-row';
 
                 let regLink = item.link ? `<a href="${item.link}" target="_blank">Kayıt Linki</a>` : 'Kayıt Linki Yok';
+                const imgs = Array.isArray(item.images) ? item.images : (item.image ? [item.image] : []);
+                let thumbHtml = imgs.length
+                    ? `<div style="position:relative; width:48px; height:48px; flex-shrink:0;">
+                        <img src="${escapeHtml(imgs[0])}" style="width:48px; height:48px; object-fit:cover; border-radius:6px;">
+                        ${imgs.length > 1 ? `<span style="position:absolute; bottom:-4px; right:-4px; background:#0f766e; color:#fff; font-size:0.65rem; font-weight:700; border-radius:999px; padding:1px 5px;">+${imgs.length - 1}</span>` : ''}
+                       </div>`
+                    : `<div style="width:48px; height:48px; background:#f1f5f9; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">🖼️</div>`;
 
                 row.innerHTML =
+                    thumbHtml +
                     `<div class="i-info">
                         <strong>${escapeHtml(item.title || '')}</strong>
                         <div class="i-meta">${escapeHtml(item.datetime || '')} — ${escapeHtml(item.location || '')}</div>
@@ -1887,13 +1900,60 @@
             resetEventForm();
         });
 
+        function renderEventImagePreview() {
+            if (!eventImages.length) {
+                eventImagePreview.innerHTML = '';
+                return;
+            }
+            eventImagePreview.innerHTML = eventImages.map((path, idx) => `
+                <div style="position:relative; width:64px; height:64px;">
+                    <img src="${path}" style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid #eef0f4;">
+                    <button type="button" data-idx="${idx}" class="event-img-remove-btn" style="position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#dc2626; color:#fff; border:none; font-size:12px; line-height:1; cursor:pointer;">&times;</button>
+                </div>
+            `).join('');
+            eventImagePreview.querySelectorAll('.event-img-remove-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    eventImages.splice(parseInt(btn.getAttribute('data-idx'), 10), 1);
+                    renderEventImagePreview();
+                });
+            });
+        }
+
+        eventImageFiles.addEventListener('change', async () => {
+            const files = Array.from(eventImageFiles.files || []);
+            if (!files.length) return;
+
+            eventImageUploadStatus.textContent = 'Yükleniyor (0/' + files.length + ')...';
+            let uploaded = 0;
+            for (const file of files) {
+                try {
+                    const ext = file.name.split('.').pop();
+                    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+                    const filename = 'images/' + Date.now() + '-' + safeName;
+                    const b64 = await fileToBase64(file);
+                    await window.adminUploadFile(filename, b64, 'Etkinlik afişi eklendi: ' + safeName);
+                    eventImages.push(filename);
+                    uploaded++;
+                    eventImageUploadStatus.textContent = 'Yükleniyor (' + uploaded + '/' + files.length + ')...';
+                } catch (e) {
+                    eventImageUploadStatus.textContent = 'Hata: ' + e.message;
+                }
+            }
+            eventImageUploadStatus.textContent = uploaded ? uploaded + ' görsel yüklendi.' : '';
+            eventImageFiles.value = '';
+            renderEventImagePreview();
+        });
+
         function resetEventForm() {
             eventEditId.value = '';
             eventTitle.value = '';
             eventDatetime.value = '';
             eventLocation.value = '';
             eventDescription.value = '';
-            eventImage.value = '';
+            eventImageFiles.value = '';
+            eventImageUploadStatus.textContent = '';
+            eventImages = [];
+            renderEventImagePreview();
             eventLink.value = '';
             eventForm.style.display = 'none';
             eventSaveStatus.textContent = '';
@@ -1909,7 +1969,8 @@
             eventDatetime.value = item.datetime || '';
             eventLocation.value = item.location || '';
             eventDescription.value = item.description || '';
-            eventImage.value = item.image || '';
+            eventImages = Array.isArray(item.images) ? item.images.slice() : (item.image ? [item.image] : []);
+            renderEventImagePreview();
             eventLink.value = item.link || '';
 
             eventForm.style.display = 'block';
@@ -1924,7 +1985,7 @@
             const datetime = eventDatetime.value.trim();
             const location = eventLocation.value.trim();
             const description = eventDescription.value.trim();
-            const image = eventImage.value.trim();
+            const images = eventImages.slice();
             const link = eventLink.value.trim();
 
             if (!title) { eventSaveStatus.textContent = 'Etkinlik Adı gerekli.'; return; }
@@ -1932,7 +1993,7 @@
             try {
                 eventSaveStatus.textContent = 'Kaydediliyor...';
                 const id = eventEditId.value || 'e' + Date.now();
-                const newItem = { id, title, datetime, location, description, image, link };
+                const newItem = { id, title, datetime, location, description, image: images[0] || '', images, link };
 
                 if (eventEditId.value) {
                     const idx = siteData.events.findIndex(ev => ev.id === id);
