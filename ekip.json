@@ -173,30 +173,6 @@
       "image": "avatar-placeholder",
       "linkedin": "",
       "email": ""
-    },
-    {
-      "name": "Sudem Durmuş",
-      "role": "Kurul Üyesi",
-      "image": "images/1791309052539-Sudem-Durmu_.jpeg",
-      "linkedin": "https://www.linkedin.com/in/sudem-durmuş-559218360?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "Sudemdurmus1998sd@gmail.com",
-      "website": ""
-    },
-    {
-      "name": "Ecrin Genç",
-      "role": "Kurul Üyesi",
-      "image": "images/1791309111889-Ecrin-Gen_.jpeg",
-      "linkedin": "https://www.linkedin.com/in/ecrin-genç-705472419?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      "email": "Mail e.gnc0430@gmail.com",
-      "website": ""
-    },
-    {
-      "name": "Ayşegül Kanlı",
-      "role": "Kurul Üyesi",
-      "image": "images/1791309150903-Ay_eg_l-Kanl_.jpeg",
-      "linkedin": "https://www.linkedin.com/in/ayşegül-kanlı-14100a315?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
-      "email": "aysegul.kanli14@gmail.com",
-      "website": ""
     }
   ],
   "kurumsal-iletisim": [
@@ -229,9 +205,9 @@
       "email": ""
     },
     {
-      "name": "Sinemnur Yaman",
-      "role": "Kurul Üyesi",
-      "image": "images/1791308937893-Sinemnur-yaman.jpeg",
+      "name": "Sinemnur yaman",
+      "role": "kurul üyesi",
+      "image": "images/1791306912357-WhatsApp_Image_2026-10-06_at_18.37.14.jpeg",
       "linkedin": "https://www.linkedin.com/in/sinemnur-yaman?utm_source=share_via&utm_content=profile&utm_medium=member_android",
       "email": "yamansinemnur444@gmail.com",
       "website": ""
@@ -244,14 +220,6 @@
       "image": "img/ekip/sadakat-sudenaz-bayrak.jpg",
       "linkedin": "https://www.linkedin.com/in/sadakatsudenazbayrak",
       "email": ""
-    },
-    {
-      "name": "Mustafa Berdan Sönmez",
-      "role": "Kurul Üyesi",
-      "image": "avatar-placeholder",
-      "linkedin": "https://www.linkedin.com/in/mustafa-sönmez-094546287?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
-      "email": "sonmezmustafaberdan@gmail.com",
-      "website": ""
     },
     {
       "name": "Buse Ak",
@@ -282,6 +250,14 @@
       "email": ""
     },
     {
+      "name": "Ahmad Antonio",
+      "role": "Kurul Üyesi",
+      "image": "images/1788209862990-Ahmad_Antonio.jpeg",
+      "linkedin": "www.linkedin.com/in/ahmad-antonıo-electrıcal",
+      "email": "mr.ahmad.tr@gmail.com",
+      "website": ""
+    },
+    {
       "name": "Ebrar Barutçu",
       "role": "Kurul Üyesi",
       "image": "images/1788209917147-Ebrar_Barut_u.jpeg",
@@ -295,6 +271,14 @@
       "image": "images/1788210097878-Ceylin_Nehir.jpeg",
       "linkedin": "",
       "email": "k.nehir0307@gmail.com",
+      "website": ""
+    },
+    {
+      "name": "Sinemnur Yaman",
+      "role": "Kurul Üyesi",
+      "image": "images/1791308937893-Sinemnur-yaman.jpeg",
+      "linkedin": "https://www.linkedin.com/in/sinemnur-yaman?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "email": "yamansinemnur444@gmail.com",
       "website": ""
     }
   ],
