@@ -360,7 +360,7 @@
                     <div id="ekip-member-form" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef0f4;">
                         <h3 id="ekip-form-title" style="margin: 0 0 16px 0; color: #14204a; font-size: 1.1rem;">Yeni Üye Ekle</h3>
                         <input type="hidden" id="ekip-edit-board">
-                        <input type="hidden" id="ekip-edit-index">
+                        <input type="hidden" id="ekip-edit-id">
 
                         <div class="field">
                             <label>Ad Soyad</label>
@@ -1273,7 +1273,7 @@
     })();
     </script>
 
-    <!-- ============ SECOND SCRIPT: EKİP YÖNETİMİ ============ -->
+    <!-- ============ SECOND SCRIPT: EKİP YÖNETİMİ (ID BAZLI) ============ -->
     <script>
     (function () {
         const EKIP_PATH = 'ekip.json';
@@ -1282,7 +1282,7 @@
         const memberForm = document.getElementById('ekip-member-form');
         const formTitle = document.getElementById('ekip-form-title');
         const editBoardInput = document.getElementById('ekip-edit-board');
-        const editIndexInput = document.getElementById('ekip-edit-index');
+        const editIdInput = document.getElementById('ekip-edit-id');
 
         const inputName = document.getElementById('ekip-name');
         const inputBoard = document.getElementById('ekip-board');
@@ -1327,6 +1327,29 @@
             loadEkip();
         }
 
+        // Eski verilerde (index bazlı dönemden kalan) id alanı olmayan üyelere
+        // kalıcı bir id atar. Sadece ilk yüklemede çalışır — her işlemde sunucuyu
+        // tekrar okumuyoruz, çünkü GitHub'ın okuma tarafı yazdıktan hemen sonra
+        // bir süre eski içeriği döndürebiliyor (eventual consistency); işlem
+        // öncesi "tazeleme" yapmak az önce eklenen kayıtları hafızadan silip
+        // dosyaya o şekilde geri yazdırıyordu. Artık her başarılı yazmadan sonra
+        // hafızadaki currentEkip zaten güncel kalıyor ve bir sonraki işlem onun
+        // üzerine inşa ediliyor.
+        function ensureMemberIds(data) {
+            let changed = false;
+            for (const boardKey of Object.keys(data)) {
+                if (Array.isArray(data[boardKey])) {
+                    data[boardKey].forEach((m, idx) => {
+                        if (!m.id) {
+                            m.id = 'm_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 5) + '_' + idx;
+                            changed = true;
+                        }
+                    });
+                }
+            }
+            return changed;
+        }
+
         async function loadEkip() {
             try {
                 currentEkip = await window.adminReadFile(EKIP_PATH);
@@ -1341,6 +1364,16 @@
                     "yazilim-proje": []
                 };
             }
+
+            const hadMissingIds = ensureMemberIds(currentEkip);
+            if (hadMissingIds) {
+                try {
+                    await window.adminWriteFile(EKIP_PATH, currentEkip, 'Üyelere benzersiz ID atandı');
+                } catch (e) {
+                    // id atama yazması başarısız olsa da panel çalışmaya devam etsin
+                }
+            }
+
             renderMembers();
         }
 
@@ -1350,7 +1383,7 @@
 
             for (const [boardKey, members] of Object.entries(currentEkip)) {
                 totalMembers += members.length;
-                members.forEach((member, index) => {
+                members.forEach((member) => {
                     const row = document.createElement('div');
                     row.className = 'member-row';
 
@@ -1374,12 +1407,12 @@
                             <div class="m-links">${linkedinLink} • ${emailLink} • ${websiteLink}</div>
                          </div>` +
                         `<div class="ekip-actions">
-                            <button class="btn-edit" id="edit-${boardKey}-${index}">Düzenle</button>
-                            <button class="btn-delete" id="del-${boardKey}-${index}">Sil</button>
+                            <button class="btn-edit" id="edit-member-${member.id}">Düzenle</button>
+                            <button class="btn-delete" id="del-member-${member.id}">Sil</button>
                          </div>`;
 
-                    row.querySelector(`#edit-${boardKey}-${index}`).addEventListener('click', () => startEdit(boardKey, index));
-                    row.querySelector(`#del-${boardKey}-${index}`).addEventListener('click', () => deleteMember(boardKey, index));
+                    row.querySelector(`#edit-member-${member.id}`).addEventListener('click', () => startEdit(boardKey, member.id));
+                    row.querySelector(`#del-member-${member.id}`).addEventListener('click', () => deleteMember(boardKey, member.id));
                     listContainer.appendChild(row);
                 });
             }
@@ -1424,7 +1457,7 @@
             isEditing = false;
             formTitle.textContent = 'Yeni Üye Ekle';
             editBoardInput.value = '';
-            editIndexInput.value = '';
+            editIdInput.value = '';
             inputName.value = '';
             inputRole.value = '';
             inputImagePath.value = '';
@@ -1436,14 +1469,14 @@
             saveStatus.textContent = '';
         }
 
-        function startEdit(boardKey, index) {
-            const member = currentEkip[boardKey][index];
+        function startEdit(boardKey, memberId) {
+            const member = (currentEkip[boardKey] || []).find(m => m.id === memberId);
             if (!member) return;
 
             isEditing = true;
             formTitle.textContent = 'Üyeyi Düzenle';
             editBoardInput.value = boardKey;
-            editIndexInput.value = index;
+            editIdInput.value = member.id;
 
             inputName.value = member.name || '';
             inputBoard.value = boardKey;
@@ -1484,16 +1517,18 @@
                     await window.adminUploadFile(imagePath, base64, 'Ekip üyesi görseli eklendi: ' + safeName);
                 }
 
-                const newItem = { name, role, image: imagePath, linkedin, email, website };
+                const memberId = isEditing ? editIdInput.value : ('m_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 5));
+                const newItem = { id: memberId, name, role, image: imagePath, linkedin, email, website };
 
                 if (isEditing) {
                     const oldBoard = editBoardInput.value;
-                    const oldIndex = parseInt(editIndexInput.value, 10);
-
                     if (oldBoard === board) {
-                        currentEkip[board][oldIndex] = newItem;
+                        const idx = (currentEkip[board] || []).findIndex(m => m.id === memberId);
+                        if (idx !== -1) currentEkip[board][idx] = newItem;
+                        else currentEkip[board].push(newItem);
                     } else {
-                        currentEkip[oldBoard].splice(oldIndex, 1);
+                        currentEkip[oldBoard] = (currentEkip[oldBoard] || []).filter(m => m.id !== memberId);
+                        if (!currentEkip[board]) currentEkip[board] = [];
                         currentEkip[board].push(newItem);
                     }
                 } else {
@@ -1511,13 +1546,13 @@
             }
         });
 
-        async function deleteMember(boardKey, index) {
-            const member = currentEkip[boardKey][index];
+        async function deleteMember(boardKey, memberId) {
+            const member = (currentEkip[boardKey] || []).find(m => m.id === memberId);
             if (!member) return;
             if (!confirm(`${member.name} isimli ekip üyesini silmek istediğinize emin misiniz?`)) return;
 
             try {
-                currentEkip[boardKey].splice(index, 1);
+                currentEkip[boardKey] = (currentEkip[boardKey] || []).filter(m => m.id !== memberId);
 
                 await window.adminWriteFile(EKIP_PATH, currentEkip, 'Ekip üyesi silindi: ' + member.name);
 
