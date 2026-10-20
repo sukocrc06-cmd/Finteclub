@@ -758,3 +758,44 @@ html.flying .spine-head::before { inset: -30px; background: radial-gradient(circ
 .toast-notification.error { border-color: rgba(239,68,68,.5); }
 .toast-icon { color: #10b981; font-size: 1.3rem; font-weight: bold; }
 .toast-notification.error .toast-icon { color: #ef4444; }
+
+/* =====================================================================
+   HAFİF MOD — telefon ve tablet (html.lite, journey.js ekler)
+   Bulanık cam, 3D katmanlar, tam ekran karışım katmanı ve sürekli dönen
+   animasyonlar mobil GPU'yu yoruyor ve belleği dolduruyordu.
+   ===================================================================== */
+html.lite .j-card,
+html.lite #p-iletisim .question-card,
+html.lite .sheet-pan, html.lite .mini-pill, html.lite .ev-modal .bd, html.lite .sp-tip,
+html.lite .toast-notification, html.lite .hub-peek { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html.lite .j-card { background-color: rgba(12, 25, 56, .94); }
+html.lite #p-iletisim .question-card { background-color: rgba(9, 19, 44, .96) !important; }
+html.lite .j-panel.on .j-card { transform: none; }
+html.lite .j-card::before { display: none; }
+html.lite .tint { display: none; }
+html.lite .sp-glow, html.lite .spine-head::before { display: none; }
+html.lite .ev-viewport { perspective: none; }
+html.lite .ev-track { transform-style: flat; }
+html.lite .ev, html.lite .ev:hover, html.lite .ev:focus-visible { transform: scale(var(--s, 1)); transition: border-color .3s, box-shadow .3s; }
+html.lite .ev.focus { box-shadow: 0 0 0 1px rgba(0,210,255,.5); }
+html.lite .ev img { transition: opacity .7s ease, filter .9s ease; transform: none; }
+/* Sürekli dönen / nabız atan süslemeler */
+html.lite .hub-core img, html.lite .final-core img, html.lite .spine-head .dia img { animation: none !important; }
+html.lite .j-panel.on .j-node::after, html.lite .j-panel.on .j-link::after,
+html.lite .hub.lit .hub-core .ring, html.lite .final.lit .final-core .ring, html.lite .final-core::after,
+html.lite .status::before { animation: none !important; }
+html.lite .hub-svg .arc { filter: none; }
+html.lite .hub-core img { filter: none; }
+/* Gereksiz katman oluşturan ipuçları */
+html.lite .ann, html.lite .member, html.lite .sp, html.lite .mv > div, html.lite .chips span,
+html.lite .hero-logo, html.lite .hero-content h1, html.lite .hero-content h2, html.lite .hero-content h3,
+html.lite .team-row, html.lite .ev-track, html.lite .spine-head, html.lite #p-iletisim .j-card,
+html.lite #p-iletisim .contact-list li, html.lite #p-iletisim .question-header, html.lite #p-iletisim .question-field, html.lite #p-iletisim .uyelik-butonu { will-change: auto !important; }
+html.lite .homepage-logo-spin-final { will-change: auto; }
+/* Mobilde body arkaplanı sabit değil (style.css) — kaydırmada yeniden boyama yok */
+html.lite body.home-page { background-attachment: scroll; }
+/* Hafif modda ışık patlaması animasyonları kapalı (geçici katman patlaması yapıyordu) */
+html.lite .j-panel.burst .j-node::before, html.lite .j-panel.burst .j-card::after { animation: none !important; }
+html.lite .j-card::after { display: none; }
+/* style.css'teki mobil menü, kapalıyken bile bulanık cam katmanı taşıyordu (zemin zaten %98 opak) */
+html.lite .nav-links { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
