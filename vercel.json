@@ -48,5 +48,24 @@
       "source": "/fintelig/:path*",
       "destination": "https://fintelig-finteclub.vercel.app/:path*"
     }
-  ]
+  ],
+  "images": {
+    "sizes": [
+      256,
+      640
+    ],
+    "localPatterns": [
+      {
+        "pathname": "^/images/.*$",
+        "search": ""
+      }
+    ],
+    "qualities": [
+      70
+    ],
+    "formats": [
+      "image/webp"
+    ],
+    "minimumCacheTTL": 2592000
+  }
 }

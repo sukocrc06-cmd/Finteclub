@@ -152,7 +152,7 @@
                 <div id="sp-card-capture">
                     <div class="sp-member-name" id="sp-member-name">Üye Adı: </div>
                     <div id="sp-perks-list"></div>
-                    <div class="sp-card-logo"><img src="Yeni-beyaz-font-Logo.png" alt="FinTeClub"></div>
+                    <div class="sp-card-logo"><img src="img/webp/yeni-beyaz-font-logo.webp" alt="FinTeClub"></div>
                 </div>
                 <button class="sp-btn" id="sp-download-btn" style="margin-top:20px;">Kartı İndir</button>
                 <button class="sp-btn secondary" id="sp-done-btn">Kapat</button>

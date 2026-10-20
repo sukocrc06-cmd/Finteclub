@@ -154,16 +154,40 @@ function varEl(k) {
     return VARMAP[k] || (/^--(h[123]|logo|glow|hint)/.test(k) ? $('hero') : root);
 }
 var rnd = function (v) { return typeof v === 'number' ? String(+v.toFixed(4)) : String(v).replace(/-?\d+\.\d{3,}/g, function (m) { return (+m).toFixed(2); }); };
+/* Yazma kuyruğu: kare içinde önce tüm ölçümler okunur, stil yazmaları sonda tek seferde uygulanır
+   (okuma-yazma sırası karışınca tarayıcı her okumada stil/yerleşimi yeniden hesaplamak zorunda kalıyordu) */
+var WQ = null;
+function flushW() { var q = WQ; WQ = null; if (!q) return; for (var i = 0; i < q.length; i += 4) { var e = q[i], m = q[i + 1]; if (m === 0) e.style.setProperty(q[i + 2], q[i + 3]); else if (m === 1) e.style[q[i + 2]] = q[i + 3]; else e.textContent = q[i + 3]; } }
 var set = function (k, v, el) {
     el = el || varEl(k); if (!el) return;
     var c = el.__vc || (el.__vc = {}); v = rnd(v);
-    if (c[k] === v) return; c[k] = v; el.style.setProperty(k, v);
+    if (c[k] === v) return; c[k] = v; if (WQ) WQ.push(el, 0, k, v); else el.style.setProperty(k, v);
 };
 var sty = function (el, prop, v) {
     var c = el.__sc || (el.__sc = {}); v = rnd(v);
-    if (c[prop] === v) return; c[prop] = v; el.style[prop] = v;
+    if (c[prop] === v) return; c[prop] = v; if (WQ) WQ.push(el, 1, prop, v); else el.style[prop] = v;
 };
-var txt = function (el, v) { if (el.__tx !== v) { el.__tx = v; el.textContent = v; } };
+var txt = function (el, v) { if (el.__tx !== v) { el.__tx = v; if (WQ) WQ.push(el, 2, 0, v); else el.textContent = v; } };
+/* Kartlarda küçük kopyalar (img/webp/k/, en fazla 640px): telefon 1400px fotoğrafı her kaydırmada çözmek zorunda kalmasın */
+var KIMG = {}; ["anitkabir-grup.webp", "anitkabir-kapak.webp", "bahar-senligi-1.webp", "bahar-senligi-2.webp", "bahar-senligi-3.webp", "bahar-senligi-4.webp", "bahar-senligi-5.webp", "bahar-senligi-6.webp", "bahar-senligi-7.webp", "bahar-senligi-8.webp", "btk-1.webp", "btk-2.webp", "btk-3.webp", "btk-4.webp", "corba-etkinligi-detay.webp", "corba-etkinligi-kapak.webp", "dostluk-maci-afis.webp", "dostluk-maci-aksiyon.webp", "dostluk-maci-grup.webp", "etlik-stant-1.webp", "etlik-stant-2.webp", "hero-bg.webp", "img-20260407-wa0006.webp", "img-20260407-wa0012.webp", "piknik.webp", "teknopark-foto1.webp", "teknopark-foto2.webp", "teknopark-foto3.webp"].forEach(function (n) { KIMG[n] = 1; });
+var KIMGA = {}; ["1785063694374.png", "1785167101691.png", "1785597847045-9d7b4a84-8141-435b-ba09-811ce0dc3b30.jpg", "1787072380330.jpg", "1787651130556.png", "1787662460259.png", "1787747845197.jpeg", "1788209751738-Sadakat_Sudenaz_Bayrak.jpeg", "1788209862990-Ahmad_Antonio.jpeg", "1788209917147-Ebrar_Barut_u.jpeg", "1788210097878-Ceylin_Nehir.jpeg", "1790012995680.jpg", "1790526514319.jpg", "1790529709564.jpg", "1790681161236-Porto-Siena.jpg", "1790681217500-Porto-Siena.jpg", "1790681971816-Porto-Siena.jpg", "1790861427520.jpg", "1790861589719.jpg", "1790861672783.jpg", "1790861687518.jpg", "1790861739159.jpg", "1790861860742.jpg", "1790861864838.jpg", "1790861901462.jpg", "1790861940678.jpg", "1790861984214.jpg", "1791204282842-1790681971816-Porto-Siena.png", "1791204503656--Porto-Siena.png", "1791204713276--Porto-Siena-logo.png", "1791204899095-porto-siena-logo-cropped.png", "1791205269798-porto-siena-logo-cropped2222.png", "1791205757228-porto_siena_g_ncel_logo.png", "1791206689574.jpg", "1791206700862.jpg", "1791306912357-WhatsApp_Image_2026-10-06_at_18.37.14.jpeg", "1791308937893-Sinemnur-yaman.jpeg", "1791309052539-Sudem-Durmu_.jpeg", "1791309111889-Ecrin-Gen_.jpeg", "1791309150903-Ay_eg_l-Kanl_.jpeg", "1791317613191-3dad02cd-787d-4f84-b78b-9be8faa403ef.jpeg", "1791364288255-e0cf6abc-3806-4fb7-8d9e-c48115f37697.jpeg", "1791364392800-0e840c8c-9f89-46bd-a861-429e4ec84b4e.jpeg", "1791369530965-2828d9d8-3132-48ef-8100-8c3c165af366.jpeg", "1791454617401-Yavuz_Selim_L_kkaya.jpg", "1791454914955-_layda_G_ndo_du.jpeg", "1791493342262.jpg", "1791628722815-Nisa-Akdeniz.jpeg", "1792143248192.jpg", "1792425667068-PHOTO-2026-10-19-16-30-19.jpg", "1792425870971-PHOTO-2026-10-19-16-30-19.jpg", "1792428121773-PHOTO-2026-10-19-16-31-17.jpg", "1792428202876-PHOTO-2026-10-19-16-32-07.jpg", "1792428263740-PHOTO-2026-10-19-16-35-02.jpg", "1792428310276-PHOTO-2026-10-19-16-35-38.jpg", "Etlik-Stant-1.jpg", "Etlik-Stant-2.jpg", "anadolu-doner.png", "aslı-sarı.jpg", "aslıhan-sarı.jpg", "avukatapp.png", "begum-mutfagi.png", "berkay-arslanargun.jpg", "btk-isbirligi-duyuru.jpg", "climate-ideathon-duyuru.jpg", "cubukbelediyesi.png", "elanur-orkun.jpg", "hacibaba.png", "hammurabi.png", "muhammet-kasap.png", "optipulse.png", "serhat-arslan.jpg", "sponsor-hammurabi.png", "sumeyye-yurtsever.jpg", "tubitak-duyuru.jpg"].forEach(function (n) { KIMGA[n] = 1; });
+var VIMG = !/^(localhost|127\.|0\.0\.0\.0|$)/.test(location.hostname);
+/* small: duyuru kutuları gibi küçük yerler (256px). Panelden yeni yüklenen görseller için Vercel görsel küçültme servisi */
+function kimg(src, small) {
+    src = src || ''; var m = /^img\/webp\/([^\/]+\.webp)$/.exec(src);
+    if (m) return KIMG[m[1]] ? 'img/webp/k/' + m[1] : src;
+    m = /^images\/([^\/]+)\.(jpe?g|png|webp)$/i.exec(src);
+    if (!m) return src;
+    if (KIMGA[m[1] + '.' + m[2]]) return 'img/webp/k/a/' + m[1] + '.webp';
+    return VIMG ? '/_vercel/image?url=' + encodeURIComponent('/' + src) + '&w=' + (small ? 256 : 640) + '&q=70' : src;
+}
+/* Küçültme servisi bir sebeple hata verirse orijinal görsele dön */
+document.addEventListener('error', function (e) {
+    var t = e.target; if (!t || t.tagName !== 'IMG') return;
+    var u = t.getAttribute('src') || '';
+    if (u.indexOf('/_vercel/image') === 0) { try { t.src = decodeURIComponent(/[?&]url=([^&]+)/.exec(u)[1]).slice(1); } catch (er) {} }
+    else if (u.indexOf('img/webp/k/') === 0 && t.dataset.full) t.src = t.dataset.full;
+}, true);
 var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
 var range = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
 var lerp = function (a, b, t) { return a + (b - a) * t; };
@@ -171,7 +195,7 @@ var ease = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 
 var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 /* Yumuşak kaydırma */
 var lenis = null;
-if (!reduce && window.Lenis) {
+if (!reduce && !LITE && window.Lenis) {   // dokunmatikte telefonun kendi kaydırması daha akıcı
     lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
     requestAnimationFrame(function raf(t) { lenis.raf(t); requestAnimationFrame(raf); });
 }
@@ -234,7 +258,7 @@ function renderTabs() {
 function renderTeam() {
     var k = TEAM.filter(function (x) { return x.key === teamKey; })[0];
     $('team-row').innerHTML = k.members.map(function (m, i) {
-        var av = m.img ? '<img src="' + m.img + '" alt="" loading="lazy" data-fx>' : esc(initials(m.n));
+        var av = m.img ? '<img src="' + kimg(m.img) + '" alt="" loading="lazy" decoding="async" data-fx>' : esc(initials(m.n));
         var links = (m.li ? '<a href="' + esc(m.li) + '" target="_blank" rel="noopener">LinkedIn</a>' : '') +
             (m.em ? '<a href="mailto:' + esc(m.em) + '">' + esc(T('E-posta')) + '</a>' : '') +
             '<a href="ekip.html#' + k.key + '">' + esc(T('Profil')) + '</a>';
@@ -280,7 +304,7 @@ $('team-tabs').addEventListener('click', function (e) {
    --------------------------------------------------------------- */
 function renderEvents() {
     $('ev-track').innerHTML = EVENTS.map(function (e, i) {
-        return '<button class="ev" type="button" data-idx="' + i + '"><img src="' + e.cover + '" alt="" loading="lazy" data-fx><span class="ev-txt"><time>' + esc(T(e.date)) + '</time><h4>' + esc(T(e.title)) + '</h4><span class="ev-open">' + esc(T('Detayları gör')) + '</span></span></button>';
+        return '<button class="ev" type="button" data-idx="' + i + '"><img src="' + kimg(e.cover) + '" alt="" loading="lazy" decoding="async" data-fx><span class="ev-txt"><time>' + esc(T(e.date)) + '</time><h4>' + esc(T(e.title)) + '</h4><span class="ev-open">' + esc(T('Detayları gör')) + '</span></span></button>';
     }).join('');
     var tl = $('timeline'), seen = {};
     tl.querySelectorAll('.tl-dot, .tl-month').forEach(function (n) { n.remove(); });
@@ -309,7 +333,7 @@ function renderModal() {
         '<button class="x" type="button" data-close aria-label="' + esc(T('Kapat')) + '">×</button>' +
         '<div class="stage"><img src="' + imgs[imgIdx] + '" alt="" data-fx>' +
         (imgs.length > 1 ? '<button class="nav-btn prev" type="button" data-img="-1" aria-label="‹">‹</button><button class="nav-btn next" type="button" data-img="1" aria-label="›">›</button>' : '') + '</div>' +
-        (imgs.length > 1 ? '<div class="thumbs">' + imgs.map(function (s, k) { return '<button type="button" data-goto="' + k + '" aria-current="' + (k === imgIdx) + '"><img src="' + s + '" alt="" loading="lazy"></button>'; }).join('') + '</div>' : '') +
+        (imgs.length > 1 ? '<div class="thumbs">' + imgs.map(function (s, k) { return '<button type="button" data-goto="' + k + '" aria-current="' + (k === imgIdx) + '"><img src="' + kimg(s) + '" alt="" loading="lazy" decoding="async"></button>'; }).join('') + '</div>' : '') +
         '<div class="body"><time>' + esc(T(e.mdate)) + '</time><h3 id="ev-modal-title">' + esc(T(e.title)) + '</h3>' +
         e.paras.map(function (p) { return '<p>' + T(p) + '</p>'; }).join('') + '</div>' +
         '<div class="foot"><button type="button" data-ev="-1">← ' + esc(T(prev.title)) + '</button>' +
@@ -497,7 +521,7 @@ function renderHub() {
 var peek = $('hub-peek');
 function showPeek(node) {
     var id = node.dataset.target, h = HUB[id], x = parseFloat(node.style.getPropertyValue('--x')), y = parseFloat(node.style.getPropertyValue('--y'));
-    var pv = h.img ? '<div class="pv"><img src="' + h.img + '" alt=""></div>'
+    var pv = h.img ? '<div class="pv"><img src="' + kimg(h.img) + '" alt="" decoding="async"></div>'
         : h.kind === 'logos' ? '<div class="pv logos">' + ['avukatapp', 'optipulse', 'hammurabi', 'anadolu-doner'].map(function (l) { return '<img src="img/webp/' + l + '.webp" alt="">'; }).join('') + '</div>'
         : h.kind === 'chart' ? '<div class="pv chart"><svg viewBox="0 0 250 118" preserveAspectRatio="none"><path d="M0,96 L25,88 L50,92 L75,72 L100,80 L125,58 L150,66 L175,44 L200,52 L225,30 L250,20" fill="none" stroke="#00d2ff" stroke-width="2"/><path d="M0,96 L25,88 L50,92 L75,72 L100,80 L125,58 L150,66 L175,44 L200,52 L225,30 L250,20 L250,118 L0,118Z" fill="rgba(0,210,255,.12)"/></svg></div>'
         : '<div class="pv mark"><img src="img/webp/yeni-beyaz-font-logo.webp" alt=""></div>';
@@ -739,6 +763,10 @@ function burst(panel, nodeRect) {
 var finalLit = false, hubLit = false, hubCore = $('hub-core'), hubSec = $('hub');
 function update() {
     ticking = false;
+    WQ = [];
+    try { updateR(); } finally { flushW(); }
+}
+function updateR() {
     var sy = scrollY, down = sy >= lastSy;
 
     // Hero sahnesi
@@ -759,7 +787,7 @@ function update() {
 
     // Omurga
     var tip = vh * .6, len = lenAtY(tip - jr.top);
-    var dOff = (L - len).toFixed(1); if (pFill.__do !== dOff) { pFill.__do = dOff; pFill.style.strokeDashoffset = dOff; if (!LITE) pGlow.style.strokeDashoffset = dOff; }
+    var dOff = (L - len).toFixed(1); sty(pFill, 'strokeDashoffset', dOff); if (!LITE) sty(pGlow, 'strokeDashoffset', dOff);
     var hp = ptAtLen(len), headOn = len > 2 && len < L - 2;
     sty(head, 'transform', 'translate(' + (hp.x - 17).toFixed(1) + 'px,' + (hp.y - 17).toFixed(1) + 'px)');
     set('--head-o', headOn ? 1 : 0);
@@ -861,7 +889,7 @@ function story() {
         var ps = progN('p-hakkimizda', .26, .02);
         stEl.querySelectorAll('.stat').forEach(function (st, i) {
             var e = easeOut(clamp(ps * 1.45 - i * .12, 0, 1)), sEl = st.querySelector('strong');
-            st.querySelector('.bar').style.setProperty('--e', e.toFixed(3));
+            set('--e', e.toFixed(3), st.__bar || (st.__bar = st.querySelector('.bar')));
             txt(sEl, String(Math.round(+sEl.dataset.count * e)));
         });
         var mv = document.querySelector('#p-hakkimizda .mv'), pm = progN('p-hakkimizda', .25, .06), d0 = mv.children[0], d1 = mv.children[1];
@@ -883,7 +911,7 @@ function story() {
             sty(s2.el, 'opacity', (.2 + .8 * e).toFixed(3));
         });
         var le = clamp((ptE - .55) / .45, 0, 1);
-        tv.querySelectorAll('.stars line').forEach(function (l) { var so = (+l.dataset.l * (1 - le)).toFixed(1); if (l.__so !== so) { l.__so = so; l.setAttribute('stroke-dashoffset', so); } });
+        tv.querySelectorAll('.stars line').forEach(function (l) { sty(l, 'strokeDashoffset', (+l.dataset.l * (1 - le)).toFixed(1)); });
         if (tw < 1) onScroll();
     }
     // 05 Mıknatıs: logolar dört bir yandan uçup yerine oturur
@@ -969,7 +997,7 @@ function renderAnn() {
         var dt = new Date((a.date || '') + 'T00:00:00');
         var ds = isNaN(dt) ? (a.date || '') : dt.toLocaleDateString(lang === 'en' ? 'en-US' : 'tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
         return '<a class="ann" style="--i:' + i + '" href="duyurular.html">' + (i === 0 ? '<span class="new-badge">' + esc(T('YENİ')) + '</span>' : '') +
-            (a.image ? '<img src="' + esc(toWebp(a.image)) + '" alt="" loading="lazy" data-fx>' : '<span></span>') +
+            (a.image ? '<img src="' + esc(kimg(toWebp(a.image), 1)) + '" alt="" loading="lazy" decoding="async" data-fx>' : '<span></span>') +
             '<div><time>' + esc(ds) + ' · ' + esc(T(a.category || 'Genel')) + '</time><h4>' + esc(T((a.title || '').trim())) + '</h4></div></a>';
     }).join('');
     fx(document.querySelector('.ann-list')); onScroll();

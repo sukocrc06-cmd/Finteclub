@@ -799,3 +799,6 @@ html.lite .j-panel.burst .j-node::before, html.lite .j-panel.burst .j-card::afte
 html.lite .j-card::after { display: none; }
 /* style.css'teki mobil menü, kapalıyken bile bulanık cam katmanı taşıyordu (zemin zaten %98 opak) */
 html.lite .nav-links { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+
+/* Telefon/tablet: 14000px'lik sayfaya gerilen arka plan fotoğrafı yerine düz zemin (ağ tuvali ve ton katmanı zaten üstte) */
+html.lite body.home-page { background-image: none !important; background-color: #050D1D; }
