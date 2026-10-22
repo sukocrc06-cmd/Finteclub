@@ -227,7 +227,8 @@
       "id": "p1792665855255",
       "name": "Ardıç Kitabevi",
       "logo": "images/1792665853601-336978651_579413810787443_7560600835301340597_n.jpg",
-      "description": "Tüm menülerde %10 indirim"
+      "description": "Tüm menülerde %10 indirim",
+      "frozen": true
     }
   ]
 }
