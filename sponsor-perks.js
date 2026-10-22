@@ -78,8 +78,21 @@
         padding: 28px 22px;
         background: linear-gradient(160deg, #0a1030 0%, #141a4a 40%, #1c2a6e 75%, #232f7a 100%);
     }
+    .sp-member-info {
+        margin-bottom: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
     .sp-member-name {
-        font-size: 1.2rem; font-weight: 800; margin-bottom: 22px;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #ffffff;
+    }
+    .sp-member-detail {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #cbd5e1;
     }
     .sp-perk-card {
         background: #fff; color: #111; border-radius: 16px;
@@ -150,7 +163,12 @@
 
             <div id="sp-screen-card" style="display:none;">
                 <div id="sp-card-capture">
-                    <div class="sp-member-name" id="sp-member-name">Üye Adı: </div>
+                    <div class="sp-member-info">
+                        <div class="sp-member-name" id="sp-member-name">Üye Adı: </div>
+                        <div class="sp-member-detail" id="sp-member-student-no">Öğrenci No: </div>
+                        <div class="sp-member-detail" id="sp-member-uni">Üniversite Adı: </div>
+                        <div class="sp-member-detail" id="sp-member-club">Kulüp Adı: FinTeClub</div>
+                    </div>
                     <div id="sp-perks-list"></div>
                     <div class="sp-card-logo"><img src="img/webp/yeni-beyaz-font-logo.webp" alt="FinTeClub"></div>
                 </div>
@@ -169,168 +187,4 @@
         var overlay = document.getElementById('sp-overlay');
         var closeBtn = document.getElementById('sp-close-btn');
         var openTriggers = document.querySelectorAll('#sponsor-perks-open-btn, .sponsor-perks-open-btn');
-        var screenForm = document.getElementById('sp-screen-form');
-        var screenCard = document.getElementById('sp-screen-card');
-        var submitBtn = document.getElementById('sp-submit-btn');
-        var errorEl = document.getElementById('sp-error');
-        var downloadBtn = document.getElementById('sp-download-btn');
-        var doneBtn = document.getElementById('sp-done-btn');
-        var memberNameEl = document.getElementById('sp-member-name');
-        var perksListEl = document.getElementById('sp-perks-list');
-
-        function openModal() {
-            overlay.classList.add('open');
-            screenForm.style.display = 'block';
-            screenCard.style.display = 'none';
-            errorEl.style.display = 'none';
-        }
-        function closeModal() {
-            overlay.classList.remove('open');
-        }
-
-        openTriggers.forEach(function (btn) {
-            btn.addEventListener('click', openModal);
-        });
-        closeBtn.addEventListener('click', closeModal);
-        doneBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) closeModal();
-        });
-
-        var studentNumberInput = document.getElementById('sp-student-number');
-        studentNumberInput.addEventListener('input', function () {
-            this.value = this.value.replace(/\D/g, '').slice(0, 11);
-        });
-
-        function escapeHtml(str) {
-            return String(str).replace(/[&<>"']/g, function (c) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-            });
-        }
-
-        submitBtn.addEventListener('click', async function () {
-            var firstName = document.getElementById('sp-first-name').value.trim();
-            var lastName = document.getElementById('sp-last-name').value.trim();
-            var studentNumber = document.getElementById('sp-student-number').value.trim();
-            var email = document.getElementById('sp-email').value.trim();
-            var phone = document.getElementById('sp-phone').value.trim();
-            var university = document.getElementById('sp-university').value.trim();
-            var faculty = document.getElementById('sp-faculty').value.trim();
-            var department = document.getElementById('sp-department').value.trim();
-            var grade = document.getElementById('sp-grade').value.trim();
-
-            var studentNumberValid = /^2\d{10}$/.test(studentNumber);
-
-            if (!firstName || !lastName || !studentNumberValid) {
-                errorEl.style.display = 'block';
-                return;
-            }
-            errorEl.style.display = 'none';
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Gönderiliyor...';
-
-            try {
-                await fetch('/api/submit-membership', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ firstName, lastName, studentNumber, email, phone, university, faculty, department, grade })
-                });
-            } catch (e) {
-                console.error('Üyelik başvurusu gönderilemedi:', e);
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Gönder';
-
-            // Sponsorluk ayrıcalıklarını oku ve kart ekranını göster
-            memberNameEl.textContent = 'Üye Adı: ' + firstName + ' ' + lastName;
-            perksListEl.innerHTML = '<div class="sp-empty-perks">Yükleniyor...</div>';
-
-            try {
-                var res = await fetch('site-data.json?t=' + Date.now());
-                var data = await res.json();
-                var perks = data.sponsorPerks || [];
-
-                if (perks.length === 0) {
-                    perksListEl.innerHTML = '<div class="sp-empty-perks">Şu anda aktif bir ayrıcalık bulunmuyor.</div>';
-                } else {
-                    perksListEl.innerHTML = perks.map(function (p) {
-                        var imgHtml = p.logo ? '<img src="' + escapeHtml(p.logo) + '" alt="">' : '';
-                        var nameHtml = p.name ? '<p class="sp-perk-name">' + escapeHtml(p.name) + '</p>' : '';
-                        return '<div class="sp-perk-card">' + imgHtml + nameHtml + '<p>' + escapeHtml(p.description || '') + '</p></div>';
-                    }).join('');
-                }
-            } catch (e) {
-                perksListEl.innerHTML = '<div class="sp-empty-perks">Ayrıcalıklar yüklenemedi.</div>';
-            }
-
-            screenForm.style.display = 'none';
-            screenCard.style.display = 'block';
-        });
-
-        downloadBtn.addEventListener('click', function () {
-            var target = document.getElementById('sp-card-capture');
-            if (!window.html2canvas) {
-                alert('Görsel oluşturucu henüz yüklenmedi, birkaç saniye sonra tekrar dene.');
-                return;
-            }
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = 'Hazırlanıyor...';
-
-            var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            // Pop-up engellenmemesi için (Web Share desteklenmezse kullanılacak yedek) sekmeyi hemen açıyoruz
-            var newTab = isMobile ? window.open('', '_blank') : null;
-
-            window.html2canvas(target, { backgroundColor: null, scale: 2 }).then(function (canvas) {
-                canvas.toBlob(async function (blob) {
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = 'Kartı İndir';
-
-                    if (!blob) {
-                        if (newTab) newTab.close();
-                        alert('Görsel oluşturulamadı, tekrar dener misin?');
-                        return;
-                    }
-
-                    var file = new File([blob], 'finteclub-uyelik-karti.png', { type: 'image/png' });
-
-                    // 1. Öncelik (sadece mobilde): Web Share API (iOS/Android'de native "Kaydet" panelini açar)
-                    if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        try {
-                            await navigator.share({ files: [file], title: 'FinTeClub Üyelik Kartı' });
-                            if (newTab) newTab.close();
-                            return;
-                        } catch (shareErr) {
-                            // Paylaşım iptal edildi ya da (iOS'ta sık görülen) kullanıcı etkileşimi
-                            // süresi doldu - aşağıdaki yedek yönteme (zaten açık olan sekme) düş
-                        }
-                    }
-
-                    var dataUrl = URL.createObjectURL(blob);
-
-                    // 2. Yedek: mobilde yeni sekmede aç, uzun basıp kaydetmesini iste
-                    if (isMobile && newTab) {
-                        newTab.document.write(
-                            '<html><head><title>FinTeClub Üyelik Kartı</title></head>' +
-                            '<body style="margin:0;background:#0a0e1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:Arial,sans-serif;">' +
-                            '<img src="' + dataUrl + '" style="max-width:92%;height:auto;border-radius:16px;margin-top:20px;">' +
-                            '<p style="color:#cbd5e1;text-align:center;padding:16px 24px;font-size:0.95rem;">Görseli kaydetmek için resme basılı tutup "Resmi Kaydet" / "Görseli İndir" seçeneğini kullan.</p>' +
-                            '</body></html>'
-                        );
-                    } else {
-                        // 3. Masaüstü: normal indirme
-                        var link = document.createElement('a');
-                        link.download = 'finteclub-uyelik-karti.png';
-                        link.href = dataUrl;
-                        link.click();
-                    }
-                }, 'image/png');
-            }).catch(function () {
-                downloadBtn.disabled = false;
-                downloadBtn.textContent = 'Kartı İndir';
-                if (newTab) newTab.close();
-                alert('Görsel oluşturulamadı, tekrar dener misin?');
-            });
-        });
-    }
-})();
+        var screenForm
