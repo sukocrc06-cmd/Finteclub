@@ -213,7 +213,8 @@
       "id": "p1789375339055",
       "name": "Anadolu Döner",
       "logo": "images/anadolu-doner.png",
-      "description": "Anadolu Döner Çubuk şubesinde %10 indirim!"
+      "description": "Anadolu Döner Çubuk şubesinde %10 indirim!",
+      "frozen": true
     },
     {
       "id": "p1791205759982",
