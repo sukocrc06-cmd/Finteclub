@@ -182,6 +182,27 @@
         padding: 6px 10px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
         font-weight: 600;
     }
+    #sponsorluk-dashboard .perk-row .perk-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    #sponsorluk-dashboard .perk-row button.btn-edit {
+        background: #e0f2fe; color: #0369a1; border: none; border-radius: 6px;
+        padding: 6px 10px; font-size: 0.8rem; cursor: pointer; font-weight: 600;
+    }
+    #sponsorluk-dashboard .perk-row button.btn-freeze {
+        background: #fef3c7; color: #b45309; border: none; border-radius: 6px;
+        padding: 6px 10px; font-size: 0.8rem; cursor: pointer; font-weight: 600;
+    }
+    #sponsorluk-dashboard .perk-row button.btn-unfreeze {
+        background: #d1fae5; color: #065f46; border: none; border-radius: 6px;
+        padding: 6px 10px; font-size: 0.8rem; cursor: pointer; font-weight: 600;
+    }
+    #sponsorluk-dashboard .perk-row button:hover { opacity: 0.85; }
+    #sponsorluk-dashboard .perk-row.is-frozen { opacity: 0.6; background: #f8fafc; }
+    #sponsorluk-dashboard .perk-row.is-frozen img { filter: grayscale(1); }
+    #sponsorluk-dashboard .frozen-badge {
+        display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 0.72rem;
+        font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 8px;
+        vertical-align: middle;
+    }
 </style>
 </head>
 <body>
@@ -810,7 +831,7 @@
                         <button class="btn btn-primary" id="perk-toggle-form-btn">+ Yeni Ayrıcalık</button>
                     </div>
                     <p style="color: #6b7280; font-size: 0.88rem; margin: -10px 0 20px 0;">
-                        Burada eklenen ayrıcalıklar, sponsorlar sayfasındaki "FinTeClub'lı Olmanın Avantajlarını Keşfet" ekranında üyelere gösterilen kartlarda otomatik olarak görünür.
+                        Burada eklenen ayrıcalıklar, sponsorlar sayfasındaki "FinTeClub'lı Olmanın Avantajlarını Keşfet" ekranında üyelere gösterilen kartlarda otomatik olarak görünür. Dondurulan ayrıcalıklar kartlarda görünmez.
                     </p>
 
                     <div id="perk-form" style="display: none; margin-top: 10px; padding-top: 20px; border-top: 1px solid #eef0f4;">
@@ -897,6 +918,7 @@
     })();
     </script>
 
+    <!-- ============ ORTAK API KATMANI + ORTAK site-data.json DEPOSU ============ -->
     <script>
     const ADMIN_API_KEY = 'ftc-admin-9f3a7k2m8x';
     window.adminReadFile = async function (path) {
@@ -910,17 +932,26 @@
         const data = await res.json();
         return data.content;
     };
-    window.adminWriteFile = async function (path, content, message) {
-        const res = await fetch('/api/admin-write', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
-            body: JSON.stringify({ path, content, message })
+
+    // Tüm yazmalar tek bir sıradan geçer: iki yazma aynı anda GitHub'a gitmez
+    // (aynı dosyaya eşzamanlı yazma çakışmalarını önler).
+    let __writeQueue = Promise.resolve();
+    window.adminWriteFile = function (path, content, message) {
+        const run = __writeQueue.then(async () => {
+            const res = await fetch('/api/admin-write', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
+                body: JSON.stringify({ path, content, message })
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || ('HTTP ' + res.status));
+            }
         });
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error || ('HTTP ' + res.status));
-        }
+        __writeQueue = run.catch(() => {});
+        return run;
     };
+
     window.adminUploadFile = async function (path, contentBase64, message) {
         const res = await fetch('/api/admin-upload', {
             method: 'POST',
@@ -933,13 +964,41 @@
         }
         return { path };
     };
+
+    // ---- ORTAK site-data.json DEPOSU ----
+    // Daha önce her sekme (ayarlar/duyurular, sponsorluk, etkinlik/doküman) dosyayı ayrı
+    // okuyup kendi kopyasını yazıyordu; bir sekmedeki eski kopya diğer sekmenin
+    // değişikliğinin (ör. dondurma) üstüne yazabiliyordu. Artık hepsi TEK nesneyi kullanır:
+    //   window.getSiteData()        -> ortak nesneyi döndürür (sayfa başına yalnızca bir kez okunur)
+    //   window.saveSiteData(mesaj)  -> ortak nesnenin güncel halini yazar
+    let __siteDataPromise = null;
+    window.getSiteData = function () {
+        if (!__siteDataPromise) {
+            __siteDataPromise = window.adminReadFile('site-data.json').then(function (d) {
+                const data = d || {};
+                if (!Array.isArray(data.announcements)) data.announcements = [];
+                if (!Array.isArray(data.sponsorPerks)) data.sponsorPerks = [];
+                if (!Array.isArray(data.events)) data.events = [];
+                if (!Array.isArray(data.documents)) data.documents = [];
+                return data;
+            }).catch(function (e) {
+                __siteDataPromise = null; // hata olursa bir sonraki denemede tekrar okunsun
+                throw e;
+            });
+        }
+        return __siteDataPromise;
+    };
+    window.saveSiteData = async function (message) {
+        // Okuma başarısız olduysa varsayılan veriyle üzerine yazmayı engelle
+        const data = await window.getSiteData();
+        return window.adminWriteFile('site-data.json', data, message);
+    };
     </script>
 
     <!-- ============ FIRST SCRIPT: LOGIN & SYSTEM SETTINGS ============ -->
     <script>
     (function () {
         const CRED_HASH = 'a5444748c68bbe12b7f593a7c0859e3e0bf5b7247ce0df5bf97ea1f60e522dc0';
-        const DATA_PATH = 'site-data.json';
         const SESSION_KEY = 'finteclub_admin_session';
 
         const loginGate = document.getElementById('login-gate');
@@ -1002,8 +1061,7 @@
 
         async function loadData() {
             try {
-                currentData = await window.adminReadFile(DATA_PATH);
-                if (!currentData) currentData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
+                currentData = await window.getSiteData();
 
                 maintenanceToggle.checked = !!currentData.maintenanceMode;
                 maintenanceMessage.value = currentData.maintenanceMessage || '';
@@ -1160,12 +1218,13 @@
         saveSettingsBtn.addEventListener('click', async () => {
             saveStatus.textContent = 'Kaydediliyor...';
             try {
+                if (!currentData) throw new Error('Veriler yüklenemedi, sayfayı yenileyin.');
                 currentData.maintenanceMode = maintenanceToggle.checked;
                 currentData.maintenanceMessage = maintenanceMessage.value.trim();
                 currentData.bannerEnabled = bannerToggle.checked;
                 currentData.bannerText = bannerText.value.trim();
 
-                await window.adminWriteFile(DATA_PATH, currentData, 'Site data update via panel');
+                await window.saveSiteData('Site data update via panel');
                 saveStatus.textContent = 'Ayarlar başarıyla kaydedildi.';
             } catch (e) {
                 saveStatus.textContent = 'Hata: ' + e.message;
@@ -1192,6 +1251,8 @@
         addAnnouncementBtn.addEventListener('click', async () => {
             announcementSaveStatus.textContent = 'Yayınlanıyor...';
             try {
+                if (!currentData) throw new Error('Veriler yüklenemedi, sayfayı yenileyin.');
+
                 const title = newTitle.value.trim();
                 const desc = newDescription.value.trim();
                 const category = newCategory.value;
@@ -1247,7 +1308,7 @@
                     return b.id.localeCompare(a.id);
                 });
 
-                await window.adminWriteFile(DATA_PATH, currentData, 'Duyuru güncellendi');
+                await window.saveSiteData('Duyuru güncellendi');
                 renderAnnouncements();
                 resetAnnouncementForm();
 
@@ -1264,7 +1325,7 @@
             if (!confirm(`"${item.title}" başlıklı duyuruyu silmek istediğinize emin misiniz?`)) return;
             try {
                 currentData.announcements = (currentData.announcements || []).filter(a => a.id !== id);
-                await window.adminWriteFile(DATA_PATH, currentData, 'Duyuru silindi: ' + item.title);
+                await window.saveSiteData('Duyuru silindi: ' + item.title);
                 renderAnnouncements();
             } catch (e) {
                 alert('Hata: ' + e.message);
@@ -1565,11 +1626,9 @@
     })();
     </script>
 
-    <!-- ============ THIRD SCRIPT: SPONSORLUK AYRICALIKLARI ============ -->
+    <!-- ============ THIRD SCRIPT: SPONSORLUK AYRICALIKLARI (dondur + düzenle) ============ -->
     <script>
     (function () {
-        const DATA_PATH = 'site-data.json';
-
         const toggleFormBtn = document.getElementById('perk-toggle-form-btn');
         const perkForm = document.getElementById('perk-form');
         const formTitle = document.getElementById('perk-form-title');
@@ -1585,7 +1644,10 @@
         const listContainer = document.getElementById('perks-list');
         const listEmpty = document.getElementById('perks-empty');
 
+        // Ortak site-data.json nesnesi (diğer sekmelerle aynı nesne)
         let perksData = null;
+        // Düzenleme sırasında mevcut (listede olmayan) özel logoyu korumak için
+        let editingLogo = '';
 
         sponsorSelect.addEventListener('change', () => {
             if (sponsorSelect.value === 'custom') {
@@ -1628,13 +1690,14 @@
 
         async function loadPerks() {
             try {
-                perksData = await window.adminReadFile(DATA_PATH);
-                if (!perksData) perksData = {};
+                perksData = await window.getSiteData();
+                if (!perksData.sponsorPerks) perksData.sponsorPerks = [];
+                renderPerks();
             } catch (e) {
-                perksData = {};
+                perksData = null;
+                listEmpty.style.display = 'block';
+                listEmpty.textContent = 'Ayrıcalıklar yüklenemedi: ' + e.message + ' (sayfayı yenileyin)';
             }
-            if (!perksData.sponsorPerks) perksData.sponsorPerks = [];
-            renderPerks();
         }
 
         function renderPerks() {
@@ -1642,21 +1705,32 @@
             const items = perksData.sponsorPerks || [];
             if (items.length === 0) {
                 listEmpty.style.display = 'block';
+                listEmpty.textContent = 'Henüz ayrıcalık eklenmedi.';
                 return;
             }
             listEmpty.style.display = 'none';
             items.forEach(item => {
+                const frozen = item.frozen === true;
                 const row = document.createElement('div');
-                row.className = 'perk-row';
+                row.className = 'perk-row' + (frozen ? ' is-frozen' : '');
                 const imgHtml = item.logo
                     ? `<img src="${escapeHtml(item.logo)}" alt="">`
                     : `<div style="width:52px;height:52px;border-radius:8px;background:#eef0f4;flex-shrink:0;"></div>`;
-                const titleHtml = item.name ? `<strong>${escapeHtml(item.name)}</strong>` : '';
+                const badge = frozen ? `<span class="frozen-badge">❄ Donduruldu</span>` : '';
+                const titleHtml = item.name
+                    ? `<strong>${escapeHtml(item.name)}${badge}</strong>`
+                    : (frozen ? `<strong>${badge}</strong>` : '');
                 row.innerHTML =
                     imgHtml +
                     `<div class="p-info">${titleHtml}<span>${escapeHtml(item.description || '')}</span></div>` +
-                    `<button class="btn-delete" id="perk-del-${item.id}">Sil</button>`;
-                row.querySelector(`#perk-del-${item.id}`).addEventListener('click', () => deletePerk(item.id));
+                    `<div class="perk-actions">
+                        <button class="btn-edit" data-act="edit">Düzenle</button>
+                        <button class="${frozen ? 'btn-unfreeze' : 'btn-freeze'}" data-act="freeze">${frozen ? 'Aktif Et' : 'Dondur'}</button>
+                        <button class="btn-delete" data-act="delete">Sil</button>
+                     </div>`;
+                row.querySelector('[data-act="edit"]').addEventListener('click', () => startEdit(item.id));
+                row.querySelector('[data-act="freeze"]').addEventListener('click', () => toggleFreeze(item.id));
+                row.querySelector('[data-act="delete"]').addEventListener('click', () => deletePerk(item.id));
                 listContainer.appendChild(row);
             });
         }
@@ -1678,13 +1752,41 @@
 
         function resetForm() {
             editIdInput.value = '';
+            editingLogo = '';
             sponsorSelect.value = 'custom';
             customFileRow.style.display = 'flex';
             logoFileInput.value = '';
             sponsorNameInput.value = '';
             descriptionInput.value = '';
+            submitBtn.textContent = 'Ayrıcalığı Kaydet';
             perkForm.style.display = 'none';
             saveStatus.textContent = '';
+        }
+
+        function startEdit(id) {
+            const item = (perksData.sponsorPerks || []).find(p => p.id === id);
+            if (!item) return;
+
+            editIdInput.value = id;
+            editingLogo = item.logo || '';
+            formTitle.textContent = 'Ayrıcalığı Düzenle';
+            submitBtn.textContent = 'Değişiklikleri Kaydet';
+
+            // Logo listede varsa onu seç, yoksa özel logo modu (mevcut logo korunur)
+            const hasOption = Array.from(sponsorSelect.options).some(o => o.value === item.logo && o.value !== 'custom');
+            if (hasOption) {
+                sponsorSelect.value = item.logo;
+                customFileRow.style.display = 'none';
+            } else {
+                sponsorSelect.value = 'custom';
+                customFileRow.style.display = 'flex';
+            }
+            logoFileInput.value = '';
+            sponsorNameInput.value = item.name || '';
+            descriptionInput.value = item.description || '';
+
+            perkForm.style.display = 'block';
+            perkForm.scrollIntoView({ behavior: 'smooth' });
         }
 
         submitBtn.addEventListener('click', async (e) => {
@@ -1695,10 +1797,12 @@
             const sponsorName = sponsorNameInput.value.trim();
             const selectedVal = sponsorSelect.value;
             const file = logoFileInput.files[0];
+            const editId = editIdInput.value;
 
             if (!description) { saveStatus.textContent = 'Açıklama gerekli.'; return; }
 
             try {
+                if (!perksData) throw new Error('Veriler yüklenemedi, sayfayı yenileyin.');
                 saveStatus.textContent = 'Kaydediliyor...';
 
                 let logoPath = '';
@@ -1709,19 +1813,34 @@
                     const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
                     logoPath = 'images/' + Date.now() + '-' + safeName;
                     await window.adminUploadFile(logoPath, base64, 'Sponsorluk ayrıcalığı logosu eklendi: ' + safeName);
+                } else if (editId) {
+                    // Düzenleme: yeni logo seçilmediyse eskisini koru
+                    logoPath = editingLogo;
                 }
 
-                const newItem = {
-                    id: 'p' + Date.now(),
-                    name: sponsorName,
-                    logo: logoPath,
-                    description
-                };
-
                 if (!perksData.sponsorPerks) perksData.sponsorPerks = [];
-                perksData.sponsorPerks.push(newItem);
 
-                await window.adminWriteFile(DATA_PATH, perksData, 'Sponsorluk ayrıcalığı eklendi');
+                if (editId) {
+                    const idx = perksData.sponsorPerks.findIndex(p => p.id === editId);
+                    if (idx === -1) throw new Error('Düzenlenen ayrıcalık bulunamadı.');
+                    const old = perksData.sponsorPerks[idx];
+                    perksData.sponsorPerks[idx] = {
+                        ...old,
+                        name: sponsorName,
+                        logo: logoPath,
+                        description
+                    };
+                    await window.saveSiteData('Sponsorluk ayrıcalığı güncellendi: ' + (sponsorName || editId));
+                } else {
+                    perksData.sponsorPerks.push({
+                        id: 'p' + Date.now(),
+                        name: sponsorName,
+                        logo: logoPath,
+                        description,
+                        frozen: false
+                    });
+                    await window.saveSiteData('Sponsorluk ayrıcalığı eklendi');
+                }
 
                 renderPerks();
                 resetForm();
@@ -1731,12 +1850,34 @@
             }
         });
 
+        async function toggleFreeze(id) {
+            const item = (perksData.sponsorPerks || []).find(p => p.id === id);
+            if (!item) return;
+            const willFreeze = item.frozen !== true;
+            const label = item.name || 'Bu ayrıcalık';
+            const msg = willFreeze
+                ? `${label} dondurulsun mu? Üyelerin avantaj kartında görünmeyecek.`
+                : `${label} tekrar aktif edilsin mi? Avantaj kartlarında görünecek.`;
+            if (!confirm(msg)) return;
+
+            try {
+                item.frozen = willFreeze;
+                await window.saveSiteData(
+                    (willFreeze ? 'Sponsorluk ayrıcalığı donduruldu: ' : 'Sponsorluk ayrıcalığı aktif edildi: ') + label
+                );
+                renderPerks();
+            } catch (e) {
+                item.frozen = !willFreeze; // hata olursa geri al
+                alert('Hata: ' + e.message);
+            }
+        }
+
         async function deletePerk(id) {
             if (!confirm('Bu ayrıcalığı silmek istediğinize emin misiniz?')) return;
             try {
                 perksData.sponsorPerks = (perksData.sponsorPerks || []).filter(p => p.id !== id);
 
-                await window.adminWriteFile(DATA_PATH, perksData, 'Sponsorluk ayrıcalığı silindi');
+                await window.saveSiteData('Sponsorluk ayrıcalığı silindi');
 
                 renderPerks();
             } catch (e) {
@@ -1749,8 +1890,6 @@
     <!-- ============ FOURTH SCRIPT: EVENTS, DOCUMENTS & MESSAGES ============ -->
     <script>
     (function () {
-        const DATA_PATH = 'site-data.json';
-
         const eventToggleFormBtn = document.getElementById('event-toggle-form-btn');
         const eventForm = document.getElementById('event-form');
         const eventFormTitle = document.getElementById('event-form-title');
@@ -1788,8 +1927,10 @@
         const messagesEmpty = document.getElementById('messages-empty');
         const msgSeedBtn = document.getElementById('msg-seed-btn');
 
+        // Ortak site-data.json nesnesi (diğer sekmelerle aynı nesne)
         let siteData = null;
         let isFetching = false;
+        let messagesLoaded = false;
 
         const observer = new MutationObserver(() => {
             const dashboard = document.getElementById('dashboard');
@@ -1828,40 +1969,61 @@
             if (isFetching) return;
             isFetching = true;
             try {
-                siteData = await window.adminReadFile(DATA_PATH);
-                inboxMessages = await window.adminReadFile('messages.json');
-            } catch (e) {
-                if (!siteData) siteData = { maintenanceMode: false, maintenanceMessage: '', bannerEnabled: false, bannerText: '', announcements: [] };
-                if (!inboxMessages) inboxMessages = [];
-            }
-
-            if (!siteData.events) siteData.events = [];
-            if (!siteData.documents) siteData.documents = [];
-            if (!inboxMessages || inboxMessages.length === 0) {
-                inboxMessages = [
-                    {
-                        id: 'm1',
-                        name: 'Ahmet Yılmaz',
-                        email: 'ahmetyilmaz@gmail.com',
-                        subject: 'Sponsorluk Görüşmesi',
-                        body: 'Merhaba, FinTeClub faaliyetlerini çok beğeniyoruz. Zirve etkinliğinize sponsor olmak istiyoruz. İletişime geçebilir misiniz?',
-                        date: '2026-07-24',
-                        unread: true
-                    },
-                    {
-                        id: 'm2',
-                        name: 'Elif Kaya',
-                        email: 'elifkaya@aybu.edu.tr',
-                        subject: 'Yazılım Kurulu Katılımı',
-                        body: 'Kulübünüz bünyesindeki Yazılım ve Proje kurulunda aktif rol almak istiyorum. Başvurular ne zaman açılacak?',
-                        date: '2026-07-23',
-                        unread: false
+                // site-data.json artık sunucudan tekrar okunmuyor: ortak nesne kullanılıyor
+                // (böylece eski kopya başka sekmenin değişikliğini ezemez).
+                if (!siteData) {
+                    try {
+                        siteData = await window.getSiteData();
+                    } catch (e) {
+                        eventsEmpty.style.display = 'block';
+                        eventsEmpty.textContent = 'Veriler yüklenemedi: ' + e.message + ' (sayfayı yenileyin)';
+                        docsEmpty.style.display = 'block';
+                        docsEmpty.textContent = 'Veriler yüklenemedi: ' + e.message + ' (sayfayı yenileyin)';
+                        return;
                     }
-                ];
-            }
+                    if (!siteData.events) siteData.events = [];
+                    if (!siteData.documents) siteData.documents = [];
+                }
 
-            renderAllModules();
-            isFetching = false;
+                // Gelen kutusu: siteden yeni mesaj gelebileceği için ilk yüklemede
+                // ve gelen kutusu sekmesi her açıldığında sunucudan okunur.
+                const inboxVisible = tabEl3 && tabEl3.style.display === 'block';
+                if (!messagesLoaded || inboxVisible) {
+                    try {
+                        inboxMessages = await window.adminReadFile('messages.json');
+                    } catch (e) {
+                        if (!inboxMessages) inboxMessages = [];
+                    }
+                    messagesLoaded = true;
+
+                    if (!inboxMessages || inboxMessages.length === 0) {
+                        inboxMessages = [
+                            {
+                                id: 'm1',
+                                name: 'Ahmet Yılmaz',
+                                email: 'ahmetyilmaz@gmail.com',
+                                subject: 'Sponsorluk Görüşmesi',
+                                body: 'Merhaba, FinTeClub faaliyetlerini çok beğeniyoruz. Zirve etkinliğinize sponsor olmak istiyoruz. İletişime geçebilir misiniz?',
+                                date: '2026-07-24',
+                                unread: true
+                            },
+                            {
+                                id: 'm2',
+                                name: 'Elif Kaya',
+                                email: 'elifkaya@aybu.edu.tr',
+                                subject: 'Yazılım Kurulu Katılımı',
+                                body: 'Kulübünüz bünyesindeki Yazılım ve Proje kurulunda aktif rol almak istiyorum. Başvurular ne zaman açılacak?',
+                                date: '2026-07-23',
+                                unread: false
+                            }
+                        ];
+                    }
+                }
+
+                renderAllModules();
+            } finally {
+                isFetching = false;
+            }
         }
 
         function renderAllModules() {
@@ -1875,7 +2037,7 @@
         }
 
         async function commitSiteData(commitMsg) {
-            await window.adminWriteFile(DATA_PATH, siteData, commitMsg);
+            await window.saveSiteData(commitMsg);
         }
 
         function renderEvents() {
@@ -2026,6 +2188,7 @@
             if (!title) { eventSaveStatus.textContent = 'Etkinlik Adı gerekli.'; return; }
 
             try {
+                if (!siteData) throw new Error('Veriler yüklenemedi, sayfayı yenileyin.');
                 eventSaveStatus.textContent = 'Kaydediliyor...';
                 const id = eventEditId.value || 'e' + Date.now();
                 const newItem = { id, title, datetime, location, description, image: images[0] || '', images, link };
@@ -2185,6 +2348,8 @@
             if (!title) { docSaveStatus.textContent = 'Doküman Adı gerekli.'; return; }
 
             try {
+                if (!siteData) throw new Error('Veriler yüklenemedi, sayfayı yenileyin.');
+
                 if (docFileInput.files.length > 0) {
                     docSaveStatus.textContent = 'Dosya yükleniyor...';
                     link = await uploadDocument(docFileInput.files[0]);
@@ -2204,7 +2369,7 @@
                 }
 
                 await commitSiteData('Doküman güncellendi: ' + title);
-                await loadSiteDataFile();
+                renderDocuments();
                 resetDocForm();
                 docSaveStatus.textContent = 'Doküman başarıyla kaydedildi!';
             } catch (e) {
