@@ -219,7 +219,8 @@
       "id": "p1791205759982",
       "name": "Porto Siena Coffee AYBÜ",
       "logo": "images/1791205757228-porto_siena_g_ncel_logo.png",
-      "description": "Tüm kahve çeşitlerinde %15 indirim!"
+      "description": "Tüm kahve çeşitlerinde %15 indirim!",
+      "frozen": true
     },
     {
       "id": "p1792665855255",
