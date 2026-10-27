@@ -1,3 +1,5 @@
+import { getDataBranch } from './_github.js';
+
 export default async function handler(req, res) {
     if (req.method !== 'GET') {
         res.status(405).json({ error: 'Method not allowed' });
@@ -19,11 +21,19 @@ export default async function handler(req, res) {
     }
 
     const REPO = 'sukocrc06-cmd/Finteclub';
-    const BRANCH = 'main';
     const token = process.env.GITHUB_TOKEN;
 
     if (!token) {
         res.status(500).json({ error: 'Sunucu yapılandırma hatası: GITHUB_TOKEN tanımlı değil.' });
+        return;
+    }
+
+    // Canlı sitede 'main'; Vercel önizlemesinde ayrı önizleme veri dalı (bkz. api/_github.js)
+    let BRANCH;
+    try {
+        BRANCH = await getDataBranch(token);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
         return;
     }
 
@@ -33,7 +43,7 @@ export default async function handler(req, res) {
         });
 
         if (getRes.status === 404) {
-            res.status(200).json({ content: null });
+            res.status(200).json({ content: null, branch: BRANCH });
             return;
         }
         if (!getRes.ok) {
@@ -44,7 +54,7 @@ export default async function handler(req, res) {
         const decoded = Buffer.from(fileData.content, 'base64').toString('utf-8');
         const parsed = JSON.parse(decoded);
 
-        res.status(200).json({ content: parsed });
+        res.status(200).json({ content: parsed, branch: BRANCH });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
