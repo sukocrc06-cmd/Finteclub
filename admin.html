@@ -203,6 +203,52 @@
         font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 8px;
         vertical-align: middle;
     }
+    /* ---- Dokümanlar: haftalık rapor denetimi ---- */
+    #tab-content-dokumanlar .doc-review-fields { background: #f6faf9; border: 1px solid #d5ebe7; border-radius: 10px; padding: 16px 16px 2px; margin-bottom: 16px; }
+    #tab-content-dokumanlar .drv-hint { margin: 0 0 14px 0; font-size: 0.85rem; color: #4b5563; }
+    #tab-content-dokumanlar .drv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+    #tab-content-dokumanlar .doc-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    #tab-content-dokumanlar .doc-filters button { border: 1px solid #d7dce5; background: #fff; color: #475569; border-radius: 999px; padding: 6px 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    #tab-content-dokumanlar .doc-filters button.active { background: #0f766e; border-color: #0f766e; color: #fff; }
+    #tab-content-dokumanlar .doc-filters em { font-style: normal; opacity: 0.75; margin-left: 4px; }
+    #tab-content-dokumanlar .item-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 0; border-bottom: 1px solid #eef0f4; flex-wrap: wrap; }
+    #tab-content-dokumanlar .item-row .i-info { flex: 1; min-width: 220px; }
+    #tab-content-dokumanlar .item-row .i-info strong { display: block; font-size: 0.98rem; color: #1a2233; margin-bottom: 3px; }
+    #tab-content-dokumanlar .item-row .i-meta { font-size: 0.82rem; color: #5a6478; margin-bottom: 4px; }
+    #tab-content-dokumanlar .item-row .i-links { display: flex; gap: 10px; font-size: 0.8rem; }
+    #tab-content-dokumanlar .item-row .i-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+    #tab-content-dokumanlar .item-row .i-actions button { border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; font-weight: 600; font-family: inherit; transition: opacity 0.15s; }
+    #tab-content-dokumanlar .item-row .i-actions button:hover { opacity: 0.85; }
+    #tab-content-dokumanlar .item-row .i-actions button:disabled { opacity: 0.5; cursor: wait; }
+    #tab-content-dokumanlar .item-row .i-actions .btn-edit { background: #e0f2fe; color: #0369a1; }
+    #tab-content-dokumanlar .item-row .i-actions .btn-delete { background: #fee2e2; color: #dc2626; }
+    #tab-content-dokumanlar .item-row .i-actions .btn-approve { background: #0f766e; color: #fff; }
+    #tab-content-dokumanlar .item-row .i-actions .btn-revise { background: #fef3c7; color: #92400e; }
+    #tab-content-dokumanlar .item-row .i-actions .btn-mail { background: none; color: #0f766e; text-decoration: underline; padding: 6px 4px; }
+    #tab-content-dokumanlar .rv-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin-left: 6px; vertical-align: 1px; }
+    #tab-content-dokumanlar .rv-pending { background: #e0e7ff; color: #3730a3; }
+    #tab-content-dokumanlar .rv-approved { background: #d1fae5; color: #065f46; }
+    #tab-content-dokumanlar .rv-revision { background: #fef3c7; color: #92400e; }
+    #tab-content-dokumanlar .rv-sent { font-size: 0.8rem; color: #64748b; }
+    #tab-content-dokumanlar .rv-note { flex-basis: 100%; font-size: 0.82rem; color: #92400e; background: #fffbeb; border-radius: 8px; padding: 8px 10px; }
+    #tab-content-dokumanlar .rv-form { flex-basis: 100%; display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+    #tab-content-dokumanlar .rv-form[hidden] { display: none; }
+    #tab-content-dokumanlar .rv-form textarea { flex: 1; min-width: 220px; border: 1px solid #d7dce5; border-radius: 8px; padding: 9px 11px; font-size: 0.9rem; font-family: inherit; background: #fafbfd; resize: vertical; }
+    #tab-content-dokumanlar .rv-error { flex-basis: 100%; font-size: 0.82rem; color: #dc2626; }
+    #doc-mail-modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 1000; }
+    #doc-mail-modal .dm-box { background: #fff; border-radius: 14px; width: 100%; max-width: 520px; max-height: 90vh; overflow: auto; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+    #doc-mail-modal h3 { margin: 0 0 4px 0; color: #14204a; font-size: 1.1rem; }
+    #doc-mail-modal .dm-meta { font-size: 0.85rem; color: #64748b; margin-bottom: 14px; }
+    #doc-mail-modal .dm-test { background: #fef3c7; color: #92400e; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; margin-bottom: 14px; }
+    #doc-mail-modal .dm-mail { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; font-size: 0.9rem; }
+    #doc-mail-modal .dm-head { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 0.82rem; background: #f8fafc; }
+    #doc-mail-modal .dm-head b { color: #1a2233; }
+    #doc-mail-modal .dm-body { padding: 12px; white-space: pre-wrap; color: #334155; line-height: 1.5; }
+    #doc-mail-modal .dm-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+    @media (max-width: 640px) {
+        #tab-content-dokumanlar .drv-grid { grid-template-columns: 1fr; }
+        #tab-content-dokumanlar .item-row .i-actions { justify-content: flex-start; }
+    }
 </style>
 </head>
 <body>
@@ -795,10 +841,32 @@
                         <label>Kategori</label>
                         <select id="doc-category" style="border: 1px solid #d7dce5; border-radius: 8px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: #1a2233; background: #fafbfd; width: 100%;">
                             <option value="tuzuk">Tüzük</option>
+                            <option value="haftalik">Haftalık Ekip Raporu (Denetime gönder)</option>
                             <option value="rapor">Faaliyet Raporu</option>
                             <option value="sablon">Sunum / Dosya Şablonu</option>
                             <option value="diger">Diğer</option>
                         </select>
+                    </div>
+                    <div id="doc-review-fields" class="doc-review-fields" style="display: none;">
+                        <p class="drv-hint">Denetleme Kurulu raporu inceleyip onaylayacak ya da revizyon isteyecek. Karar, aşağıda seçtiğin kişiye otomatik mail olarak gider.</p>
+                        <div class="drv-grid">
+                            <div class="field">
+                                <label for="doc-team">Ekip</label>
+                                <select id="doc-team"></select>
+                            </div>
+                            <div class="field">
+                                <label for="doc-week">Hafta</label>
+                                <input type="week" id="doc-week">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="doc-uploader">Yükleyen kişi (karar maili bu kişiye gider)</label>
+                            <select id="doc-uploader"></select>
+                        </div>
+                        <div class="field">
+                            <label for="doc-note">Denetime not (isteğe bağlı)</label>
+                            <textarea id="doc-note" rows="2" placeholder="Örn. Bu hafta 3 firmayla görüştük, detaylar 2. sayfada."></textarea>
+                        </div>
                     </div>
                     <div class="field">
                         <label>Dosya Seç (Dosya Yükle)</label>
@@ -816,9 +884,23 @@
                     <div id="doc-save-status" style="font-size:0.85rem; color:#6b7280; margin-top:10px;"></div>
                 </div>
 
+                <div id="doc-filters" class="doc-filters" style="display: none;"></div>
                 <div id="docs-list" style="margin-top: 20px;">
                     <div class="empty-state" id="docs-empty">Dokümanlar yükleniyor...</div>
                 </div>
+            </div>
+        </div>
+
+        <div id="doc-mail-modal" role="dialog" aria-modal="true" aria-labelledby="dm-title">
+            <div class="dm-box">
+                <h3 id="dm-title">Gönderilen mail</h3>
+                <div class="dm-meta" id="dm-meta"></div>
+                <div class="dm-test" id="dm-test" style="display: none;"></div>
+                <div class="dm-mail">
+                    <div class="dm-head">Kime: <b id="dm-to"></b><br>Konu: <b id="dm-subject"></b></div>
+                    <div class="dm-body" id="dm-body"></div>
+                </div>
+                <div class="dm-actions"><button class="btn btn-primary" id="dm-close">Kapat</button></div>
             </div>
         </div>
 
@@ -930,8 +1012,11 @@
             throw new Error(err.error || ('HTTP ' + res.status));
         }
         const data = await res.json();
+        // Verinin okunduğu dal: canlı sitede 'main', Vercel önizlemesinde 'onizleme-verisi'
+        if (data.branch) window.DATA_BRANCH = data.branch;
         return data.content;
     };
+    window.DATA_BRANCH = 'main';
 
     // Tüm yazmalar tek bir sıradan geçer: iki yazma aynı anda GitHub'a gitmez
     // (aynı dosyaya eşzamanlı yazma çakışmalarını önler).
@@ -2225,18 +2310,189 @@
 
         const categoryNames = {
             'tuzuk': 'Tüzük',
+            'haftalik': 'Haftalık Ekip Raporu',
             'rapor': 'Faaliyet Raporu',
             'sablon': 'Sunum / Şablon',
             'diger': 'Diğer'
         };
 
+        // ---- Haftalık rapor denetimi ----
+        const docReviewFields = document.getElementById('doc-review-fields');
+        const docTeam = document.getElementById('doc-team');
+        const docWeek = document.getElementById('doc-week');
+        const docUploader = document.getElementById('doc-uploader');
+        const docNote = document.getElementById('doc-note');
+        const docFilters = document.getElementById('doc-filters');
+
+        const TEAM_NAMES = {
+            'yonetim-kurulu': 'Yönetim Kurulu',
+            'denetleme-kurulu': 'Denetleme Kurulu',
+            'sosyal-medya': 'Sosyal Medya',
+            'kurumsal-iletisim': 'Kurumsal İletişim',
+            'etkinlik-kurulu': 'Etkinlik Kurulu',
+            'yazilim-proje': 'Yazılım & Proje'
+        };
+        const teamName = key => TEAM_NAMES[key] || String(key || '').replace(/-/g, ' ');
+        const REVIEW_LABELS = { pending: 'Denetim bekliyor', approved: 'Onaylandı', revision: 'Revizyon istendi' };
+        let docFilter = 'all';
+        let ekipCache = null;
+
+        function reviewStatus(item) {
+            if (item.category !== 'haftalik') return null;
+            return (item.review && item.review.status) || 'pending';
+        }
+
+        // "2026-W44" -> "44. hafta (2026)"
+        function weekLabel(week) {
+            const m = /^(\d{4})-W(\d{1,2})$/.exec(String(week || ''));
+            return m ? `${Number(m[2])}. hafta (${m[1]})` : String(week || '');
+        }
+
+        function currentIsoWeek() {
+            const d = new Date();
+            const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            const day = t.getUTCDay() || 7;
+            t.setUTCDate(t.getUTCDate() + 4 - day);
+            const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+            const week = Math.ceil(((t - yearStart) / 86400000 + 1) / 7);
+            return `${t.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+        }
+
+        function formatDate(iso) {
+            if (!iso) return '';
+            try {
+                return new Date(iso).toLocaleString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            } catch (e) { return iso; }
+        }
+
+        async function loadEkip(force) {
+            if (!ekipCache || force) {
+                ekipCache = (await window.adminReadFile('ekip.json')) || {};
+            }
+            return ekipCache;
+        }
+
+        function fillUploaderOptions(selectedId) {
+            const members = (ekipCache && Array.isArray(ekipCache[docTeam.value])) ? ekipCache[docTeam.value] : [];
+            docUploader.innerHTML = '';
+            const placeholder = new Option('Kişi seç', '');
+            docUploader.add(placeholder);
+            members.forEach(m => {
+                const hasMail = !!(m.email && String(m.email).includes('@'));
+                const opt = new Option(m.name + (m.role ? ' – ' + m.role : '') + (hasMail ? '' : ' (mail adresi yok)'), m.id || '');
+                opt.disabled = !hasMail || !m.id;
+                docUploader.add(opt);
+            });
+            docUploader.value = selectedId || '';
+        }
+
+        async function showReviewFields(item) {
+            const isWeekly = docCategory.value === 'haftalik';
+            docReviewFields.style.display = isWeekly ? 'block' : 'none';
+            if (!isWeekly) return;
+            try {
+                await loadEkip(!item);
+            } catch (e) {
+                docSaveStatus.textContent = 'Ekip listesi yüklenemedi: ' + e.message;
+                return;
+            }
+            const keys = Object.keys(ekipCache || {}).filter(k => k !== 'denetleme-kurulu');
+            const prevTeam = (item && item.team) || docTeam.value;
+            docTeam.innerHTML = '';
+            keys.forEach(k => docTeam.add(new Option(teamName(k), k)));
+            if (prevTeam && keys.includes(prevTeam)) docTeam.value = prevTeam;
+            if (!docWeek.value) docWeek.value = (item && item.week) || currentIsoWeek();
+            fillUploaderOptions(item && item.uploaderId);
+        }
+
+        docCategory.addEventListener('change', () => showReviewFields(null));
+        docTeam.addEventListener('change', () => fillUploaderOptions(''));
+
+        function renderDocFilters(items) {
+            const weekly = items.filter(i => i.category === 'haftalik');
+            if (weekly.length === 0) {
+                docFilters.style.display = 'none';
+                docFilter = 'all';
+                return;
+            }
+            const count = st => weekly.filter(i => reviewStatus(i) === st).length;
+            const chips = [
+                ['all', 'Tümü', items.length],
+                ['pending', 'Denetim bekleyen', count('pending')],
+                ['approved', 'Onaylanan', count('approved')],
+                ['revision', 'Revizyon istenen', count('revision')]
+            ];
+            docFilters.style.display = 'flex';
+            docFilters.innerHTML = chips.map(([k, t, c]) =>
+                `<button type="button" data-f="${k}" class="${k === docFilter ? 'active' : ''}">${t}<em>${c}</em></button>`).join('');
+            docFilters.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+                docFilter = b.dataset.f;
+                renderDocuments();
+            }));
+        }
+
+        function openMailModal(item) {
+            const m = (item.review && item.review.mail) || {};
+            document.getElementById('dm-meta').textContent = (item.title || '') + ' · ' + formatDate(item.review && item.review.decidedAt);
+            const testEl = document.getElementById('dm-test');
+            if (m.testMode) {
+                testEl.style.display = 'block';
+                testEl.textContent = 'Test modu: bu mail gerçekten gönderilmedi. Gerçek gönderim açıldığında yükleyen kişiye bu metin gidecek.';
+            } else {
+                testEl.style.display = 'none';
+            }
+            document.getElementById('dm-to').textContent = (item.uploaderName ? item.uploaderName + ' ' : '') + '<' + (m.to || item.uploaderEmail || '') + '>';
+            document.getElementById('dm-subject').textContent = m.subject || '';
+            document.getElementById('dm-body').textContent = m.text || '';
+            document.getElementById('doc-mail-modal').style.display = 'flex';
+            document.getElementById('dm-close').focus();
+        }
+        document.getElementById('dm-close').addEventListener('click', () => {
+            document.getElementById('doc-mail-modal').style.display = 'none';
+        });
+        document.getElementById('doc-mail-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'doc-mail-modal') e.currentTarget.style.display = 'none';
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') document.getElementById('doc-mail-modal').style.display = 'none';
+        });
+
+        async function sendReview(item, decision, note, row) {
+            const errEl = row.querySelector('.rv-error');
+            row.querySelectorAll('.i-actions button, .rv-form button').forEach(b => b.disabled = true);
+            if (errEl) errEl.textContent = '';
+            try {
+                const res = await fetch('/api/send-review', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
+                    body: JSON.stringify({ docId: item.id, decision, note })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+                // Sunucunun kaydettiği kararı ortak nesneye de işle, böylece sonraki
+                // kayıtlar bu kararı geri almaz.
+                const shared = siteData.documents.find(d => d.id === item.id);
+                if (shared) shared.review = data.review;
+                renderDocuments();
+                openMailModal(shared || item);
+            } catch (e) {
+                row.querySelectorAll('.i-actions button, .rv-form button').forEach(b => b.disabled = false);
+                let el = row.querySelector('.rv-error');
+                if (!el) { el = document.createElement('div'); el.className = 'rv-error'; row.appendChild(el); }
+                el.textContent = 'Hata: ' + e.message;
+            }
+        }
+
         function renderDocuments() {
             docsList.querySelectorAll('.item-row').forEach(el => el.remove());
-            const items = siteData.documents || [];
+            const all = siteData.documents || [];
+            renderDocFilters(all);
+            const items = docFilter === 'all' ? all : all.filter(i => reviewStatus(i) === docFilter);
 
             if (items.length === 0) {
                 docsEmpty.style.display = 'block';
-                docsEmpty.textContent = 'Henüz doküman eklenmedi.';
+                docsEmpty.textContent = all.length === 0 ? 'Henüz doküman eklenmedi.' :
+                    (docFilter === 'pending' ? 'Denetim bekleyen rapor yok. Hepsi incelendi.' : 'Bu filtrede doküman yok.');
                 return;
             }
             docsEmpty.style.display = 'none';
@@ -2249,7 +2505,7 @@
 
                 let absoluteUrl = item.link || '';
                 if (item.link && !item.link.startsWith('http') && !item.link.startsWith('//')) {
-                    absoluteUrl = 'https://raw.githubusercontent.com/sukocrc06-cmd/Finteclub/main/' + item.link;
+                    absoluteUrl = 'https://raw.githubusercontent.com/sukocrc06-cmd/Finteclub/' + (window.DATA_BRANCH || 'main') + '/' + item.link;
                 }
 
                 let viewLink = absoluteUrl;
@@ -2260,23 +2516,70 @@
                 }
 
                 let downloadBtn = item.link
-                    ? `<a href="${viewLink}" target="_blank" style="margin-right: 12px; color: #0f766e; font-weight: 600; text-decoration: none;">Görüntüle</a>` +
-                      `<a href="${absoluteUrl}" download style="color: #0369a1; font-weight: 600; text-decoration: none;">İndir</a>`
+                    ? `<a href="${escapeHtml(viewLink)}" target="_blank" style="margin-right: 12px; color: #0f766e; font-weight: 600; text-decoration: none;">Görüntüle</a>` +
+                      `<a href="${escapeHtml(absoluteUrl)}" download style="color: #0369a1; font-weight: 600; text-decoration: none;">İndir</a>`
                     : 'Dosya Yok';
+
+                const status = reviewStatus(item);
+                let meta = `Kategori: ${escapeHtml(catText)}`;
+                let badge = '';
+                let reviewActions = '';
+                let extra = '';
+                if (status) {
+                    meta += ` · ${escapeHtml(teamName(item.team))} · ${escapeHtml(weekLabel(item.week))} · Yükleyen: ${escapeHtml(item.uploaderName || '-')}`;
+                    if (item.note) meta += `<br>Ekibin notu: ${escapeHtml(item.note)}`;
+                    badge = `<span class="rv-badge rv-${status}">${REVIEW_LABELS[status]}</span>`;
+                    if (status === 'pending') {
+                        reviewActions =
+                            `<button class="btn-approve" data-a="approve">Onayla ve mail at</button>` +
+                            `<button class="btn-revise" data-a="revise">Revizyon iste</button>`;
+                        extra =
+                            `<div class="rv-form" hidden>
+                                <textarea rows="2" maxlength="1000" placeholder="Neyin eksik? Bu not ${escapeHtml(item.uploaderName || 'yükleyen kişi')} adlı kişiye mail olarak gidecek."></textarea>
+                                <button class="btn" data-a="cancel-rev" style="background:#e5e7eb; color:#374151;">Vazgeç</button>
+                                <button class="btn" data-a="send-rev" style="background:#b45309; color:#fff;" disabled>Revizyon maili gönder</button>
+                             </div>`;
+                    } else {
+                        const m = (item.review && item.review.mail) || {};
+                        reviewActions =
+                            `<span class="rv-sent">${m.testMode ? 'Test modu · ' : 'Mail gitti · '}${escapeHtml(formatDate(item.review.decidedAt))}</span>` +
+                            `<button class="btn-mail" data-a="see-mail">Maili gör</button>`;
+                        if (status === 'revision' && item.review.note) {
+                            extra = `<div class="rv-note">Revizyon notu: ${escapeHtml(item.review.note)}</div>`;
+                        }
+                    }
+                }
 
                 row.innerHTML =
                     `<div class="i-info">
-                        <strong>${escapeHtml(item.title || '')}</strong>
-                        <div class="i-meta">Kategori: ${escapeHtml(catText)}</div>
+                        <strong>${escapeHtml(item.title || '')}${badge}</strong>
+                        <div class="i-meta">${meta}</div>
                         <div class="i-links">${downloadBtn}</div>
                      </div>` +
                     `<div class="i-actions">
-                        <button class="btn-edit" id="doc-edit-${item.id}">Düzenle</button>
-                        <button class="btn-delete" id="doc-del-${item.id}">Sil</button>
-                     </div>`;
+                        ${reviewActions}
+                        <button class="btn-edit" data-a="edit">Düzenle</button>
+                        <button class="btn-delete" data-a="delete">Sil</button>
+                     </div>` + extra;
 
-                row.querySelector(`#doc-edit-${item.id}`).addEventListener('click', () => startDocEdit(item.id));
-                row.querySelector(`#doc-del-${item.id}`).addEventListener('click', () => deleteDoc(item.id));
+                const actions = row.querySelector('.i-actions');
+                const form = row.querySelector('.rv-form');
+                row.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const a = b.dataset.a;
+                    if (a === 'edit') startDocEdit(item.id);
+                    if (a === 'delete') deleteDoc(item.id);
+                    if (a === 'approve') sendReview(item, 'approved', '', row);
+                    if (a === 'revise') { actions.style.display = 'none'; form.hidden = false; form.querySelector('textarea').focus(); }
+                    if (a === 'cancel-rev') { actions.style.display = ''; form.hidden = true; }
+                    if (a === 'send-rev') sendReview(item, 'revision', form.querySelector('textarea').value.trim(), row);
+                    if (a === 'see-mail') openMailModal(item);
+                }));
+                if (form) {
+                    const ta = form.querySelector('textarea');
+                    const sendBtn = form.querySelector('[data-a="send-rev"]');
+                    ta.addEventListener('input', () => { sendBtn.disabled = !ta.value.trim(); });
+                }
                 docsList.appendChild(row);
             });
         }
@@ -2302,6 +2605,9 @@
             docCategory.value = 'tuzuk';
             docLink.value = '';
             if (docFileInput) docFileInput.value = '';
+            docWeek.value = '';
+            docNote.value = '';
+            docReviewFields.style.display = 'none';
             docForm.style.display = 'none';
             docSaveStatus.textContent = '';
         }
@@ -2315,6 +2621,9 @@
             docTitle.value = item.title || '';
             docCategory.value = item.category || 'tuzuk';
             docLink.value = item.link || '';
+            docWeek.value = item.week || '';
+            docNote.value = item.note || '';
+            showReviewFields(item);
 
             docForm.style.display = 'block';
             docForm.scrollIntoView({ behavior: 'smooth' });
@@ -2347,6 +2656,24 @@
 
             if (!title) { docSaveStatus.textContent = 'Doküman Adı gerekli.'; return; }
 
+            // Haftalık rapor: ekip, hafta ve yükleyen kişi zorunlu
+            let weekly = null;
+            if (category === 'haftalik') {
+                const members = (ekipCache && ekipCache[docTeam.value]) || [];
+                const uploader = members.find(m => m.id && m.id === docUploader.value);
+                if (!docTeam.value) { docSaveStatus.textContent = 'Ekip seçin.'; return; }
+                if (!docWeek.value) { docSaveStatus.textContent = 'Hafta seçin.'; return; }
+                if (!uploader || !uploader.email) { docSaveStatus.textContent = 'Karar mailinin gideceği yükleyen kişiyi seçin.'; return; }
+                weekly = {
+                    team: docTeam.value,
+                    week: docWeek.value,
+                    uploaderId: uploader.id,
+                    uploaderName: uploader.name,
+                    uploaderEmail: String(uploader.email).trim(),
+                    note: docNote.value.trim().slice(0, 1000)
+                };
+            }
+
             try {
                 if (!siteData) throw new Error('Veriler yüklenemedi, sayfayı yenileyin.');
 
@@ -2360,6 +2687,18 @@
                 docSaveStatus.textContent = 'Kaydediliyor...';
                 const id = docEditId.value || 'd' + Date.now();
                 const newItem = { id, title, category, link };
+                if (weekly) {
+                    Object.assign(newItem, weekly);
+                    const prev = docEditId.value ? siteData.documents.find(dc => dc.id === id) : null;
+                    // Düzenlemede karar korunur; revizyon istenmiş rapora yeni dosya
+                    // yüklendiyse tekrar denetime düşer.
+                    if (prev && prev.review && prev.review.status === 'revision' && prev.link !== link) {
+                        newItem.review = { status: 'pending', previous: prev.review };
+                    } else {
+                        newItem.review = (prev && prev.review) || { status: 'pending' };
+                    }
+                    newItem.uploadedAt = (prev && prev.uploadedAt) || new Date().toISOString();
+                }
 
                 if (docEditId.value) {
                     const idx = siteData.documents.findIndex(dc => dc.id === id);
@@ -2371,7 +2710,7 @@
                 await commitSiteData('Doküman güncellendi: ' + title);
                 renderDocuments();
                 resetDocForm();
-                docSaveStatus.textContent = 'Doküman başarıyla kaydedildi!';
+                docSaveStatus.textContent = weekly ? 'Rapor kaydedildi ve denetime gönderildi.' : 'Doküman başarıyla kaydedildi!';
             } catch (e) {
                 docSaveStatus.textContent = 'Hata: ' + e.message;
             }

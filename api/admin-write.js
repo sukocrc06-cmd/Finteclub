@@ -1,3 +1,5 @@
+import { getDataBranch } from './_github.js';
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         res.status(405).json({ error: 'Method not allowed' });
@@ -23,11 +25,19 @@ export default async function handler(req, res) {
     }
 
     const REPO = 'sukocrc06-cmd/Finteclub';
-    const BRANCH = 'main';
     const token = process.env.GITHUB_TOKEN;
 
     if (!token) {
         res.status(500).json({ error: 'Sunucu yapılandırma hatası: GITHUB_TOKEN tanımlı değil.' });
+        return;
+    }
+
+    // Canlı sitede 'main'; Vercel önizlemesinde ayrı önizleme veri dalı (bkz. api/_github.js)
+    let BRANCH;
+    try {
+        BRANCH = await getDataBranch(token);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
         return;
     }
 
