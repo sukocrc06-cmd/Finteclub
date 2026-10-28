@@ -227,8 +227,13 @@
 
     <!-- ============ DASHBOARD ============ -->
     <div id="dashboard">
-        <h1>Sistem Ayarları &amp; Duyurular</h1>
-        <p class="subtitle">Bakım modu, site geneli banner ve öğrencilere yönelik duyurular.</p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+            <div>
+                <h1>Sistem Ayarları &amp; Duyurular</h1>
+                <p class="subtitle">Bakım modu, site geneli banner ve öğrencilere yönelik duyurular.</p>
+            </div>
+            <button class="btn" id="logout-btn" style="background:#e5e7eb; color:#374151; flex-shrink:0; margin-top:6px;">Çıkış Yap</button>
+        </div>
 
         <!-- Sistem Durumu -->
         <div class="panel">
@@ -920,15 +925,39 @@
 
     <!-- ============ ORTAK API KATMANI + ORTAK site-data.json DEPOSU ============ -->
     <script>
-    const ADMIN_API_KEY = 'ftc-admin-9f3a7k2m8x';
+    // ---------------------------------------------------------------
+    //  Tarayıcıda HİÇBİR anahtar/sır tutulmaz.
+    //  Yetki, api/admin-login.js'in verdiği HttpOnly oturum cookie'si ile
+    //  taşınır. Bu cookie JavaScript tarafından okunamaz, isteklere
+    //  tarayıcı tarafından otomatik eklenir (credentials: 'include').
+    //  Sunucu her istekte imzayı ve süreyi doğrular.
+    // ---------------------------------------------------------------
+
+    // Oturum düşerse paneli kapatıp giriş ekranına dön.
+    function __handleAuthFailure() {
+        try { sessionStorage.removeItem('finteclub_admin_session'); } catch (e) {}
+        const gate = document.getElementById('login-gate');
+        const dash = document.getElementById('dashboard');
+        if (gate && dash) {
+            dash.style.display = 'none';
+            gate.style.display = 'flex';
+        }
+    }
+
+    async function __apiError(res) {
+        const err = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+            __handleAuthFailure();
+            return new Error(err.error || 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.');
+        }
+        return new Error(err.error || ('HTTP ' + res.status));
+    }
+
     window.adminReadFile = async function (path) {
         const res = await fetch('/api/admin-read?path=' + encodeURIComponent(path), {
-            headers: { 'x-admin-key': ADMIN_API_KEY }
+            credentials: 'include'
         });
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error || ('HTTP ' + res.status));
-        }
+        if (!res.ok) throw await __apiError(res);
         const data = await res.json();
         return data.content;
     };
@@ -940,13 +969,11 @@
         const run = __writeQueue.then(async () => {
             const res = await fetch('/api/admin-write', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ path, content, message })
             });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error || ('HTTP ' + res.status));
-            }
+            if (!res.ok) throw await __apiError(res);
         });
         __writeQueue = run.catch(() => {});
         return run;
@@ -955,13 +982,11 @@
     window.adminUploadFile = async function (path, contentBase64, message) {
         const res = await fetch('/api/admin-upload', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_API_KEY },
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ path, contentBase64, message })
         });
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error || ('HTTP ' + res.status));
-        }
+        if (!res.ok) throw await __apiError(res);
         return { path };
     };
 
@@ -998,7 +1023,10 @@
     <!-- ============ FIRST SCRIPT: LOGIN & SYSTEM SETTINGS ============ -->
     <script>
     (function () {
-        const CRED_HASH = 'a5444748c68bbe12b7f593a7c0859e3e0bf5b7247ce0df5bf97ea1f60e522dc0';
+        // Şifre artık burada DEĞİL, sunucuda (api/admin-login.js + Vercel
+        // ortam değişkenleri) doğrulanıyor. Bu dosyada hiçbir sır yok.
+        // Aşağıdaki anahtar yalnızca bakım modu ekranını yönetici için
+        // atlatan bir arayüz ipucudur; yetkilendirme ile ilgisi yoktur.
         const SESSION_KEY = 'finteclub_admin_session';
 
         const loginGate = document.getElementById('login-gate');
@@ -1031,33 +1059,76 @@
 
         let currentData = null;
 
-        async function sha256(text) {
-            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
         function showDashboard() {
             loginGate.style.display = 'none';
             dashboard.style.display = 'block';
             loadData();
         }
 
-        if (sessionStorage.getItem(SESSION_KEY) === 'true') {
-            showDashboard();
-        }
+        // Sayfa açılışında sunucuya sor: geçerli bir oturum cookie'si var mı?
+        // Tarayıcıdaki bir bayrağa güvenilmiyor; karar sunucunun.
+        (async function checkExistingSession() {
+            try {
+                const res = await fetch('/api/admin-login', { credentials: 'include' });
+                const data = await res.json();
+                if (data && data.authenticated) {
+                    sessionStorage.setItem(SESSION_KEY, 'true');
+                    showDashboard();
+                } else {
+                    sessionStorage.removeItem(SESSION_KEY);
+                }
+            } catch (e) {
+                // Oturum doğrulanamadı: giriş ekranı açık kalsın.
+            }
+        })();
 
         loginBtn.addEventListener('click', async () => {
-            const combo = emailInput.value.trim() + '|' + passwordInput.value;
-            const hash = await sha256(combo);
-            if (hash === CRED_HASH) {
-                sessionStorage.setItem(SESSION_KEY, 'true');
-                loginError.style.display = 'none';
-                showDashboard();
-            } else {
+            loginError.style.display = 'none';
+            const originalText = loginBtn.textContent;
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Giriş yapılıyor...';
+
+            try {
+                const res = await fetch('/api/admin-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        email: emailInput.value.trim(),
+                        password: passwordInput.value
+                    })
+                });
+
+                if (res.ok) {
+                    sessionStorage.setItem(SESSION_KEY, 'true');
+                    passwordInput.value = '';
+                    showDashboard();
+                } else {
+                    const err = await res.json().catch(() => ({}));
+                    loginError.textContent = err.error || 'E-posta veya şifre hatalı.';
+                    loginError.style.display = 'block';
+                }
+            } catch (e) {
+                loginError.textContent = 'Sunucuya ulaşılamadı: ' + e.message;
                 loginError.style.display = 'block';
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = originalText;
             }
         });
         passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+
+        // ---- Çıkış ----
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await fetch('/api/admin-login', { method: 'DELETE', credentials: 'include' });
+                } catch (e) { /* yine de arayüzü kilitle */ }
+                sessionStorage.removeItem(SESSION_KEY);
+                location.reload();
+            });
+        }
 
         async function loadData() {
             try {
