@@ -1,0 +1,20 @@
+# Bu dosyalar siteye statik olarak YÜKLENMEZ (dışarıdan erişilemez)
+# Sunucu kodu
+_worker.js
+wrangler.toml
+functions/
+api/
+
+# Kişisel veriler (üyelik başvuruları, telefon, öğrenci no)
+messages.json
+
+# Gereksiz / eski platform dosyaları
+.git/
+node_modules/
+qr/node_modules/
+vercel.json
+.vercelignore
+.gitattributes
+desktop.ini
+qr.rar
+.assetsignore
