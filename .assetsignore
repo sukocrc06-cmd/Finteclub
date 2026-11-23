@@ -1,4 +1,4 @@
-# Bu dosyalar siteye statik olarak YÜKLENMEZ (dışarıdan erişilemez)
+# Bu dosyalar siteye statik olarak YÜKLENMEZ (dışarıdan erişilemez)deneme
 # Sunucu kodu
 _worker.js
 wrangler.toml
