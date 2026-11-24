@@ -289,6 +289,13 @@
       "logo": "images/1792665853601-336978651_579413810787443_7560600835301340597_n.jpg",
       "description": "Tüm menülerde %10 indirim",
       "frozen": false
+    },
+    {
+      "id": "p1795499321601",
+      "name": "Sirius Kitap Kafe-Kütüphane",
+      "logo": "images/1795499313413-PHOTO-2026-11-22-20-01-50.jpg",
+      "description": "FinTeClub üyelerine özel tüm kahve çeşitlerinde %25 indirim!",
+      "frozen": false
     }
   ]
 }
